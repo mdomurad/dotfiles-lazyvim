@@ -48,9 +48,33 @@ keymap.set("n", "<C-w><down>", "<C-w>-")
 
 -- Diagnostics
 keymap.set("n", "<C-j>", function()
-	vim.diagnostic.goto_next()
+  vim.diagnostic.goto_next()
 end, opts)
 
 keymap.set("n", "<leader>r", function()
-	require("craftzdog.utils").replaceHexWithHSL()
+  require("craftzdog.utils").replaceHexWithHSL()
 end)
+
+local which_key = require("which-key")
+
+-- Define your mappings
+local mappings = {
+  r = {
+    name = "ChatGPT",
+    r = { ":ChatGPT<CR>", "ChatGPT" },
+    e = { ":ChatGPTEditWithInstruction<CR>", "Edit with instruction" },
+    g = { ":ChatGPTRun grammar_correction<CR>", "Grammar Correction" },
+    t = { ":ChatGPTRun translate<CR>", "Translate" },
+    k = { ":ChatGPTRun keywords<CR>", "Keywords" },
+    d = { ":ChatGPTRun docstring<CR>", "Docstring" },
+    a = { ":ChatGPTRun add_tests<CR>", "Add Tests" },
+    o = { ":ChatGPTRun optimize_code<CR>", "Optimize Code" },
+    s = { ":ChatGPTRun summarize<CR>", "Summarize" },
+    f = { ":ChatGPTRun fix_bugs<CR>", "Fix Bugs" },
+    x = { ":ChatGPTRun explain_code<CR>", "Explain Code" },
+    c = { ":ChatGPTRun roxygen_edit<CR>", "Roxygen Edit" },
+    l = { ":ChatGPTRun code_readability_analysis<CR>", "Code Readability Analysis" },
+  },
+}
+-- Set up WhichKey
+which_key.register(mappings, { prefix = "<leader>" })
