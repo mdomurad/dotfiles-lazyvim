@@ -1,6 +1,4 @@
-local discipline = require("craftzdog.discipline")
-
-discipline.cowboy()
+local which_key = require("which-key")
 
 local keymap = vim.keymap
 local opts = { noremap = true, silent = true }
@@ -19,10 +17,6 @@ keymap.set("n", "<C-a>", "gg<S-v>G")
 
 -- Save with root permission (not working for now)
 --vim.api.nvim_create_user_command('W', 'w !sudo tee > /dev/null %', {})
-
--- Disable continuations
-keymap.set("n", "<Leader>o", "o<Esc>^Da", opts)
-keymap.set("n", "<Leader>O", "O<Esc>^Da", opts)
 
 -- Jumplist
 keymap.set("n", "<C-m>", "<C-i>", opts)
@@ -55,26 +49,29 @@ keymap.set("n", "<leader>r", function()
   require("craftzdog.utils").replaceHexWithHSL()
 end)
 
-local which_key = require("which-key")
-
 -- Define your mappings
 local mappings = {
+  -- JackMort/ChatGPT
   r = {
     name = "ChatGPT",
-    r = { ":ChatGPT<CR>", "ChatGPT" },
-    e = { ":ChatGPTEditWithInstruction<CR>", "Edit with instruction" },
-    g = { ":ChatGPTRun grammar_correction<CR>", "Grammar Correction" },
-    t = { ":ChatGPTRun translate<CR>", "Translate" },
-    k = { ":ChatGPTRun keywords<CR>", "Keywords" },
-    d = { ":ChatGPTRun docstring<CR>", "Docstring" },
-    a = { ":ChatGPTRun add_tests<CR>", "Add Tests" },
-    o = { ":ChatGPTRun optimize_code<CR>", "Optimize Code" },
-    s = { ":ChatGPTRun summarize<CR>", "Summarize" },
-    f = { ":ChatGPTRun fix_bugs<CR>", "Fix Bugs" },
-    x = { ":ChatGPTRun explain_code<CR>", "Explain Code" },
-    c = { ":ChatGPTRun roxygen_edit<CR>", "Roxygen Edit" },
-    l = { ":ChatGPTRun code_readability_analysis<CR>", "Code Readability Analysis" },
+    r = { ":ChatGPT<CR>", "ChatGPT", opts },
+    e = { ":'<,'>ChatGPTEditWithInstruction<CR>", "Edit with instruction", opts },
+    g = { ":'<,'>ChatGPTRun grammar_correction<CR>", "Grammar Correction", opts },
+    t = { ":'<,'>ChatGPTRun translate<CR>", "Translate", opts },
+    k = { ":'<,'>ChatGPTRun keywords<CR>", "Keywords", opts },
+    d = { ":'<,'>ChatGPTRun docstring<CR>", "Docstring", opts },
+    a = { ":'<,'>ChatGPTRun add_tests<CR>", "Add Tests", opts },
+    o = { ":'<,'>ChatGPTRun optimize_code<CR>", "Optimize Code", opts },
+    s = { ":'<,'>ChatGPTRun summarize<CR>", "Summarize", opts },
+    f = { ":'<,'>ChatGPTRun fix_bugs<CR>", "Fix Bugs", opts },
+    x = { ":'<,'>ChatGPTRun explain_code<CR>", "Explain Code", opts },
+    c = { ":'<,'>ChatGPTRun roxygen_edit<CR>", "Roxygen Edit", opts },
+    l = { ":'<,'>ChatGPTRun code_readability_analysis<CR>", "Code Readability Analysis", opts },
   },
+  -- Disable continuations
+  o = { "o<Esc>^Da", "Empty line below", opts },
+  O = { "O<Esc>^Da", "Empty line above", opts },
 }
+
 -- Set up WhichKey
 which_key.register(mappings, { prefix = "<leader>" })
