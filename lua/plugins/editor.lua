@@ -116,6 +116,53 @@ return {
         desc = "Lists Diagnostics for all open buffers or a specific buffer",
       },
       {
+        ";w",
+        function()
+          local builtin = require("telescope.builtin")
+          local clients = vim.lsp.buf_get_clients()
+          -- Check if there are any language server clients
+          if #clients > 0 then
+            local csharp_client = nil
+            for _, client in ipairs(clients) do
+              if client.name == "csharp_ls" then
+                csharp_client = client
+                break
+              end
+            end
+            -- If a C# language server is found, request code actions for the workspace
+            if csharp_client then
+              csharp_client.request("textDocument/definition", {
+                textDocument = { uri = vim.uri_from_bufnr(0) },
+                range = { start = { line = 0, character = 0 }, ["end"] = { line = vim.fn.line("$"), character = 0 } },
+                context = { diagnostics = {} },
+              }, function(_, _, actions)
+                -- Filter and display only the diagnostics from the code actions
+                local diagnostics = {}
+                for _, action in ipairs(actions) do
+                  if action.kind and action.kind.value == "quickfix" and action.diagnostics then
+                    for _, diagnostic in ipairs(action.diagnostics) do
+                      table.insert(diagnostics, diagnostic)
+                    end
+                  end
+                end
+                if #diagnostics > 0 then
+                  builtin.quickfix({ entries = diagnostics })
+                else
+                  print("No diagnostics found for the workspace.")
+                end
+              end)
+            else
+              -- If no C# language server is found, fall back to listing diagnostics for all open buffers
+              builtin.diagnostics()
+            end
+          else
+            -- If no language server clients are available, fall back to listing diagnostics for all open buffers
+            builtin.diagnostics()
+          end
+        end,
+        desc = "Lists Diagnostics for all open buffers or a specific buffer in the workspace",
+      },
+      {
         ";s",
         function()
           local builtin = require("telescope.builtin")
