@@ -13,7 +13,6 @@ return {
         "typescript-language-server",
         "css-lsp",
         "omnisharp",
-        "csharp-language-server",
       })
     end,
   },
