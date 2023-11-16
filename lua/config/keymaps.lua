@@ -49,6 +49,9 @@ keymap.set("n", "<leader>r", function()
   require("md.utils").replaceHexWithHSL()
 end)
 
+-- cosco.vim
+keymap.set("n", ";;", "<Plug>(cosco-commaOrSemiColon)", opts)
+
 -- Window-picker
 local picker = require("window-picker")
 
