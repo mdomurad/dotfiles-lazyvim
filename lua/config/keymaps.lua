@@ -49,7 +49,16 @@ keymap.set("n", "<leader>r", function()
   require("md.utils").replaceHexWithHSL()
 end)
 
--- Define your mappings
+-- Window-picker
+local picker = require("window-picker")
+
+vim.keymap.set("n", ",w", function()
+  local picked_window_id = picker.pick_window({
+    include_current_win = true,
+  }) or vim.api.nvim_get_current_win()
+  vim.api.nvim_set_current_win(picked_window_id)
+end, { desc = "Pick a window" })
+
 local mappings = {
   -- JackMort/ChatGPT
   r = {
