@@ -20,6 +20,7 @@ return {
         "sql",
         "svelte",
         "c_sharp",
+        "lua",
       },
 
       -- matchup = {
