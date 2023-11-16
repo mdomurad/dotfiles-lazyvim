@@ -14,6 +14,8 @@ return {
   },
   -- Add semicolon or colon on the end of line
   { "lfilho/cosco.vim" },
+  -- Multiple cursors plugin
+  { "mg979/vim-visual-multi" },
   {
     "echasnovski/mini.hipatterns",
     event = "BufReadPre",
@@ -101,7 +103,7 @@ return {
         desc = "Lists available help tags and opens a new window with the relevant help info on <cr>",
       },
       {
-        ";;",
+        ";.",
         function()
           local builtin = require("telescope.builtin")
           builtin.resume()
