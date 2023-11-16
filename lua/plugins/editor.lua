@@ -12,7 +12,8 @@ return {
       },
     },
   },
-
+  -- Add semicolon or colon on the end of line
+  { "lfilho/cosco.vim" },
   {
     "echasnovski/mini.hipatterns",
     event = "BufReadPre",
