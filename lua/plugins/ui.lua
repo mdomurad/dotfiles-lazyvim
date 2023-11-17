@@ -167,6 +167,7 @@ return {
 ]]
 
       -- https://emojicombos.com/anime-ascii-art
+      -- https://patorjk.com/software/taag/?ref=devas.life#p=display&f=ANSI%20Shadow&t=NEM%40_%40
       logo = string.rep("\n", 8) .. logo .. "\n\n"
       opts.config.header = vim.split(logo, "\n")
     end,
