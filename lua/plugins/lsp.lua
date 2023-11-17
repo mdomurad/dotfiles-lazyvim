@@ -14,6 +14,7 @@ return {
         "css-lsp",
         "omnisharp",
         "csharp-language-server",
+        "emmet-language-server",
       })
     end,
   },

@@ -1,7 +1,7 @@
 {
   "extras": [
-    "lazyvim.plugins.extras.coding.codeium",
     "lazyvim.plugins.extras.dap.core",
+    "lazyvim.plugins.extras.coding.codeium",
     "lazyvim.plugins.extras.dap.nlua",
     "lazyvim.plugins.extras.lang.docker",
     "lazyvim.plugins.extras.lang.omnisharp",
@@ -9,7 +9,7 @@
     "lazyvim.plugins.extras.lang.yaml"
   ],
   "news": {
-    "NEWS.md": "2123",
+    "NEWS.md": "2191",
     "doc/news.txt": "14318"
   },
   "version": 2
