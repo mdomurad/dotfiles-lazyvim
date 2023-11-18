@@ -255,4 +255,11 @@ return {
       require("telescope").load_extension("file_browser")
     end,
   },
+  -- Color Picker
+  {
+    "ziontee113/color-picker.nvim",
+    config = function()
+      require("color-picker")
+    end,
+  },
 }
