@@ -52,6 +52,10 @@ keymap.set("n", ";;", "<Plug>(cosco-commaOrSemiColon)", opts)
 -- Window-picker
 local picker = require("window-picker")
 
+-- Color-picker
+vim.keymap.set("n", "<C-x>", "<cmd>PickColor<cr>", opts)
+vim.keymap.set("i", "<C-x>", "<cmd>PickColorInsert<cr>", opts)
+
 vim.keymap.set("n", ",w", function()
   local picked_window_id = picker.pick_window({
     include_current_win = true,
