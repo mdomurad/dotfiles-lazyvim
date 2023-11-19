@@ -15,6 +15,7 @@ return {
         "omnisharp",
         "csharp-language-server",
         "emmet-language-server",
+        "svelte-language-server",
       })
     end,
   },
