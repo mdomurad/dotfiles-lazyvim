@@ -84,10 +84,6 @@ local mappings = {
   -- Disable continuations
   o = { "o<Esc>^Da", "Empty line below", opts },
   O = { "O<Esc>^Da", "Empty line above", opts },
-  -- add additional simpler mapping for removing current buffer
-  d = {
-    d = { "bd<CR>", "Delete Buffer", opts },
-  },
 }
 
 -- Set up WhichKey
