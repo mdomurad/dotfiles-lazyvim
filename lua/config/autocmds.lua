@@ -17,3 +17,11 @@ vim.api.nvim_create_autocmd("FileType", {
   pattern = "*",
   command = ":ColorizerAttachToBuffer",
 })
+
+-- Set current path to opened file root dir
+vim.api.nvim_create_autocmd("BufEnter", {
+  pattern = "*",
+  callback = function()
+    vim.cmd("cd %:p:h")
+  end,
+})
