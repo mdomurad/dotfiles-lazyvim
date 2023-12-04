@@ -18,6 +18,11 @@ vim.api.nvim_create_autocmd("FileType", {
   command = ":ColorizerAttachToBuffer",
 })
 
+vim.api.nvim_create_autocmd("BufEnter", {
+  pattern = "*.xaml",
+  command = ":setfiletype xml",
+})
+
 -- Set current path to opened file root dir
 vim.api.nvim_create_autocmd("BufEnter", {
   pattern = "*",
