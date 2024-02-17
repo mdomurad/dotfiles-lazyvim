@@ -108,4 +108,35 @@ return {
       "nvim-telescope/telescope.nvim",
     },
   },
+  {
+    {
+      "nvim-neorg/neorg",
+      -- ft = "norg", --lazy load on filetype
+      -- cmd = "Neorg", -- lazy load on command, allows you to autocomplete :Neorg regardless of whether it's loaded yet
+      -- priority = 30, -- treesitter is on default priority of 50, neorg should load after it.
+      run = ":Neorg sync-parsers", -- This is the important bit!
+      config = function()
+        require("neorg").setup({
+          load = {
+            ["core.defaults"] = {}, -- Loads default behaviour
+            ["core.concealer"] = {}, -- Adds pretty icons to your documents
+            ["core.completion"] = { config = { engine = "nvim-cmp" } },
+            ["core.journal"] = {},
+            ["core.qol.toc"] = {},
+            ["core.dirman"] = { -- Manages Neorg workspaces
+              config = {
+                workspaces = {
+                  todo = "c:/notes/todo",
+                  notes = "c:/notes/notes",
+                  development = "c:/notes/dev",
+                  bim = "c:/notes/bim",
+                },
+                default_workspace = "todo",
+              },
+            },
+          },
+        })
+      end,
+    },
+  },
 }
