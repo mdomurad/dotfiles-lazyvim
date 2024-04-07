@@ -104,6 +104,7 @@ return {
       -- ft = "norg", --lazy load on filetype
       -- cmd = "Neorg", -- lazy load on command, allows you to autocomplete :Neorg regardless of whether it's loaded yet
       -- priority = 30, -- treesitter is on default priority of 50, neorg should load after it.
+      version = "v7.0.0",
       run = ":Neorg sync-parsers", -- This is the important bit!
       config = function()
         require("neorg").setup({
