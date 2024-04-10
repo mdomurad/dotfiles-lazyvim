@@ -66,6 +66,11 @@ return {
               -- determining which version to use for project loading.
               IncludePrereleases = true,
             },
+            RenameOptions = {
+              RenameInComments = true,
+              RenameOverloads = true,
+              RenameInStrings = true,
+            },
           },
         },
         tailwindcss = {
