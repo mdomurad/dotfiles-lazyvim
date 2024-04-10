@@ -129,5 +129,23 @@ return {
         })
       end,
     },
+    {
+      -- Roslyn.nvim
+      {
+        "jmederosalvarado/roslyn.nvim",
+        config = function()
+          local nvim_lsp = require("lspconfig")
+          require("roslyn").setup({
+            dotnet_cmd = "dotnet",
+            roslyn_version = "4.8.0-3.23475.7",
+            on_attach = function(client, bufnr)
+              -- Set up key mappings, autocommands, etc. for the LSP client
+              nvim_lsp.on_attach(client, bufnr)
+            end,
+            capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
+          })
+        end,
+      },
+    },
   },
 }
