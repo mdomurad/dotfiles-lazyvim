@@ -139,8 +139,8 @@ return {
     --         dotnet_cmd = "dotnet",
     --         roslyn_version = "4.8.0-3.23475.7",
     --         on_attach = function(client, bufnr)
-    --           require("lazyvim.util").lsp.on_attach(client, bufnr)
     --           client.autostart = true
+    --           -- require("lazyvim.util").lsp.on_attach(client, bufnr)
     --         end,
     --         capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
     --       })
