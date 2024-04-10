@@ -12,8 +12,6 @@ return {
         "tailwindcss-language-server",
         "typescript-language-server",
         "css-lsp",
-        "omnisharp",
-        "csharp-language-server",
         "emmet-language-server",
         "svelte-language-server",
       })
