@@ -20,6 +20,7 @@ return {
         "sql",
         "svelte",
         "lua",
+        "sql",
       },
 
       -- matchup = {
