@@ -63,7 +63,7 @@ end, { desc = "Pick a window" })
 
 local mappings = {
   -- JackMort/ChatGPT
-  r = {
+  t = {
     name = "ChatGPT",
     r = { ":ChatGPT<CR>", "ChatGPT", opts },
     e = { ":'<,'>ChatGPTEditWithInstruction<CR>", "Edit with instruction", opts },
@@ -78,6 +78,25 @@ local mappings = {
     x = { ":'<,'>ChatGPTRun explain_code<CR>", "Explain Code", opts },
     c = { ":'<,'>ChatGPTRun roxygen_edit<CR>", "Roxygen Edit", opts },
     l = { ":'<,'>ChatGPTRun code_readability_analysis<CR>", "Code Readability Analysis", opts },
+  },
+  r = {
+    name = "CopilotChat",
+    r = { ":CopilotChat<CR>", "CopilotChat", opts },
+    -- e = { ":'<,'>ChatGPTEditWithInstruction<CR>", "Edit with instruction", opts },
+    -- g = { ":'<,'>ChatGPTRun grammar_correction<CR>", "Grammar Correction", opts },
+    -- t = { ":'<,'>ChatGPTRun translate<CR>", "Translate", opts },
+    -- k = { ":'<,'>ChatGPTRun keywords<CR>", "Keywords", opts },
+    i = { ":'<,'>CopilotChatFixDiagnostics<CR>", "Fix Diagnostics", opts },
+    d = { ":'<,'>CopilotChatDocs<CR>", "Docstring", opts },
+    a = { ":'<,'>CopilotChatTests<CR>", "Add Tests", opts },
+    o = { ":'<,'>CopilotChatOptimize<CR>", "Optimize Code", opts },
+    s = { ":'<,'>CopilotChatReview<CR>", "Review Cod", opts },
+    f = { ":'<,'>CopilotChatFix<CR>", "Fix Bugs", opts },
+    x = { ":'<,'>CopilotChatExplain<CR>", "Explain Code", opts },
+    c = { ":'<,'>CopilotChatCommit<CR>", "Commit Message", opts },
+    m = { ":'<,'>CopilotChatCommitStaged<CR>", "Commit Message Staged", opts },
+    -- c = { ":'<,'>ChatGPTRun roxygen_edit<CR>", "Roxygen Edit", opts },
+    -- l = { ":'<,'>ChatGPTRun code_readability_analysis<CR>", "Code Readability Analysis", opts },
   },
   -- Disable continuations
   o = { "o<Esc>^Da", "Empty line below", opts },
