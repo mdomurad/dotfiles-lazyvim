@@ -62,10 +62,23 @@ vim.keymap.set("n", ",w", function()
 end, { desc = "Pick a window" })
 
 local mappings = {
-  -- JackMort/ChatGPT
-  t = {
+  r = {
+    name = "CopilotChat",
+    r = { ":CopilotChat<CR>", "CopilotChat", opts },
+  },
+  R = {
     name = "ChatGPT",
     r = { ":ChatGPT<CR>", "ChatGPT", opts },
+  },
+  -- Disable continuations
+  o = { "o<Esc>^Da", "Empty line below", opts },
+  O = { "O<Esc>^Da", "Empty line above", opts },
+}
+
+local visualMappings = {
+  -- JackMort/ChatGPT
+  T = {
+    name = "ChatGPT",
     e = { ":'<,'>ChatGPTEditWithInstruction<CR>", "Edit with instruction", opts },
     g = { ":'<,'>ChatGPTRun grammar_correction<CR>", "Grammar Correction", opts },
     t = { ":'<,'>ChatGPTRun translate<CR>", "Translate", opts },
@@ -79,9 +92,8 @@ local mappings = {
     c = { ":'<,'>ChatGPTRun roxygen_edit<CR>", "Roxygen Edit", opts },
     l = { ":'<,'>ChatGPTRun code_readability_analysis<CR>", "Code Readability Analysis", opts },
   },
-  r = {
+  t = {
     name = "CopilotChat",
-    r = { ":CopilotChat<CR>", "CopilotChat", opts },
     -- e = { ":'<,'>ChatGPTEditWithInstruction<CR>", "Edit with instruction", opts },
     -- g = { ":'<,'>ChatGPTRun grammar_correction<CR>", "Grammar Correction", opts },
     -- t = { ":'<,'>ChatGPTRun translate<CR>", "Translate", opts },
@@ -90,21 +102,21 @@ local mappings = {
     d = { ":'<,'>CopilotChatDocs<CR>", "Docstring", opts },
     a = { ":'<,'>CopilotChatTests<CR>", "Add Tests", opts },
     o = { ":'<,'>CopilotChatOptimize<CR>", "Optimize Code", opts },
-    s = { ":'<,'>CopilotChatReview<CR>", "Review Cod", opts },
+    t = { ":'<,'>CopilotChatReview<CR>", "Review Code", opts },
     f = { ":'<,'>CopilotChatFix<CR>", "Fix Bugs", opts },
     x = { ":'<,'>CopilotChatExplain<CR>", "Explain Code", opts },
     c = { ":'<,'>CopilotChatCommit<CR>", "Commit Message", opts },
     m = { ":'<,'>CopilotChatCommitStaged<CR>", "Commit Message Staged", opts },
+    s = { ":'<,'>CopilotChatSave chat<CR>", "Save", opts },
+    l = { ":'<,'>CopilotChatLoad chat<CR>", "Save", opts },
     -- c = { ":'<,'>ChatGPTRun roxygen_edit<CR>", "Roxygen Edit", opts },
     -- l = { ":'<,'>ChatGPTRun code_readability_analysis<CR>", "Code Readability Analysis", opts },
   },
-  -- Disable continuations
-  o = { "o<Esc>^Da", "Empty line below", opts },
-  O = { "O<Esc>^Da", "Empty line above", opts },
 }
 
 -- Set up WhichKey
 which_key.register(mappings, { prefix = "<leader>" })
+which_key.register(visualMappings, { prefix = "<leader>", mode = "v" })
 
 -- Omnisharp extended
 -- replaces vim.lsp.buf.definition()
