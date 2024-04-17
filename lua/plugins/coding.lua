@@ -107,7 +107,12 @@ return {
     },
     opts = {
       debug = true, -- Enable debugging
-      -- See Configuration section for rest
+      window = {
+        layout = "float",
+        relative = "editor",
+        width = 0.8,
+        height = 0.6,
+      },
     },
     -- See Commands section for default commands if you want to lazy load on them
   },
