@@ -94,6 +94,7 @@ local visualMappings = {
   },
   t = {
     name = "CopilotChat",
+    r = { ":'<,'>CopilotChat<CR>", "CopilotChat", opts },
     -- e = { ":'<,'>ChatGPTEditWithInstruction<CR>", "Edit with instruction", opts },
     -- g = { ":'<,'>ChatGPTRun grammar_correction<CR>", "Grammar Correction", opts },
     -- t = { ":'<,'>ChatGPTRun translate<CR>", "Translate", opts },

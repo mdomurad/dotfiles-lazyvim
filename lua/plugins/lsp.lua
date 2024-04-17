@@ -14,6 +14,7 @@ return {
         "css-lsp",
         "emmet-language-server",
         "svelte-language-server",
+        "python-lsp-server",
       })
     end,
   },
