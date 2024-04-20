@@ -65,8 +65,8 @@ local mappings = {
   t = {
     name = "CopilotChat",
     t = { "<cmd>CopilotChat<CR>", "CopilotChat" },
-    c = { ":'<,'>CopilotChatCommit<CR>", "Commit Message", opts },
-    s = { ":'<,'>CopilotChatCommitStaged<CR>", "Commit Message Staged", opts },
+    c = { "<cmd>CopilotChatCommit<CR>", "Commit Message", opts },
+    s = { "<cmd>CopilotChatCommitStaged<CR>", "Commit Message Staged", opts },
     a = {
       "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions())<CR>",
       "Prompt actions",
@@ -94,7 +94,7 @@ local visualMappings = {
     t = { ":'<,'>ChatGPTRun translate<CR>", "Translate", opts },
     k = { ":'<,'>ChatGPTRun keywords<CR>", "Keywords", opts },
     d = { ":'<,'>ChatGPTRun docstring<CR>", "Docstring", opts },
-    a = { ":'<,'>ChatGPTRun add_tests<CR>", "Add Tests", opts },
+    q = { ":'<,'>ChatGPTRun add_tests<CR>", "Add Tests", opts },
     o = { ":'<,'>ChatGPTRun optimize_code<CR>", "Optimize Code", opts },
     s = { ":'<,'>ChatGPTRun summarize<CR>", "Summarize", opts },
     f = { ":'<,'>ChatGPTRun fix_bugs<CR>", "Fix Bugs", opts },
@@ -109,10 +109,6 @@ local visualMappings = {
       "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions())<CR>",
       "Prompt actions",
     },
-    -- e = { ":'<,'>ChatGPTEditWithInstruction<CR>", "Edit with instruction", opts },
-    -- g = { ":'<,'>ChatGPTRun grammar_correction<CR>", "Grammar Correction", opts },
-    -- t = { ":'<,'>ChatGPTRun translate<CR>", "Translate", opts },
-    -- k = { ":'<,'>ChatGPTRun keywords<CR>", "Keywords", opts },
     i = { ":'<,'>CopilotChatFixDiagnostics<CR>", "Fix Diagnostics", opts },
     d = { ":'<,'>CopilotChatDocs<CR>", "Docstring", opts },
     q = { ":'<,'>CopilotChatTests<CR>", "Add Tests", opts },
@@ -122,8 +118,6 @@ local visualMappings = {
     x = { ":'<,'>CopilotChatExplain<CR>", "Explain Code", opts },
     s = { ":'<,'>CopilotChatSave chat<CR>", "Save", opts },
     l = { ":'<,'>CopilotChatLoad chat<CR>", "Load", opts },
-    -- c = { ":'<,'>ChatGPTRun roxygen_edit<CR>", "Roxygen Edit", opts },
-    -- l = { ":'<,'>ChatGPTRun code_readability_analysis<CR>", "Code Readability Analysis", opts },
   },
 }
 
