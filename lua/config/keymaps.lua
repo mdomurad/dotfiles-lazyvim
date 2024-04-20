@@ -62,17 +62,27 @@ vim.keymap.set("n", ",w", function()
 end, { desc = "Pick a window" })
 
 local mappings = {
-  r = {
+  t = {
     name = "CopilotChat",
-    r = { ":CopilotChat<CR>", "CopilotChat", opts },
+    t = { "<cmd>CopilotChat<CR>", "CopilotChat" },
+    c = { ":'<,'>CopilotChatCommit<CR>", "Commit Message", opts },
+    s = { ":'<,'>CopilotChatCommitStaged<CR>", "Commit Message Staged", opts },
+    a = {
+      "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions())<CR>",
+      "Prompt actions",
+    },
+    h = {
+      "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').help_actions())<CR>",
+      "Help actions",
+    },
   },
-  R = {
+  T = {
     name = "ChatGPT",
-    r = { ":ChatGPT<CR>", "ChatGPT", opts },
+    T = { "<cmd>ChatGPT<CR>", "ChatGPT" },
   },
   -- Disable continuations
-  o = { "o<Esc>^Da", "Empty line below", opts },
-  O = { "O<Esc>^Da", "Empty line above", opts },
+  o = { "o<Esc>^Da", "Empty line below" },
+  O = { "O<Esc>^Da", "Empty line above" },
 }
 
 local visualMappings = {
@@ -106,8 +116,6 @@ local visualMappings = {
     t = { ":'<,'>CopilotChatReview<CR>", "Review Code", opts },
     f = { ":'<,'>CopilotChatFix<CR>", "Fix Bugs", opts },
     x = { ":'<,'>CopilotChatExplain<CR>", "Explain Code", opts },
-    c = { ":'<,'>CopilotChatCommit<CR>", "Commit Message", opts },
-    m = { ":'<,'>CopilotChatCommitStaged<CR>", "Commit Message Staged", opts },
     s = { ":'<,'>CopilotChatSave chat<CR>", "Save", opts },
     l = { ":'<,'>CopilotChatLoad chat<CR>", "Save", opts },
     -- c = { ":'<,'>ChatGPTRun roxygen_edit<CR>", "Roxygen Edit", opts },
