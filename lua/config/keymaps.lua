@@ -92,8 +92,8 @@ local mappings = {
   t = {
     name = "CopilotChat",
     t = { "<cmd>CopilotChat<CR>", "CopilotChat" },
-    c = { "<cmd>CopilotChatCommit<CR>", "Commit Message", opts },
-    s = { "<cmd>CopilotChatCommitStaged<CR>", "Commit Message Staged", opts },
+    q = { "<cmd>CopilotChatCommit<CR>", "Commit Message", opts },
+    c = { "<cmd>CopilotChatCommitStaged<CR>", "Commit Message Staged", opts },
     a = {
       "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions())<CR>",
       "Prompt actions",
@@ -102,6 +102,8 @@ local mappings = {
       "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').help_actions())<CR>",
       "Help actions",
     },
+    s = { "<cmd>CopilotChatSave chat<CR>", "Save", opts },
+    l = { "<cmd>CopilotChatLoad chat<CR>", "Load", opts },
   },
   T = {
     name = "ChatGPT",
@@ -154,16 +156,10 @@ local visualMappings = {
     r = { ":'<,'>CopilotChatReview<CR>", "Review Code", opts },
     f = { ":'<,'>CopilotChatFix<CR>", "Fix Bugs", opts },
     x = { ":'<,'>CopilotChatExplain<CR>", "Explain Code", opts },
-    s = { ":'<,'>CopilotChatSave chat<CR>", "Save", opts },
-    l = { ":'<,'>CopilotChatLoad chat<CR>", "Load", opts },
   },
 }
 
 -- ; prefixed mappings
-
-local specialMappings = {
-  c = {},
-}
 
 -- Set up WhichKey
 which_key.register(mappings, { prefix = "<leader>" })

@@ -31,7 +31,9 @@ return {
       },
       prompts = {
         QuickCommit = {
-          prompt = "Write commit title message for the change with commitizen convention. Make sure the title has maximum 50 characters and message is wrapped at 72 characters. Wrap the whole message in code block with language gitcommit.",
+          prompt = [[ Write commit title for the change with commitizen convention.
+            Make sure the title has maximum 50 characters.
+            Do not provide any extra information, just the title itself in one line.]],
           description = "Generate a quick commit message",
           mapping = ";c",
           close = true,
@@ -39,8 +41,16 @@ return {
             return require("CopilotChat.select").gitdiff(source, true)
           end,
           callback = function(response, source)
-            print("Source: ", source)
-            print("Resonse: ", response)
+            local copilot = require("CopilotChat")
+            -- Use vim-fugitive for git commands
+            vim.cmd("G add -A")
+            vim.cmd("G commit -m " .. response .. '"')
+
+            copilot.close()
+            -- Get the list of files in the last commit
+            local committedFiles = io.popen("git log -1 --name-only"):read("*all")
+            vim.api.nvim_echo({ { "Commit message: " .. response, "HighlightGroup" } }, true, {})
+            vim.api.nvim_echo({ { "Files in the last commit:\n" .. committedFiles, "HighlightGroup" } }, true, {})
           end,
         },
       },
