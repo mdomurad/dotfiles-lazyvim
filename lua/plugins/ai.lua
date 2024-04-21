@@ -1,6 +1,7 @@
+message = ""
+
 return {
   {
-
     "jackMort/ChatGPT.nvim",
     event = "VeryLazy",
     config = function()
@@ -39,7 +40,8 @@ return {
           mapping = ";c",
           close = true,
           selection = function(source)
-            return require("CopilotChat.select").gitdiff(source, true)
+            message = require("CopilotChat.select").gitdiff(source, true)
+            return message
           end,
           callback = function(response, source)
             local copilot = require("CopilotChat")
@@ -49,8 +51,9 @@ return {
             copilot.close()
             -- Get the list of files in the last commit
             local committedFiles = io.popen("git log -1 --name-only"):read("*all")
-            vim.api.nvim_echo({ { "Commit message: " .. response, "HighlightGroup" } }, true, {})
-            vim.api.nvim_echo({ { "Files in the last commit:\n" .. committedFiles, "HighlightGroup" } }, true, {})
+            -- vim.api.nvim_echo({ { "Commit message: " .. response, "HighlightGroup" } }, true, {})
+            vim.api.nvim_echo({ { "Commit message: " .. message, "HighlightGroup" } }, true, {})
+            -- vim.api.nvim_echo({ { "Files in the last commit:\n" .. committedFiles, "HighlightGroup" } }, true, {})
           end,
         },
       },
