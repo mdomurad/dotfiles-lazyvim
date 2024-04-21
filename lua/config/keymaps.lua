@@ -88,6 +88,19 @@ vim.keymap.set("n", ",w", function()
   vim.api.nvim_set_current_win(picked_window_id)
 end, { desc = "Pick a window" })
 
+function quickChat()
+  local input = vim.fn.input("Quick Chat: ")
+  if input ~= "" then
+    require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
+  end
+end
+
+function get_git_remote_url()
+  local git_path = -- however git_path is being set
+    print(git_path) -- add this line
+  -- rest of the function
+end
+
 local mappings = {
   t = {
     name = "CopilotChat",
@@ -104,6 +117,7 @@ local mappings = {
     },
     s = { "<cmd>CopilotChatSave chat<CR>", "Save", opts },
     l = { "<cmd>CopilotChatLoad chat<CR>", "Load", opts },
+    x = { "<cmd>lue get_git_remote_url()<CR>", "Get git remote url", opts },
   },
   T = {
     name = "ChatGPT",
@@ -113,13 +127,6 @@ local mappings = {
   o = { "o<Esc>^Da", "Empty line below" },
   O = { "O<Esc>^Da", "Empty line above" },
 }
-
-function quickChat()
-  local input = vim.fn.input("Quick Chat: ")
-  if input ~= "" then
-    require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
-  end
-end
 
 local visualMappings = {
   -- JackMort/ChatGPT
