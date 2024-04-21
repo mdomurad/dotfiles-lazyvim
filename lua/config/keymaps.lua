@@ -20,9 +20,11 @@ keymap.set("n", "<C-m>", "<C-i>", opts)
 
 -- New tab
 keymap.set("n", "te", ":tabedit")
+
 -- Split window
 keymap.set("n", "ss", ":split<Return>", opts)
 keymap.set("n", "sv", ":vsplit<Return>", opts)
+
 -- Move window
 keymap.set("n", "sh", "<C-w>h")
 keymap.set("n", "sk", "<C-w>k")
@@ -110,6 +112,13 @@ local mappings = {
   O = { "O<Esc>^Da", "Empty line above" },
 }
 
+function quickChat()
+  local input = vim.fn.input("Quick Chat: ")
+  if input ~= "" then
+    require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
+  end
+end
+
 local visualMappings = {
   -- JackMort/ChatGPT
   T = {
@@ -130,6 +139,10 @@ local visualMappings = {
   t = {
     name = "CopilotChat",
     t = { ":'<,'>CopilotChat<CR>", "CopilotChat", opts },
+    c = {
+      "<cmd> lua quickChat() <CR>",
+      "CopilotChat - Quick chat",
+    },
     a = {
       "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions())<CR>",
       "Prompt actions",
@@ -144,6 +157,12 @@ local visualMappings = {
     s = { ":'<,'>CopilotChatSave chat<CR>", "Save", opts },
     l = { ":'<,'>CopilotChatLoad chat<CR>", "Load", opts },
   },
+}
+
+-- ; prefixed mappings
+
+local specialMappings = {
+  c = {},
 }
 
 -- Set up WhichKey
