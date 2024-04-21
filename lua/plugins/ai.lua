@@ -34,7 +34,7 @@ return {
             Use provided git diff data for generating commit.
             Make sure the title has maximum 50 characters.
             Do not provide any extra information, just the title itself in one line.
-            Do not place any symbols to wrap strings around title.]],
+            Do not wrap the title with any symbols like qute.]],
           description = "Generate a quick commit message",
           mapping = ";c",
           close = true,

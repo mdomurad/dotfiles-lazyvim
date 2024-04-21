@@ -88,6 +88,12 @@ vim.keymap.set("n", ",w", function()
   vim.api.nvim_set_current_win(picked_window_id)
 end, { desc = "Pick a window" })
 
+--- This function initiates a quick chat.
+-- It prompts the user for input and if the input is not an empty string,
+-- it calls the 'ask' function from the 'CopilotChat' module with the user's input
+-- and the current buffer as the selection.
+-- @param None
+-- @return None
 function quickChat()
   local input = vim.fn.input("Quick Chat: ")
   if input ~= "" then
@@ -95,10 +101,12 @@ function quickChat()
   end
 end
 
+--- This function retrieves the URL of the remote repository in Git.
+-- It prints the path of the Git repository for debugging purposes.
+-- @return nil
 function get_git_remote_url()
   local git_path = -- however git_path is being set
     print(git_path) -- add this line
-  -- rest of the function
 end
 
 local mappings = {
