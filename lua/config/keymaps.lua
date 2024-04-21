@@ -117,7 +117,7 @@ local mappings = {
     },
     s = { "<cmd>CopilotChatSave chat<CR>", "Save", opts },
     l = { "<cmd>CopilotChatLoad chat<CR>", "Load", opts },
-    x = { "<cmd>lue get_git_remote_url()<CR>", "Get git remote url", opts },
+    x = { "<cmd>lua get_git_remote_url()<CR>", "Get git remote url", opts },
   },
   T = {
     name = "ChatGPT",
