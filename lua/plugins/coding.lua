@@ -85,38 +85,6 @@ return {
     end,
   },
   {
-    "jackMort/ChatGPT.nvim",
-    event = "VeryLazy",
-    config = function()
-      require("chatgpt").setup({
-        model = "gpt-3.5-turbo",
-      })
-    end,
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim",
-    },
-  },
-  {
-    "CopilotC-Nvim/CopilotChat.nvim",
-    branch = "canary",
-    dependencies = {
-      { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
-      { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
-    },
-    opts = {
-      debug = true, -- Enable debugging
-      window = {
-        layout = "float",
-        relative = "editor",
-        width = 0.8,
-        height = 0.6,
-      },
-    },
-    -- See Commands section for default commands if you want to lazy load on them
-  },
-  {
     {
       "nvim-neorg/neorg",
       -- ft = "norg", --lazy load on filetype
