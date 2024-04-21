@@ -44,6 +44,31 @@ keymap.set("n", "<leader>r", function()
   require("md.utils").replaceHexWithHSL()
 end)
 
+-- Omnisharp extended
+-- replaces vim.lsp.buf.definition()
+vim.keymap.set("n", "gd", '<cmd>lua require("omnisharp_extended").lsp_definition()<cr>', {})
+
+-- replaces vim.lsp.buf.type_definition()
+vim.keymap.set("n", "<leader>D", '<cmd>lua require("omnisharp_extended").lsp_type_definition()<cr>', {})
+
+-- replaces vim.lsp.buf.references()
+vim.keymap.set("n", "gr", '<cmd>lua require("omnisharp_extended").lsp_references()<cr>', {})
+
+-- replaces vim.lsp.buf.implementation()
+vim.keymap.set("n", "gi", '<cmd>lua require("omnisharp_extended").lsp_implementation()<cr>', {})
+
+-- commands for telescope
+vim.keymap.set("n", "gr", "<cmd>lua require('omnisharp_extended').telescope_lsp_references()<cr>", { noremap = true })
+-- options are supported as well
+vim.keymap.set(
+  "n",
+  "gd",
+  '<cmd>lua require("omnisharp_extended").telescope_lsp_definition({ jump_type = "vsplit" })<cr>',
+  {}
+)
+vim.keymap.set("n", "<leader>D", '<cmd>lua require("omnisharp_extended").telescope_lsp_type_definition()<cr>', {})
+vim.keymap.set("n", "gi", '<cmd>lua require("omnisharp_extended").telescope_lsp_implementation()<cr>', {})
+
 -- cosco.vim
 keymap.set("n", ";;", "<Plug>(cosco-commaOrSemiColon)", opts)
 
@@ -124,28 +149,3 @@ local visualMappings = {
 -- Set up WhichKey
 which_key.register(mappings, { prefix = "<leader>" })
 which_key.register(visualMappings, { prefix = "<leader>", mode = "v" })
-
--- Omnisharp extended
--- replaces vim.lsp.buf.definition()
-vim.keymap.set("n", "gd", '<cmd>lua require("omnisharp_extended").lsp_definition()<cr>', {})
-
--- replaces vim.lsp.buf.type_definition()
-vim.keymap.set("n", "<leader>D", '<cmd>lua require("omnisharp_extended").lsp_type_definition()<cr>', {})
-
--- replaces vim.lsp.buf.references()
-vim.keymap.set("n", "gr", '<cmd>lua require("omnisharp_extended").lsp_references()<cr>', {})
-
--- replaces vim.lsp.buf.implementation()
-vim.keymap.set("n", "gi", '<cmd>lua require("omnisharp_extended").lsp_implementation()<cr>', {})
-
--- commands for telescope
-vim.keymap.set("n", "gr", "<cmd>lua require('omnisharp_extended').telescope_lsp_references()<cr>", { noremap = true })
--- options are supported as well
-vim.keymap.set(
-  "n",
-  "gd",
-  '<cmd>lua require("omnisharp_extended").telescope_lsp_definition({ jump_type = "vsplit" })<cr>',
-  {}
-)
-vim.keymap.set("n", "<leader>D", '<cmd>lua require("omnisharp_extended").telescope_lsp_type_definition()<cr>', {})
-vim.keymap.set("n", "gi", '<cmd>lua require("omnisharp_extended").telescope_lsp_implementation()<cr>', {})
