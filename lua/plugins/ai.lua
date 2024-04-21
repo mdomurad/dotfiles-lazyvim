@@ -42,9 +42,8 @@ return {
           end,
           callback = function(response, source)
             local copilot = require("CopilotChat")
-            -- Use vim-fugitive for git commands
-            vim.cmd("G add -A")
-            vim.cmd("G commit -m " .. response .. '"')
+            os.execute("git add -A")
+            os.execute('git commit -m "' .. response .. '"')
 
             copilot.close()
             -- Get the list of files in the last commit

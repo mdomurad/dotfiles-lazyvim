@@ -30,3 +30,18 @@ vim.api.nvim_create_autocmd("BufEnter", {
     vim.cmd("cd %:p:h")
   end,
 })
+
+--- This autocmd is triggered when a buffer matching the pattern 'copilot-*' is entered.
+--- It sets the local option 'relativenumber' to true for the buffer.
+--- It also maps the key combination 'Ctrl-p' to print the last response from CopilotChat.
+vim.api.nvim_create_autocmd("BufEnter", {
+  pattern = "copilot-*",
+  callback = function()
+    vim.opt_local.relativenumber = true
+
+    -- C-p to print last response
+    vim.keymap.set("n", "<C-p>", function()
+      print(require("CopilotChat").response())
+    end, { buffer = true, remap = true })
+  end,
+})
