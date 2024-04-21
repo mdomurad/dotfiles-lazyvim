@@ -33,7 +33,8 @@ return {
         QuickCommit = {
           prompt = [[ Write commit title for the change with commitizen convention.
             Make sure the title has maximum 50 characters.
-            Do not provide any extra information, just the title itself in one line.]],
+            Do not provide any extra information, just the title itself in one line.
+            Do not place any symbols to wrap strings around title.]],
           description = "Generate a quick commit message",
           mapping = ";c",
           close = true,
