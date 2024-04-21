@@ -1,5 +1,3 @@
-message = ""
-
 return {
   {
     "jackMort/ChatGPT.nvim",
@@ -33,6 +31,7 @@ return {
       prompts = {
         QuickCommit = {
           prompt = [[ Write commit title for the change with commitizen convention.
+            Use provided git diff data for generating commit.
             Make sure the title has maximum 50 characters.
             Do not provide any extra information, just the title itself in one line.
             Do not place any symbols to wrap strings around title.]],
@@ -40,8 +39,7 @@ return {
           mapping = ";c",
           close = true,
           selection = function(source)
-            message = require("CopilotChat.select").gitdiff(source, true)
-            return message
+            return require("CopilotChat.select").gitdiff(source, true)
           end,
           callback = function(response, source)
             local copilot = require("CopilotChat")
@@ -51,9 +49,8 @@ return {
             copilot.close()
             -- Get the list of files in the last commit
             local committedFiles = io.popen("git log -1 --name-only"):read("*all")
-            -- vim.api.nvim_echo({ { "Commit message: " .. response, "HighlightGroup" } }, true, {})
-            vim.api.nvim_echo({ { "Commit message: " .. message, "HighlightGroup" } }, true, {})
-            -- vim.api.nvim_echo({ { "Files in the last commit:\n" .. committedFiles, "HighlightGroup" } }, true, {})
+            vim.api.nvim_echo({ { "Commit message: " .. response, "HighlightGroup" } }, true, {})
+            vim.api.nvim_echo({ { "Files in the last commit:\n" .. committedFiles, "HighlightGroup" } }, true, {})
           end,
         },
       },
