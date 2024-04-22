@@ -1,2 +1,2 @@
-- ( ) Test using commitizen tool to generate commits with ai assistance
 - ( ) replace all git diff commands with fugitive commands
+- ( ) add additional copilotchat command for generating full commits with description for staged and with auto staging
