@@ -48,28 +48,29 @@ end)
 
 -- Omnisharp extended
 -- replaces vim.lsp.buf.definition()
-vim.keymap.set("n", "gd", '<cmd>lua require("omnisharp_extended").lsp_definition()<cr>', {})
+keymap.set("n", "gd", '<cmd>lua require("omnisharp_extended").lsp_definition()<cr>', {})
 
 -- replaces vim.lsp.buf.type_definition()
-vim.keymap.set("n", "<leader>D", '<cmd>lua require("omnisharp_extended").lsp_type_definition()<cr>', {})
+keymap.set("n", "<leader>D", '<cmd>lua require("omnisharp_extended").lsp_type_definition()<cr>', {})
 
 -- replaces vim.lsp.buf.references()
-vim.keymap.set("n", "gr", '<cmd>lua require("omnisharp_extended").lsp_references()<cr>', {})
+keymap.set("n", "gr", '<cmd>lua require("omnisharp_extended").lsp_references()<cr>', {})
 
 -- replaces vim.lsp.buf.implementation()
-vim.keymap.set("n", "gi", '<cmd>lua require("omnisharp_extended").lsp_implementation()<cr>', {})
+keymap.set("n", "gi", '<cmd>lua require("omnisharp_extended").lsp_implementation()<cr>', {})
 
 -- commands for telescope
-vim.keymap.set("n", "gr", "<cmd>lua require('omnisharp_extended').telescope_lsp_references()<cr>", { noremap = true })
+keymap.set("n", "gr", "<cmd>lua require('omnisharp_extended').telescope_lsp_references()<cr>", { noremap = true })
+
 -- options are supported as well
-vim.keymap.set(
+keymap.set(
   "n",
   "gd",
   '<cmd>lua require("omnisharp_extended").telescope_lsp_definition({ jump_type = "vsplit" })<cr>',
   {}
 )
-vim.keymap.set("n", "<leader>D", '<cmd>lua require("omnisharp_extended").telescope_lsp_type_definition()<cr>', {})
-vim.keymap.set("n", "gi", '<cmd>lua require("omnisharp_extended").telescope_lsp_implementation()<cr>', {})
+keymap.set("n", "<leader>D", '<cmd>lua require("omnisharp_extended").telescope_lsp_type_definition()<cr>', {})
+keymap.set("n", "gi", '<cmd>lua require("omnisharp_extended").telescope_lsp_implementation()<cr>', {})
 
 -- cosco.vim
 keymap.set("n", ";;", "<Plug>(cosco-commaOrSemiColon)", opts)
@@ -78,10 +79,10 @@ keymap.set("n", ";;", "<Plug>(cosco-commaOrSemiColon)", opts)
 local picker = require("window-picker")
 
 -- Color-picker
-vim.keymap.set("n", "<C-x>", "<cmd>PickColor<cr>", opts)
-vim.keymap.set("i", "<C-x>", "<cmd>PickColorInsert<cr>", opts)
+keymap.set("n", "<C-x>", "<cmd>PickColor<cr>", opts)
+keymap.set("i", "<C-x>", "<cmd>PickColorInsert<cr>", opts)
 
-vim.keymap.set("n", ",w", function()
+keymap.set("n", ",w", function()
   local picked_window_id = picker.pick_window({
     include_current_win = true,
   }) or vim.api.nvim_get_current_win()
