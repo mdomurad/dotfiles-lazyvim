@@ -53,7 +53,7 @@ return {
             vim.api.nvim_echo({ { "Files in the last commit:\n" .. committedFiles, "HighlightGroup" } }, true, {})
           end,
         },
-        CommitStaged = {
+        QuickCommitStaged = {
           prompt = [[ Write commit title for the change with commitizen convention.
             Use provided git diff data for generating commit.
             Make sure the title has maximum 50 characters.
