@@ -35,11 +35,11 @@ return {
           mapping = ";q",
           close = true,
           selection = function(source)
+            os.execute("git add -A")
             return require("CopilotChat.select").gitdiff(source, true)
           end,
           callback = function(response, source)
             local copilot = require("CopilotChat")
-            os.execute("git add -A")
             os.execute('git commit -m "' .. response .. '"')
 
             copilot.close()
