@@ -14,13 +14,6 @@ return {
     opts = { snippet_engine = "luasnip" },
   },
 
-  -- Incremental rename
-  {
-    "smjonas/inc-rename.nvim",
-    cmd = "IncRename",
-    config = true,
-  },
-
   -- Refactoring tool
   {
     "ThePrimeagen/refactoring.nvim",
@@ -115,23 +108,12 @@ return {
         })
       end,
     },
-    -- {
-    --   -- Roslyn.nvim
-    --   {
-    --     "jmederosalvarado/roslyn.nvim",
-    --     config = function()
-    --       local nvim_lsp = require("lspconfig")
-    --       require("roslyn").setup({
-    --         dotnet_cmd = "dotnet",
-    --         roslyn_version = "4.8.0-3.23475.7",
-    --         on_attach = function(client, bufnr)
-    --           client.autostart = true
-    --           -- require("lazyvim.util").lsp.on_attach(client, bufnr)
-    --         end,
-    --         capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities()),
-    --       })
-    --     end,
-    --   },
-    -- },
+    -- Incremetal rename
+    {
+      "smjonas/inc-rename.nvim",
+      config = function()
+        require("inc_rename").setup()
+      end,
+    },
   },
 }
