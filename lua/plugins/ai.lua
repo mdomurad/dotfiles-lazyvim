@@ -30,11 +30,7 @@ return {
       },
       prompts = {
         QuickCommit = {
-          prompt = [[ Write commit title for the change with commitizen convention.
-            Use provided git diff data for generating commit.
-            Make sure the title has maximum 50 characters.
-            Do not provide any extra information, just the title itself in one line.
-            Do not wrap the title with any symbols like qute.]],
+          prompt = "Write commit title for the change with commitizen convention. Use provided git diff data for generating commit. Make sure the title has maximum 50 characters. Do not provide any extra information, just the title itself in one line. Do not wrap the title with any symbols like qute.",
           description = "Stage all and quick commit",
           mapping = ";q",
           close = true,
@@ -54,11 +50,7 @@ return {
           end,
         },
         QuickCommitStaged = {
-          prompt = [[ Write commit title for the change with commitizen convention.
-            Use provided git diff data for generating commit.
-            Make sure the title has maximum 50 characters.
-            Do not provide any extra information, just the title itself in one line.
-            Do not wrap the title with any symbols like qute.]],
+          prompt = "Write commit title for the change with commitizen convention. Use provided git diff data for generating commit. Make sure the title has maximum 50 characters. Do not provide any extra information, just the title itself in one line. Do not wrap the title with any symbols like qute.",
           description = "Commit staged with message",
           mapping = ";c",
           close = true,
