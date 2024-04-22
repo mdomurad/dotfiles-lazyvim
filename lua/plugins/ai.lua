@@ -35,7 +35,7 @@ return {
             Make sure the title has maximum 50 characters.
             Do not provide any extra information, just the title itself in one line.
             Do not wrap the title with any symbols like qute.]],
-          description = "Generate a quick commit message",
+          description = "Stage all and quick commit",
           mapping = ";q",
           close = true,
           selection = function(source)
@@ -59,7 +59,7 @@ return {
             Make sure the title has maximum 50 characters.
             Do not provide any extra information, just the title itself in one line.
             Do not wrap the title with any symbols like qute.]],
-          description = "Generate a quick commit message",
+          description = "Commit staged with message",
           mapping = ";c",
           close = true,
           selection = function(source)
