@@ -27,7 +27,10 @@ vim.api.nvim_create_autocmd("BufEnter", {
 vim.api.nvim_create_autocmd("BufEnter", {
   pattern = "*",
   callback = function()
-    vim.cmd("cd %:p:h")
+    local dir = vim.fn.expand("%:p:h")
+    if dir ~= "" and vim.fn.isdirectory(dir) == 1 then
+      vim.cmd("cd " .. dir)
+    end
   end,
 })
 
