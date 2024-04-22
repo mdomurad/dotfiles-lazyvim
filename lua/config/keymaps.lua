@@ -101,14 +101,6 @@ function quickChat()
   end
 end
 
---- This function retrieves the URL of the remote repository in Git.
--- It prints the path of the Git repository for debugging purposes.
--- @return nil
-function get_git_remote_url()
-  local git_path = -- however git_path is being set
-    print(git_path) -- add this line
-end
-
 local mappings = {
   t = {
     name = "CopilotChat",
@@ -173,8 +165,6 @@ local visualMappings = {
     x = { ":'<,'>CopilotChatExplain<CR>", "Explain Code", opts },
   },
 }
-
--- ; prefixed mappings
 
 -- Set up WhichKey
 which_key.register(mappings, { prefix = "<leader>" })
