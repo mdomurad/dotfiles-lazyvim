@@ -50,11 +50,6 @@ return {
       })
 
       opts.presets.lsp_doc_border = true
-
-      -- Incremental rename integration
-      require("noice").setup({
-        presets = { inc_rename = true },
-      })
     end,
   },
 
