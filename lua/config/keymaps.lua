@@ -3,6 +3,24 @@ local which_key = require("which-key")
 local keymap = vim.keymap
 local opts = { noremap = true, silent = true }
 
+----------------------------------------------------------------------------------------------------
+
+--- This function initiates a quick chat.
+-- It prompts the user for input and if the input is not an empty string,
+-- it calls the 'ask' function from the 'CopilotChat' module with the user's input
+-- and the current buffer as the selection.
+-- @param None
+-- @return None
+function quickChat()
+  local input = vim.fn.input("Quick Chat: ")
+  if input ~= "" then
+    require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
+  end
+end
+
+----------------------------------------------------------------------------------------------------
+--- Key mappings
+
 keymap.set("n", "x", '"_x')
 
 -- Increment/decrement
@@ -41,10 +59,6 @@ keymap.set("n", "<C-w><down>", "<C-w>-")
 keymap.set("n", "<C-j>", function()
   vim.diagnostic.goto_next()
 end, opts)
-
-keymap.set("n", "<leader>r", function()
-  require("md.utils").replaceHexWithHSL()
-end)
 
 -- Omnisharp extended
 -- replaces vim.lsp.buf.definition()
@@ -89,18 +103,15 @@ keymap.set("n", ",w", function()
   vim.api.nvim_set_current_win(picked_window_id)
 end, { desc = "Pick a window" })
 
---- This function initiates a quick chat.
--- It prompts the user for input and if the input is not an empty string,
--- it calls the 'ask' function from the 'CopilotChat' module with the user's input
--- and the current buffer as the selection.
--- @param None
--- @return None
-function quickChat()
-  local input = vim.fn.input("Quick Chat: ")
-  if input ~= "" then
-    require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
-  end
-end
+----------------------------------------------------------------------------------------------------
+--- Leader mappings
+
+keymap.set("n", "<leader>r", function()
+  require("md.utils").replaceHexWithHSL()
+end)
+
+----------------------------------------------------------------------------------------------------
+--- WhichKey mappings
 
 local mappings = {
   -- JackMort/ChatGPT
@@ -125,6 +136,9 @@ local mappings = {
     s = { "<cmd>CopilotChatSave chat<CR>", "Save", opts },
     l = { "<cmd>CopilotChatLoad chat<CR>", "Load", opts },
     x = { "<cmd>lua get_git_remote_url()<CR>", "Get git remote url", opts },
+  },
+  g = {
+    p = { "<cmd>G pull<CR>", "Git pull", opts },
   },
   -- Disable continuations
   o = { "o<Esc>^Da", "Empty line below" },
@@ -170,6 +184,7 @@ local visualMappings = {
   },
 }
 
+----------------------------------------------------------------------------------------------------
 -- Set up WhichKey
 which_key.register(mappings, { prefix = "<leader>" })
 which_key.register(visualMappings, { prefix = "<leader>", mode = "v" })
