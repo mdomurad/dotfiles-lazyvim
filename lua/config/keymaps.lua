@@ -103,6 +103,12 @@ function quickChat()
 end
 
 local mappings = {
+  -- JackMort/ChatGPT
+  T = {
+    name = "ChatGPT",
+    T = { "<cmd>ChatGPT<CR>", "ChatGPT" },
+  },
+  -- CopilotChat
   t = {
     name = "CopilotChat",
     t = { "<cmd>CopilotChat<CR>", "CopilotChat" },
@@ -119,10 +125,6 @@ local mappings = {
     s = { "<cmd>CopilotChatSave chat<CR>", "Save", opts },
     l = { "<cmd>CopilotChatLoad chat<CR>", "Load", opts },
     x = { "<cmd>lua get_git_remote_url()<CR>", "Get git remote url", opts },
-  },
-  T = {
-    name = "ChatGPT",
-    T = { "<cmd>ChatGPT<CR>", "ChatGPT" },
   },
   -- Disable continuations
   o = { "o<Esc>^Da", "Empty line below" },
@@ -146,6 +148,7 @@ local visualMappings = {
     c = { ":'<,'>ChatGPTRun roxygen_edit<CR>", "Roxygen Edit", opts },
     l = { ":'<,'>ChatGPTRun code_readability_analysis<CR>", "Code Readability Analysis", opts },
   },
+  -- CopilotChat
   t = {
     name = "CopilotChat",
     t = { ":'<,'>CopilotChat<CR>", "CopilotChat", opts },
