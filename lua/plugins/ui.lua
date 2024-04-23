@@ -137,13 +137,16 @@ return {
     "folke/zen-mode.nvim",
     cmd = "ZenMode",
     opts = {
+      window = {
+        width = 150,
+      },
       plugins = {
         gitsigns = true,
         tmux = true,
         kitty = { enabled = false, font = "+2" },
       },
     },
-    keys = { { "<leader>z", "<cmd>ZenMode<cr>", desc = "Zen Mode" } },
+    keys = { { ";z", "<cmd>ZenMode<cr>", desc = "Zen Mode" } },
   },
 
   {
