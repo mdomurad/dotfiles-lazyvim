@@ -36,6 +36,57 @@ return {
         height = 0.6,
       },
       prompts = {
+        FullCommit = {
+          prompt = "Write commit message for the change with commitizen convention. Make sure the title has maximum 50 characters and message is wrapped at 72 characters. Do not wrap message in quotes.",
+          description = "Stage all and commit",
+          mapping = ";d",
+          close = true,
+          selection = function(source)
+            os.execute("git add -A")
+            return require("CopilotChat.select").gitdiff(source, true)
+          end,
+          callback = function(response, source)
+            local copilot = require("CopilotChat")
+
+            -- Split the response into lines
+            local lines = {}
+            for s in response:gmatch("[^\r\n]+") do
+              table.insert(lines, s)
+            end
+
+            -- Construct the git commit command with the first line as a separate -m argument and the rest as another -m argument
+            local commitCmd = "git commit"
+            if #lines > 0 then
+              commitCmd = commitCmd .. ' -m "' .. lines[1] .. '"'
+              table.remove(lines, 1)
+            end
+            if #lines > 0 then
+              commitCmd = commitCmd .. ' -m "' .. table.concat(lines, " ") .. '"'
+            end
+
+            -- Execute the git commit command
+            os.execute(commitCmd)
+
+            copilot.close()
+            echoCommitInfo(response)
+          end,
+        },
+        FullCommitStaged = {
+          prompt = "Write commit message for the change with commitizen convention. Make sure the title has maximum 50 characters and message is wrapped at 72 characters. Wrap the whole message in code block with language gitcommit.",
+          description = "Commit staged",
+          mapping = ";a",
+          close = true,
+          selection = function(source)
+            return require("CopilotChat.select").gitdiff(source, true)
+          end,
+          callback = function(response, source)
+            local copilot = require("CopilotChat")
+            os.execute('git commit -m "' .. response .. '"')
+
+            copilot.close()
+            echoCommitInfo(response)
+          end,
+        },
         QuickCommit = {
           prompt = "Write commit title for the change with commitizen convention. Make sure the title has maximum 50 characters. Do not add any surrounding quotes.",
           description = "Stage all and commit with title only",
