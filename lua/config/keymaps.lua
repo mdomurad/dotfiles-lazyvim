@@ -1,5 +1,3 @@
-local which_key = require("which-key")
-
 local keymap = vim.keymap
 local opts = { noremap = true, silent = true }
 
@@ -139,7 +137,8 @@ local mappings = {
   },
   g = {
     p = { "<cmd>G pull<CR>", "Git pull", opts },
-    d = { "Gvdiffsplit", "Git diff", opts },
+    P = { "<cmd>G push<CR>", "Git push", opts },
+    d = { "<cmd>Gvdiffsplit<CR>", "Git diff", opts },
   },
   -- Disable continuations
   o = { "o<Esc>^Da", "Empty line below" },
