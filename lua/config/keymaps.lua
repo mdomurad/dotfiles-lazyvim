@@ -139,6 +139,7 @@ local mappings = {
   },
   g = {
     p = { "<cmd>G pull<CR>", "Git pull", opts },
+    d = { "Gvdiffsplit", "Git diff", opts },
   },
   -- Disable continuations
   o = { "o<Esc>^Da", "Empty line below" },
