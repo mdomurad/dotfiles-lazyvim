@@ -1,3 +1,10 @@
+local function echoCommitInfo(response)
+  -- Get the list of files in the last commit
+  local committedFiles = io.popen("git log -1 --name-only"):read("*all")
+  vim.api.nvim_echo({ { "Commit message: " .. response, "HighlightGroup" } }, true, {})
+  vim.api.nvim_echo({ { "Files in the last commit:\n" .. committedFiles, "HighlightGroup" } }, true, {})
+end
+
 return {
   {
     "jackMort/ChatGPT.nvim",
@@ -43,10 +50,7 @@ return {
             os.execute('git commit -m "' .. response .. '"')
 
             copilot.close()
-            -- Get the list of files in the last commit
-            local committedFiles = io.popen("git log -1 --name-only"):read("*all")
-            vim.api.nvim_echo({ { "Commit message: " .. response, "HighlightGroup" } }, true, {})
-            vim.api.nvim_echo({ { "Files in the last commit:\n" .. committedFiles, "HighlightGroup" } }, true, {})
+            echoCommitInfo(response)
           end,
         },
         QuickCommitStaged = {
@@ -62,10 +66,7 @@ return {
             os.execute('git commit -m "' .. response .. '"')
 
             copilot.close()
-            -- Get the list of files in the last commit
-            local committedFiles = io.popen("git log -1 --name-only"):read("*all")
-            vim.api.nvim_echo({ { "Commit message: " .. response, "HighlightGroup" } }, true, {})
-            vim.api.nvim_echo({ { "Files in the last commit:\n" .. committedFiles, "HighlightGroup" } }, true, {})
+            echoCommitInfo(response)
           end,
         },
       },
