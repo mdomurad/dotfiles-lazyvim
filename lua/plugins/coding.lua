@@ -108,7 +108,7 @@ return {
         })
       end,
     },
-    -- Incremetal rename
+    -- Incremental rename
     {
       "smjonas/inc-rename.nvim",
       config = function()
