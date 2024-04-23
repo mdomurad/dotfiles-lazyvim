@@ -31,7 +31,7 @@ return {
       prompts = {
         QuickCommit = {
           prompt = "Write commit title for the change with commitizen convention. Make sure the title has maximum 50 characters. Do not add any surrounding quotes.",
-          description = "Stage all and quick commit",
+          description = "Stage all and commit with title only",
           mapping = ";q",
           close = true,
           selection = function(source)
@@ -51,7 +51,7 @@ return {
         },
         QuickCommitStaged = {
           prompt = "Write commit title for the change with commitizen convention. Make sure the title has maximum 50 characters. Do not add any surrounding quotes.",
-          description = "Commit staged with message",
+          description = "Commit staged with title only",
           mapping = ";c",
           close = true,
           selection = function(source)
