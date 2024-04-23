@@ -5,6 +5,27 @@ local function echoCommitInfo(response)
   vim.api.nvim_echo({ { "Files in the last commit:\n" .. committedFiles, "HighlightGroup" } }, true, {})
 end
 
+local function formatGitResponse(response)
+  -- Split the response into lines
+  local lines = {}
+  for s in response:gmatch("[^\r\n]+") do
+    table.insert(lines, s)
+  end
+
+  -- Construct the git commit command with the first line as a separate -m argument and the rest as another -m argument
+  local commitCmd = "git commit"
+  if #lines > 0 then
+    commitCmd = commitCmd .. ' -m "' .. lines[1] .. '"'
+    table.remove(lines, 1)
+  end
+  if #lines > 0 then
+    commitCmd = commitCmd .. ' -m "' .. table.concat(lines, " ") .. '"'
+  end
+
+  -- Execute the git commit command
+  os.execute(commitCmd)
+end
+
 return {
   {
     "jackMort/ChatGPT.nvim",
@@ -37,7 +58,7 @@ return {
       },
       prompts = {
         FullCommit = {
-          prompt = "Write commit message for the change with commitizen convention. Make sure the title has maximum 50 characters and message is wrapped at 72 characters. Do not wrap message in quotes.",
+          prompt = "Write commit message for the change with commitizen convention. Make sure the title has maximum 50 characters and message is wrapped at 72 characters. Do not add any surrounding quotes.",
           description = "Stage all and commit",
           mapping = ";d",
           close = true,
@@ -48,31 +69,14 @@ return {
           callback = function(response, source)
             local copilot = require("CopilotChat")
 
-            -- Split the response into lines
-            local lines = {}
-            for s in response:gmatch("[^\r\n]+") do
-              table.insert(lines, s)
-            end
-
-            -- Construct the git commit command with the first line as a separate -m argument and the rest as another -m argument
-            local commitCmd = "git commit"
-            if #lines > 0 then
-              commitCmd = commitCmd .. ' -m "' .. lines[1] .. '"'
-              table.remove(lines, 1)
-            end
-            if #lines > 0 then
-              commitCmd = commitCmd .. ' -m "' .. table.concat(lines, " ") .. '"'
-            end
-
-            -- Execute the git commit command
-            os.execute(commitCmd)
+            formatGitResponse(response)
 
             copilot.close()
             echoCommitInfo(response)
           end,
         },
         FullCommitStaged = {
-          prompt = "Write commit message for the change with commitizen convention. Make sure the title has maximum 50 characters and message is wrapped at 72 characters. Wrap the whole message in code block with language gitcommit.",
+          prompt = "Write commit message for the change with commitizen convention. Make sure the title has maximum 50 characters and message is wrapped at 72 characters. Do not add any surrounding quotes.",
           description = "Commit staged",
           mapping = ";a",
           close = true,
@@ -81,7 +85,8 @@ return {
           end,
           callback = function(response, source)
             local copilot = require("CopilotChat")
-            os.execute('git commit -m "' .. response .. '"')
+
+            formatGitResponse(response)
 
             copilot.close()
             echoCommitInfo(response)
