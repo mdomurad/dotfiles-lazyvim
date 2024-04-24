@@ -1,5 +1,6 @@
 local keymap = vim.keymap
 local opts = { noremap = true, silent = true }
+local which_key = require("which-key")
 
 ----------------------------------------------------------------------------------------------------
 
