@@ -140,6 +140,7 @@ local mappings = {
     p = { "<cmd>G pull<CR>", "Git pull", opts },
     P = { "<cmd>G push<CR>", "Git push", opts },
     d = { "<cmd>Gvdiffsplit<CR>", "Git diff", opts },
+    r = { "<cmd>G commit --amend .<CR>", "Reword latest commit", opts },
   },
   -- Disable continuations
   o = { "o<Esc>^Da", "Empty line below" },
