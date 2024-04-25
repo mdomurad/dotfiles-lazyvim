@@ -1,4 +1,11 @@
 return {
+  -- File Explorer
+  {
+    "stevearc/oil.nvim",
+    opts = {},
+    -- Optional dependencies
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+  },
   {
     enabled = false,
     "folke/flash.nvim",
