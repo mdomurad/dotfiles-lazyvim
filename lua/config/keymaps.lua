@@ -85,9 +85,6 @@ keymap.set(
 keymap.set("n", "<leader>D", '<cmd>lua require("omnisharp_extended").telescope_lsp_type_definition()<cr>', {})
 keymap.set("n", "gi", '<cmd>lua require("omnisharp_extended").telescope_lsp_implementation()<cr>', {})
 
--- cosco.vim
-keymap.set("n", ";;", "<Plug>(cosco-commaOrSemiColon)", opts)
-
 -- Window-picker
 local picker = require("window-picker")
 
@@ -186,7 +183,16 @@ local visualMappings = {
   },
 }
 
+local semicolonPrefixed = {
+  o = { "<cmd>Oil<CR>", "Oil", opts },
+  O = { "<cmd>Oil --float<CR>", "Oil floated", opts },
+}
+
+-- cosco.vim
+keymap.set("n", ";;", "<Plug>(cosco-commaOrSemiColon)", opts)
+
 ----------------------------------------------------------------------------------------------------
 -- Set up WhichKey
 which_key.register(mappings, { prefix = "<leader>" })
 which_key.register(visualMappings, { prefix = "<leader>", mode = "v" })
+which_key.register(semicolonPrefixed, { prefix = ";" })
