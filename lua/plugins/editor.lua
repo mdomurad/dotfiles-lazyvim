@@ -120,7 +120,7 @@ return {
         ";w",
         function()
           local builtin = require("telescope.builtin")
-          local clients = vim.lsp.buf_get_clients()
+          local clients = vim.lsp.get_clients()
           -- Check if there are any language server clients
           if #clients > 0 then
             local csharp_client = nil
