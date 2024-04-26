@@ -41,6 +41,11 @@ return {
       },
     },
   },
+  -- Telescop File Browser
+  {
+    "nvim-telescope/telescope-file-browser.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
+  },
   {
     "telescope.nvim",
     dependencies = {
