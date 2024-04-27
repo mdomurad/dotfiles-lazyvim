@@ -2,7 +2,6 @@ return {
   -- File Explorer
   {
     "stevearc/oil.nvim",
-    delete_to_trash = true,
     opts = {
       keymaps = {
         ["h"] = "actions.parent",
