@@ -2,11 +2,10 @@ return {
   -- File Explorer
   {
     "stevearc/oil.nvim",
+    delete_to_trash = true,
     opts = {
-      delete_to_trash = true,
       keymaps = {
         ["h"] = "actions.parent",
-        ["g"] = "actions.toggle_hidden",
         ["g\\"] = "actions.toggle_trash",
         ["q"] = "actions.close",
         ["<CR>"] = "actions.select",
@@ -25,6 +24,9 @@ return {
         ["tp"] = "actions.open_cmdline",
         ["td"] = "actions.open_cmdline_dir",
         ["m"] = "actions.add_to_loclist",
+      },
+      float = {
+        padding = 10,
       },
     },
     -- Optional dependencies
