@@ -26,7 +26,7 @@ return {
         ["m"] = "actions.add_to_loclist",
       },
       float = {
-        padding = 12,
+        padding = 10,
       },
     },
     -- Optional dependencies
