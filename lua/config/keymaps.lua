@@ -140,8 +140,8 @@ local mappings = {
     r = { "<cmd>G commit --amend .<CR>", "Reword latest commit", opts },
   },
   -- Disable continuations
-  o = { "o<Esc>^Da", "Empty line below" },
-  O = { "O<Esc>^Da", "Empty line above" },
+  O = { "o<Esc>^Da", "Empty line below" },
+  o = { "O<Esc>^Da", "Empty line above" },
 }
 
 local visualMappings = {

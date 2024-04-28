@@ -45,7 +45,7 @@ return {
               -- for projects that are relevant to code that is being edited. With this
               -- setting enabled OmniSharp may load fewer projects and may thus display
               -- incomplete reference lists for symbols.
-              LoadProjectsOnDemand = nil,
+              LoadProjectsOnDemand = false,
             },
             RoslynExtensionsOptions = {
               -- Enables support for roslyn analyzers, code fixes and rulesets.
@@ -59,16 +59,14 @@ return {
               EnableImportCompletion = true,
               -- Only run analyzers against open files when 'enableRoslynAnalyzers' is
               -- true
-              AnalyzeOpenDocumentsOnly = nil,
+              AnalyzeOpenDocumentsOnly = false,
               EnableDecompilationSupport = true,
             },
             Sdk = {
               -- Specifies whether to include preview versions of the .NET SDK when
               -- determining which version to use for project loading.
               IncludePrereleases = true,
-            },
-            DotNet = {
-              EnablePackageRestore = true,
+              path = os.getenv("USERPROFILE") .. "\\scoop\\apps\\dotnet-sdk\\current",
             },
             RenameOptions = {
               RenameInComments = true,
