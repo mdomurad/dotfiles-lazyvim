@@ -1,4 +1,4 @@
-reuturn({
+return {
   {
     "vhyrro/luarocks.nvim",
     priority = 1000,
@@ -32,4 +32,4 @@ reuturn({
       })
     end,
   },
-})
+}
