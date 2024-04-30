@@ -1,4 +1,6 @@
 return {
+  { "pysan3/pathlib.nvim" },
+  { "nvim-neorg/lua-utils.nvim" },
   {
     "vhyrro/luarocks.nvim",
     priority = 1000,
@@ -15,15 +17,16 @@ return {
           ["core.defaults"] = {}, -- Loads default behaviour
           ["core.concealer"] = {}, -- Adds pretty icons to your documents
           ["core.completion"] = { config = { engine = "nvim-cmp" } },
-          ["core.journal"] = {},
+          ["core.journal"] = { config = { jornal_folder = "jrnl" } },
           ["core.qol.toc"] = {},
           ["core.dirman"] = { -- Manages Neorg workspaces
             config = {
               workspaces = {
-                todo = "c:/notes/todo",
-                notes = "c:/notes/notes",
-                development = "c:/notes/dev",
-                bim = "c:/notes/bim",
+                todo = "c:/.neorg/todo",
+                notes = "c:/.neorg/notes",
+                development = "c:/.neorg/dev",
+                bim = "c:/.neorg/bim",
+                priv = "c:/.neorg/jrnl",
               },
               default_workspace = "todo",
             },
