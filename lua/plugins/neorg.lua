@@ -10,7 +10,6 @@ return {
       "luarocks.nvim",
       "pysan3/pathlib.nvim",
       "nvim-neorg/lua-utils.nvim",
-      { "pysan3/neorg-templates", dependencies = { "L3MON4D3/LuaSnip" } },
     },
     lazy = false, -- Disable lazy loading as some `lazy.nvim` distributions set `lazy = true` by default
     version = "*", -- Pin Neorg to the latest stable release
