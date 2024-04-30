@@ -17,10 +17,8 @@ return {
       require("neorg").setup({
         load = {
           ["core.defaults"] = {}, -- Loads default behaviour
-          ["core.concealer"] = {}, -- Adds pretty icons to your documents
           ["core.completion"] = { config = { engine = "nvim-cmp" } },
-          ["core.journal"] = { config = { jornal_folder = "jrnl" } },
-          ["core.qol.toc"] = {},
+          ["core.concealer"] = {}, -- Adds pretty icons to your documents
           ["core.dirman"] = { -- Manages Neorg workspaces
             config = {
               workspaces = {
@@ -33,6 +31,13 @@ return {
               default_workspace = "todo",
             },
           },
+          ["core.export"] = {}, -- Exports Neorg documents into any other supported filetype.
+          ["core.export.markdown"] = {}, -- Interface for core.export to allow exporting to markdown.
+          ["core.presenter"] = { config = { zen_mode = "zen-mode" } }, -- Neorg module to create gorgeous presentation slides.
+          ["core.summary"] = {}, -- Creates links to all files in any workspace.
+          ["core.ui.calendar"] = {}, -- Creates links to all files in any workspace.
+
+          ["core.journal"] = { config = { jornal_folder = "jrnl" } },
         },
       })
     end,
