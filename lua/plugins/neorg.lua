@@ -26,7 +26,7 @@ return {
                 notes = "c:/.neorg/notes",
                 development = "c:/.neorg/dev",
                 bim = "c:/.neorg/bim",
-                priv = "c:/.neorg/jrnl",
+                journal = "c:/.neorg/jrnl",
               },
               default_workspace = "todo",
             },
@@ -37,7 +37,7 @@ return {
           ["core.summary"] = {}, -- Creates links to all files in any workspace.
           ["core.ui.calendar"] = {}, -- Creates links to all files in any workspace.
 
-          ["core.journal"] = { config = { jornal_folder = "jrnl" } },
+          ["core.journal"] = { config = { journal_folder = "jrnl", workspace = "journal" } },
         },
       })
     end,
