@@ -143,6 +143,10 @@ local mappings = {
   -- Disable continuations
   o = { "o<Esc>^Da", "Empty line below" },
   O = { "O<Esc>^Da", "Empty line above" },
+  -- Override commands deleting buffers
+  b = {
+    o = { "<cmd>bufdo e | %bd | e#<CR>", "Delete Other Buffers", opts },
+  },
 }
 
 local visualMappings = {
