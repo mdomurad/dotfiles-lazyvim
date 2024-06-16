@@ -19,7 +19,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 vim.api.nvim_create_autocmd("BufEnter", {
-  pattern = "*.xaml",
+  pattern = { "*.xaml", "*.config" },
   command = ":setfiletype xml",
 })
 
