@@ -4,7 +4,7 @@ return {
     "stevearc/oil.nvim",
     opts = {
       keymaps = {
-        ["h"] = "actions.parent",
+        ["u"] = "actions.parent",
         ["g\\"] = "actions.toggle_trash",
         ["q"] = "actions.close",
         ["<CR>"] = "actions.select",
