@@ -135,7 +135,7 @@ local mappings = {
     x = { "<cmd>lua get_git_remote_url()<CR>", "Get git remote url", opts },
   },
   g = {
-    p = { "<cmd>G pull<CR>", "Git pull", opts },
+    p = { "<cmd>G pull<CR>", "Git pull --rebase", opts },
     P = { "<cmd>G push<CR>", "Git push", opts },
     d = { "<cmd>Gvdiffsplit<CR>", "Git diff", opts },
     r = { "<cmd>G commit --amend .<CR>", "Reword latest commit", opts },
