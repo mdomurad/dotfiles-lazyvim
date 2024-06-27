@@ -27,6 +27,7 @@ local function formatGitResponse(response)
 end
 
 return {
+
   {
     "jackMort/ChatGPT.nvim",
     event = "VeryLazy",
@@ -57,6 +58,16 @@ return {
         height = 0.6,
       },
       prompts = {
+        FixGrammar = {
+          prompt = "/COPILOT_GENERATE Rewrite text to improve clarity and style. Fix all grammar and spelling mistakes.",
+          description = "Fix spelling and grammar",
+          mapping = "<leader>tg",
+          close = true,
+          selection = function(source)
+            local select = require("CopilotChat.select")
+            return select.visual(source) or select.line(source)
+          end,
+        },
         FullCommit = {
           prompt = "Write commit message for the change with commitizen convention. Make sure the title has maximum 50 characters and message is wrapped at 72 characters. Do not add any surrounding quotes.",
           description = "Stage all and commit",
@@ -80,9 +91,7 @@ return {
           description = "Commit staged",
           mapping = ";a",
           close = true,
-          selection = function(source)
-            return require("CopilotChat.select").gitdiff(source, true)
-          end,
+          selection = selection,
           callback = function(response, source)
             local copilot = require("CopilotChat")
 
