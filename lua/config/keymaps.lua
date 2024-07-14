@@ -108,96 +108,74 @@ end)
 
 ----------------------------------------------------------------------------------------------------
 --- WhichKey mappings
-
-local mappings = {
+-- Normal mode mappings
+which_key.add({
   -- JackMort/ChatGPT
-  T = {
-    name = "ChatGPT",
-    T = { "<cmd>ChatGPT<CR>", "ChatGPT" },
+  { "<leader>T", group = "ChatGPT" },
+  { "<leader>TT", "<cmd>ChatGPT<CR>", desc = "ChatGPT" },
+  { "<leader>bo", "<cmd>bufdo e | %bd | e#<CR>", desc = "Delete Other Buffers" },
+  { "<leader>gP", "<cmd>G push<CR>", desc = "Git push" },
+  { "<leader>ga", "<cmd>Gwrite<CR>", desc = "Stage current file" },
+  { "<leader>gd", "<cmd>Gvdiffsplit<CR>", desc = "Git diff" },
+  { "<leader>gp", "<cmd>G pull<CR>", desc = "Git pull --rebase" },
+  { "<leader>gr", "<cmd>G commit --amend .<CR>", desc = "Reword latest commit" },
+  { "<leader>t", group = "CopilotChat" },
+  {
+    "<leader>ta",
+    "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions())<CR>",
+    desc = "Prompt actions",
   },
-  -- CopilotChat
-  t = {
-    name = "CopilotChat",
-    t = { "<cmd>CopilotChat<CR>", "CopilotChat" },
-    q = { "<cmd>CopilotChatCommit<CR>", "Commit Message", opts },
-    c = { "<cmd>CopilotChatCommitStaged<CR>", "Commit Message Staged", opts },
-    a = {
-      "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions())<CR>",
-      "Prompt actions",
-    },
-    h = {
-      "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').help_actions())<CR>",
-      "Help actions",
-    },
-    i = { "<cmd>CopilotChatFixDiagnostics<CR>", "Fix Diagnostics", opts },
-    s = { "<cmd>CopilotChatSave chat<CR>", "Save", opts },
-    l = { "<cmd>CopilotChatLoad chat<CR>", "Load", opts },
-    x = { "<cmd>lua get_git_remote_url()<CR>", "Get git remote url", opts },
+  { "<leader>tc", "<cmd>CopilotChatCommitStaged<CR>", desc = "Commit Message Staged" },
+  {
+    "<leader>th",
+    "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').help_actions())<CR>",
+    desc = "Help actions",
   },
-  g = {
-    p = { "<cmd>G pull<CR>", "Git pull --rebase", opts },
-    P = { "<cmd>G push<CR>", "Git push", opts },
-    d = { "<cmd>Gvdiffsplit<CR>", "Git diff", opts },
-    r = { "<cmd>G commit --amend .<CR>", "Reword latest commit", opts },
-    a = { "<cmd>Gwrite<CR>", "Stage current file", opts },
-  },
-  -- Disable continuations
-  o = { "o<Esc>^Da", "Empty line below" },
-  O = { "O<Esc>^Da", "Empty line above" },
-  -- Override commands deleting buffers
-  b = {
-    o = { "<cmd>bufdo e | %bd | e#<CR>", "Delete Other Buffers", opts },
-  },
-}
+  { "<leader>ti", "<cmd>CopilotChatFixDiagnostics<CR>", desc = "Fix Diagnostics" },
+  { "<leader>tl", "<cmd>CopilotChatLoad chat<CR>", desc = "Load" },
+  { "<leader>tq", "<cmd>CopilotChatCommit<CR>", desc = "Commit Message" },
+  { "<leader>ts", "<cmd>CopilotChatSave chat<CR>", desc = "Save" },
+  { "<leader>tt", "<cmd>CopilotChat<CR>", desc = "CopilotChat" },
+  { "<leader>tx", "<cmd>lua get_git_remote_url()<CR>", desc = "Get git remote url" },
+  -- Oil
+  { ";O", "<cmd>Oil --float<CR>", desc = "Oil floated" },
+  { ";o", "<cmd>Oil<CR>", desc = "Oil" },
+})
 
-local visualMappings = {
+-- Visual mode mappings
+which_key.add(
   -- JackMort/ChatGPT
-  T = {
-    name = "ChatGPT",
-    e = { ":'<,'>ChatGPTEditWithInstruction<CR>", "Edit with instruction", opts },
-    g = { ":'<,'>ChatGPTRun grammar_correction<CR>", "Grammar Correction", opts },
-    t = { ":'<,'>ChatGPTRun translate<CR>", "Translate", opts },
-    k = { ":'<,'>ChatGPTRun keywords<CR>", "Keywords", opts },
-    d = { ":'<,'>ChatGPTRun docstring<CR>", "Docstring", opts },
-    q = { ":'<,'>ChatGPTRun add_tests<CR>", "Add Tests", opts },
-    o = { ":'<,'>ChatGPTRun optimize_code<CR>", "Optimize Code", opts },
-    s = { ":'<,'>ChatGPTRun summarize<CR>", "Summarize", opts },
-    f = { ":'<,'>ChatGPTRun fix_bugs<CR>", "Fix Bugs", opts },
-    x = { ":'<,'>ChatGPTRun explain_code<CR>", "Explain Code", opts },
-    c = { ":'<,'>ChatGPTRun roxygen_edit<CR>", "Roxygen Edit", opts },
-    l = { ":'<,'>ChatGPTRun code_readability_analysis<CR>", "Code Readability Analysis", opts },
-  },
-  -- CopilotChat
-  t = {
-    name = "CopilotChat",
-    t = { ":'<,'>CopilotChat<CR>", "CopilotChat", opts },
-    c = {
-      "<cmd> lua quickChat() <CR>",
-      "CopilotChat - Quick chat",
-    },
-    a = {
+  {
+    mode = { "v" },
+    { "<leader>T", group = "ChatGPT" },
+    { "<leader>Tc", ":'<,'>ChatGPTRun roxygen_edit<CR>", desc = "Roxygen Edit" },
+    { "<leader>Td", ":'<,'>ChatGPTRun docstring<CR>", desc = "Docstring" },
+    { "<leader>Te", ":'<,'>ChatGPTEditWithInstruction<CR>", desc = "Edit with instruction" },
+    { "<leader>Tf", ":'<,'>ChatGPTRun fix_bugs<CR>", desc = "Fix Bugs" },
+    { "<leader>Tg", ":'<,'>ChatGPTRun grammar_correction<CR>", desc = "Grammar Correction" },
+    { "<leader>Tk", ":'<,'>ChatGPTRun keywords<CR>", desc = "Keywords" },
+    { "<leader>Tl", ":'<,'>ChatGPTRun code_readability_analysis<CR>", desc = "Code Readability Analysis" },
+    { "<leader>To", ":'<,'>ChatGPTRun optimize_code<CR>", desc = "Optimize Code" },
+    { "<leader>Tq", ":'<,'>ChatGPTRun add_tests<CR>", desc = "Add Tests" },
+    { "<leader>Ts", ":'<,'>ChatGPTRun summarize<CR>", desc = "Summarize" },
+    { "<leader>Tt", ":'<,'>ChatGPTRun translate<CR>", desc = "Translate" },
+    { "<leader>Tx", ":'<,'>ChatGPTRun explain_code<CR>", desc = "Explain Code" },
+    { "<leader>t", group = "CopilotChat" },
+    {
+      "<leader>ta",
       "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions())<CR>",
-      "Prompt actions",
+      desc = "Prompt actions",
     },
-    d = { ":'<,'>CopilotChatDocs<CR>", "Docstring", opts },
-    q = { ":'<,'>CopilotChatTests<CR>", "Add Tests", opts },
-    o = { ":'<,'>CopilotChatOptimize<CR>", "Optimize Code", opts },
-    r = { ":'<,'>CopilotChatReview<CR>", "Review Code", opts },
-    f = { ":'<,'>CopilotChatFix<CR>", "Fix Bugs", opts },
-    x = { ":'<,'>CopilotChatExplain<CR>", "Explain Code", opts },
-  },
-}
-
-local semicolonPrefixed = {
-  o = { "<cmd>Oil<CR>", "Oil", opts },
-  O = { "<cmd>Oil --float<CR>", "Oil floated", opts },
-}
+    { "<leader>tc", "<cmd> lua quickChat() <CR>", desc = "CopilotChat - Quick chat" },
+    { "<leader>td", ":'<,'>CopilotChatDocs<CR>", desc = "Docstring" },
+    { "<leader>tf", ":'<,'>CopilotChatFix<CR>", desc = "Fix Bugs" },
+    { "<leader>to", ":'<,'>CopilotChatOptimize<CR>", desc = "Optimize Code" },
+    { "<leader>tq", ":'<,'>CopilotChatTests<CR>", desc = "Add Tests" },
+    { "<leader>tr", ":'<,'>CopilotChatReview<CR>", desc = "Review Code" },
+    { "<leader>tt", ":'<,'>CopilotChat<CR>", desc = "CopilotChat" },
+    { "<leader>tx", ":'<,'>CopilotChatExplain<CR>", desc = "Explain Code" },
+  }
+)
 
 -- cosco.vim
 keymap.set("n", ";;", "<Plug>(cosco-commaOrSemiColon)", opts)
-
-----------------------------------------------------------------------------------------------------
--- Set up WhichKey
-which_key.register(mappings, { prefix = "<leader>" })
-which_key.register(visualMappings, { prefix = "<leader>", mode = "v" })
-which_key.register(semicolonPrefixed, { prefix = ";" })
