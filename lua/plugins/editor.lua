@@ -328,4 +328,7 @@ return {
       })
     end,
   },
+  {
+    "jlcrochet/vim-razor",
+  },
 }
