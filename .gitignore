@@ -8,3 +8,7 @@ foo.*
 data
 *lazy-lock.json
 lazy-lock.json
+
+lua/plugins/lsp/*
+
+
