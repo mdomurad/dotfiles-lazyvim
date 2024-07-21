@@ -59,7 +59,7 @@ return {
       },
       prompts = {
         FixGrammar = {
-          prompt = "/COPILOT_GENERATE Rewrite text to improve clarity and style. Fix all grammar and spelling mistakes and make sure the text is easy to read. Use language of the original text.",
+          prompt = "/COPILOT_GENERATE Rewrite text to improve clarity and style. Fix all grammar and spelling mistakes. Use language of the original text. Remove line numbers.",
           description = "Fix spelling and grammar",
           mapping = "<leader>tg",
           close = true,

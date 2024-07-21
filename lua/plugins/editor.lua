@@ -340,4 +340,6 @@ return {
     end,
     ft = { "markdown" },
   },
+  { "vim-pandoc/vim-pandoc" },
+  { "vim-pandoc/vim-pandoc-syntax" },
 }
