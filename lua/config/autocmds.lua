@@ -48,3 +48,10 @@ vim.api.nvim_create_autocmd("BufEnter", {
     end, { buffer = true, remap = true })
   end,
 })
+
+vim.api.nvim_create_autocmd("Filetype", {
+  pattern = "norg",
+  callback = function()
+    vim.keymap.set("n", "gx", "<Plug>(neorg.esupports.hop.hop-link)", { buffer = true })
+  end,
+})

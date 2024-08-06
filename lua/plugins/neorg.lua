@@ -24,7 +24,7 @@ return {
               workspaces = {
                 todo = "c:/.neorg/todo",
                 notes = "c:/.neorg/notes",
-                development = "c:/.neorg/dev",
+                dev = "c:/.neorg/dev",
                 bim = "c:/.neorg/bim",
                 journal = "c:/.neorg/jrnl",
               },
@@ -36,7 +36,7 @@ return {
           ["core.presenter"] = { config = { zen_mode = "zen-mode" } }, -- Neorg module to create gorgeous presentation slides.
           ["core.summary"] = {}, -- Creates links to all files in any workspace.
           ["core.ui.calendar"] = {}, -- Creates links to all files in any workspace.
-
+          ["core.keybinds"] = {},
           ["core.journal"] = { config = { journal_folder = "jrnl", workspace = "journal" } },
         },
       })
