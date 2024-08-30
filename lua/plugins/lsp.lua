@@ -28,6 +28,18 @@ return {
       ---@type lspconfig.options
       servers = {
         cssls = {},
+        pyright = {
+          settings = {
+            python = {
+              analysis = {
+                extraPaths = {
+                  "C:/repos/stubs/rvt/2022",
+                  "C:/pyrevit/pyrevitlib",
+                },
+              },
+            },
+          },
+        },
         omnisharp = {
           settings = {
             FormattingOptions = {
