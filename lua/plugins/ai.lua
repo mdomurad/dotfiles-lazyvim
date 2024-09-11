@@ -104,7 +104,7 @@ return {
         QuickCommit = {
           prompt = "Write commit title for the change with commitizen convention. Provide information about scope of the change. If only one file was updated provide its name. Make sure the title has maximum 50 characters. Do not add any surrounding quotes.",
           description = "Stage all and commit with title only",
-          mapping = ";q",
+          mapping = ";g",
           close = true,
           selection = function(source)
             os.execute("git add -A")
