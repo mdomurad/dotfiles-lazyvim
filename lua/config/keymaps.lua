@@ -140,6 +140,8 @@ which_key.add({
   -- Oil
   { ";O", "<cmd>Oil --float<CR>", desc = "Oil floated" },
   { ";o", "<cmd>Oil<CR>", desc = "Oil" },
+  -- Defualt overrides
+  { ";n", "<cmd>lua vim.diagnostic.goto_next()<CR>", desc = "Next diagnostic" },
 })
 
 -- Visual mode mappings
