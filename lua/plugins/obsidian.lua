@@ -1,3 +1,33 @@
+local username = os.getenv("USERNAME")
+
+local workspaces = {
+  {
+    name = "work",
+    path = "~/vaults/public/work",
+  },
+  {
+    name = "dev",
+    path = "~/vaults/public/dev",
+  },
+}
+
+if username == "ianus" then
+  local additional_workspaces = {
+    {
+      name = "ianus",
+      path = "~/vaults/priv/ianus",
+    },
+    {
+      name = "tbb",
+      path = "~/vaults/priv/tbb",
+    },
+  }
+
+  for _, workspace in ipairs(additional_workspaces) do
+    table.insert(workspaces, workspace)
+  end
+end
+
 return {
   "epwalsh/obsidian.nvim",
   version = "*", -- recommended, use latest release instead of latest commit
@@ -18,20 +48,7 @@ return {
     -- see below for full list of optional dependencies 👇
   },
   opts = {
-    workspaces = {
-      {
-        name = "ianus",
-        path = "~/vaults/ianus",
-      },
-      {
-        name = "work",
-        path = "~/vaults/work",
-      },
-      {
-        name = "dev",
-        path = "~/vaults/dev",
-      },
-    },
+    workspaces = workspaces,
     ui = {
       enable = false,
     },
