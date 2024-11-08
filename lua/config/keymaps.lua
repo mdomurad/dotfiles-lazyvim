@@ -85,19 +85,9 @@ keymap.set(
 keymap.set("n", "<leader>D", '<cmd>lua require("omnisharp_extended").telescope_lsp_type_definition()<cr>', {})
 keymap.set("n", "gi", '<cmd>lua require("omnisharp_extended").telescope_lsp_implementation()<cr>', {})
 
--- Window-picker
-local picker = require("window-picker")
-
 -- Color-picker
 keymap.set("n", "<C-x>", "<cmd>PickColor<cr>", opts)
 keymap.set("i", "<C-x>", "<cmd>PickColorInsert<cr>", opts)
-
-keymap.set("n", ",w", function()
-  local picked_window_id = picker.pick_window({
-    include_current_win = true,
-  }) or vim.api.nvim_get_current_win()
-  vim.api.nvim_set_current_win(picked_window_id)
-end, { desc = "Pick a window" })
 
 ----------------------------------------------------------------------------------------------------
 --- Leader mappings
