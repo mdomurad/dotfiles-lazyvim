@@ -116,7 +116,7 @@ which_key.add({
   { ";n", "<cmd>lua vim.diagnostic.goto_next()<CR>", desc = "Next diagnostic" },
 })
 
-if user == "" then
+if user == "remove" then
   which_key.add({
     -- JackMort/ChatGPT
     { "<leader>t", group = "ChatGPT" },
@@ -146,7 +146,7 @@ else
 end
 
 -- Visual mode mappings
-if user == "" then
+if user == "remove" then
   which_key.add(
     -- JackMort/ChatGPT
     {
