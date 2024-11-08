@@ -343,8 +343,8 @@ return {
     end,
     ft = { "markdown" },
   },
-  { "vim-pandoc/vim-pandoc" },
-  { "vim-pandoc/vim-pandoc-syntax" },
+  -- { "vim-pandoc/vim-pandoc" },
+  -- { "vim-pandoc/vim-pandoc-syntax" },
   {
     "johmsalas/text-case.nvim",
     dependencies = { "nvim-telescope/telescope.nvim" },
