@@ -116,7 +116,6 @@ which_key.add({
   { ";n", "<cmd>lua vim.diagnostic.goto_next()<CR>", desc = "Next diagnostic" },
 })
 
-print(user)
 if user == "" then
   which_key.add({
     -- JackMort/ChatGPT
@@ -126,6 +125,7 @@ if user == "" then
 else
   which_key.add({
     { "<leader>t", group = "CopilotChat" },
+    { "<leader>tt", "<cmd>CopilotChat<CR>", desc = "CopilotChat" },
     {
       "<leader>ta",
       "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions())<CR>",
@@ -141,7 +141,6 @@ else
     { "<leader>tl", "<cmd>CopilotChatLoad chat<CR>", desc = "Load" },
     { "<leader>tq", "<cmd>CopilotChatCommit<CR>", desc = "Commit Message" },
     { "<leader>ts", "<cmd>CopilotChatSave chat<CR>", desc = "Save" },
-    { "<leader>tt", "<cmd>CopilotChat<CR>", desc = "CopilotChat" },
     { "<leader>tx", "<cmd>lua get_git_remote_url()<CR>", desc = "Get git remote url" },
   })
 end
