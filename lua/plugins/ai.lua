@@ -1,3 +1,5 @@
+local username = os.getenv("USERNAME")
+
 local function echoCommitInfo(response)
   -- Get the list of files in the last commit
   local committedFiles = io.popen("git log -1 --name-only"):read("*all")
@@ -27,115 +29,161 @@ local function formatGitResponse(response)
 end
 
 return {
-
-  {
-    "jackMort/ChatGPT.nvim",
+  { username == "ianus" } and {
+    "yetone/avante.nvim",
     event = "VeryLazy",
-    config = function()
-      require("chatgpt").setup({
-        model = "gpt-3.5-turbo",
-      })
-    end,
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-      "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope.nvim",
-    },
-  },
-  {
-    "CopilotC-Nvim/CopilotChat.nvim",
-    branch = "canary",
-    dependencies = {
-      { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
-      { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
-    },
+    lazy = false,
+    version = false, -- set this if you want to always pull the latest change
     opts = {
-      debug = true, -- Enable debugging
-      window = {
-        layout = "float",
-        relative = "editor",
-        width = 0.8,
-        height = 0.6,
+      -- add any opts here
+    },
+    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
+    build = "make",
+    -- build = "powershell -ExecutionPolicy Bypass -File Build.ps1 -BuildFromSource false" -- for windows
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+      "stevearc/dressing.nvim",
+      "nvim-lua/plenary.nvim",
+      "MunifTanjim/nui.nvim",
+      --- The below dependencies are optional,
+      "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
+      "zbirenbaum/copilot.lua", -- for providers='copilot'
+      {
+        -- support for image pasting
+        "HakonHarnes/img-clip.nvim",
+        event = "VeryLazy",
+        opts = {
+          -- recommended settings
+          default = {
+            embed_image_as_base64 = false,
+            prompt_for_file_name = false,
+            drag_and_drop = {
+              insert_mode = true,
+            },
+            -- required for Windows users
+            use_absolute_path = true,
+          },
+        },
       },
-      prompts = {
-        FixGrammar = {
-          prompt = "/COPILOT_GENERATE Rewrite text to improve clarity and style. Fix all grammar and spelling mistakes. Use language of the original text. Remove line numbers.",
-          description = "Fix spelling and grammar",
-          mapping = "<leader>tg",
-          close = true,
-          selection = function(source)
-            local select = require("CopilotChat.select")
-            return select.visual(source) or select.line(source)
-          end,
+      {
+        -- Make sure to set this up properly if you have lazy=true
+        "MeanderingProgrammer/render-markdown.nvim",
+        opts = {
+          file_types = { "markdown", "Avante" },
         },
-        FullCommit = {
-          prompt = "Write commit message for the change with commitizen convention. Make sure the title has maximum 50 characters and message is wrapped at 72 characters. Do not add any surrounding quotes.",
-          description = "Stage all and commit",
-          mapping = ";d",
-          close = true,
-          selection = function(source)
-            os.execute("git add -A")
-            return require("CopilotChat.select").gitdiff(source, true)
-          end,
-          callback = function(response, source)
-            local copilot = require("CopilotChat")
-
-            formatGitResponse(response)
-
-            copilot.close()
-            echoCommitInfo(response)
-          end,
-        },
-        FullCommitStaged = {
-          prompt = "Write commit message for the change with commitizen convention. Make sure the title has maximum 50 characters and message is wrapped at 72 characters. Do not add any surrounding quotes.",
-          description = "Commit staged",
-          mapping = ";a",
-          close = true,
-          selection = selection,
-          callback = function(response, source)
-            local copilot = require("CopilotChat")
-
-            formatGitResponse(response)
-
-            copilot.close()
-            echoCommitInfo(response)
-          end,
-        },
-        QuickCommit = {
-          prompt = "Write commit title for the change with commitizen convention. Provide information about scope of the change. If only one file was updated provide its name. Make sure the title has maximum 50 characters. Do not add any surrounding quotes.",
-          description = "Stage all and commit with title only",
-          mapping = ";g",
-          close = true,
-          selection = function(source)
-            os.execute("git add -A")
-            return require("CopilotChat.select").gitdiff(source, true)
-          end,
-          callback = function(response, source)
-            local copilot = require("CopilotChat")
-            os.execute('git commit -m "' .. response .. '"')
-
-            copilot.close()
-            echoCommitInfo(response)
-          end,
-        },
-        QuickCommitStaged = {
-          prompt = "Write commit title for the change with commitizen convention. Provide information about scope of the change. If only one file was updated provide its name. Make sure the title has maximum 50 characters. Do not add any surrounding quotes.",
-          description = "Commit staged with title only",
-          mapping = ";c",
-          close = true,
-          selection = function(source)
-            return require("CopilotChat.select").gitdiff(source, true)
-          end,
-          callback = function(response, source)
-            local copilot = require("CopilotChat")
-            os.execute('git commit -m "' .. response .. '"')
-
-            copilot.close()
-            echoCommitInfo(response)
-          end,
-        },
+        ft = { "markdown", "Avante" },
       },
     },
-    -- See Commands section for default commands if you want to lazy load on them
   },
+
+  -- {
+  --   "jackMort/ChatGPT.nvim",
+  --   event = "VeryLazy",
+  --   config = function()
+  --     require("chatgpt").setup({
+  --       model = "gpt-3.5-turbo",
+  --     })
+  --   end,
+  --   dependencies = {
+  --     "MunifTanjim/nui.nvim",
+  --     "nvim-lua/plenary.nvim",
+  --     "nvim-telescope/telescope.nvim",
+  --   },
+  -- },
+  -- {
+  --   "CopilotC-Nvim/CopilotChat.nvim",
+  --   branch = "canary",
+  --   dependencies = {
+  --     { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
+  --     { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
+  --   },
+  --   opts = {
+  --     debug = true, -- Enable debugging
+  --     window = {
+  --       layout = "float",
+  --       relative = "editor",
+  --       width = 0.8,
+  --       height = 0.6,
+  --     },
+  --     prompts = {
+  --       FixGrammar = {
+  --         prompt = "/COPILOT_GENERATE Rewrite text to improve clarity and style. Fix all grammar and spelling mistakes. Use language of the original text. Remove line numbers.",
+  --         description = "Fix spelling and grammar",
+  --         mapping = "<leader>tg",
+  --         close = true,
+  --         selection = function(source)
+  --           local select = require("CopilotChat.select")
+  --           return select.visual(source) or select.line(source)
+  --         end,
+  --       },
+  --       FullCommit = {
+  --         prompt = "Write commit message for the change with commitizen convention. Make sure the title has maximum 50 characters and message is wrapped at 72 characters. Do not add any surrounding quotes.",
+  --         description = "Stage all and commit",
+  --         mapping = ";d",
+  --         close = true,
+  --         selection = function(source)
+  --           os.execute("git add -A")
+  --           return require("CopilotChat.select").gitdiff(source, true)
+  --         end,
+  --         callback = function(response, source)
+  --           local copilot = require("CopilotChat")
+  --
+  --           formatGitResponse(response)
+  --
+  --           copilot.close()
+  --           echoCommitInfo(response)
+  --         end,
+  --       },
+  --       FullCommitStaged = {
+  --         prompt = "Write commit message for the change with commitizen convention. Make sure the title has maximum 50 characters and message is wrapped at 72 characters. Do not add any surrounding quotes.",
+  --         description = "Commit staged",
+  --         mapping = ";a",
+  --         close = true,
+  --         selection = selection,
+  --         callback = function(response, source)
+  --           local copilot = require("CopilotChat")
+  --
+  --           formatGitResponse(response)
+  --
+  --           copilot.close()
+  --           echoCommitInfo(response)
+  --         end,
+  --       },
+  --       QuickCommit = {
+  --         prompt = "Write commit title for the change with commitizen convention. Provide information about scope of the change. If only one file was updated provide its name. Make sure the title has maximum 50 characters. Do not add any surrounding quotes.",
+  --         description = "Stage all and commit with title only",
+  --         mapping = ";g",
+  --         close = true,
+  --         selection = function(source)
+  --           os.execute("git add -A")
+  --           return require("CopilotChat.select").gitdiff(source, true)
+  --         end,
+  --         callback = function(response, source)
+  --           local copilot = require("CopilotChat")
+  --           os.execute('git commit -m "' .. response .. '"')
+  --
+  --           copilot.close()
+  --           echoCommitInfo(response)
+  --         end,
+  --       },
+  --       QuickCommitStaged = {
+  --         prompt = "Write commit title for the change with commitizen convention. Provide information about scope of the change. If only one file was updated provide its name. Make sure the title has maximum 50 characters. Do not add any surrounding quotes.",
+  --         description = "Commit staged with title only",
+  --         mapping = ";c",
+  --         close = true,
+  --         selection = function(source)
+  --           return require("CopilotChat.select").gitdiff(source, true)
+  --         end,
+  --         callback = function(response, source)
+  --           local copilot = require("CopilotChat")
+  --           os.execute('git commit -m "' .. response .. '"')
+  --
+  --           copilot.close()
+  --           echoCommitInfo(response)
+  --         end,
+  --       },
+  --     },
+  --   },
+  --   -- See Commands section for default commands if you want to lazy load on them
+  -- },
 }
