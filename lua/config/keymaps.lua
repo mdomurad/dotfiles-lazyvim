@@ -117,7 +117,7 @@ which_key.add({
 })
 
 print(user)
-if user == "ianus" then
+if user == "" then
   which_key.add({
     -- JackMort/ChatGPT
     { "<leader>t", group = "ChatGPT" },
@@ -147,7 +147,7 @@ else
 end
 
 -- Visual mode mappings
-if user == "ianus" then
+if user == "" then
   which_key.add(
     -- JackMort/ChatGPT
     {
