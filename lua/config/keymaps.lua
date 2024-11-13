@@ -125,12 +125,12 @@ which_key.add({
 -- else
 which_key.add({
   { "<leader>t", group = "CopilotChat" },
-  { "<leader>tt", "<cmd>CopilotChat<CR>", desc = "CopilotChat" },
   {
     "<leader>ta",
     "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions())<CR>",
     desc = "Prompt actions",
   },
+  { "<leader>tt", "<cmd>CopilotChat<CR>", desc = "CopilotChat" },
   { "<leader>tc", "<cmd>CopilotChatCommitStaged<CR>", desc = "Commit Message Staged" },
   {
     "<leader>th",
