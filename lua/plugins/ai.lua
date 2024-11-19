@@ -172,11 +172,4 @@ local copilotPlugin = {
 }
 -- See Commands section for default commands if you want to lazy load on them
 
-if user == "ianus" then
-  return { avantePlugin, copilotPlugin, commonPlugins }
-else
-  return {
-    copilotPlugin,
-    commonPlugins,
-  }
-end
+return { avantePlugin, copilotPlugin, commonPlugins }
