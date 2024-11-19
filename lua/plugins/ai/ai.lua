@@ -108,7 +108,7 @@ local copilotPlugin = {
         close = true,
         selection = function(source)
           os.execute("git add -A")
-          return require("CopilotChat.select").gitdiff(source, true)
+          return require("CopilotChat.context").gitdiff(source, true)
         end,
         callback = function(response, source)
           local copilot = require("CopilotChat")
@@ -139,11 +139,13 @@ local copilotPlugin = {
         description = "Stage all and commit with title only",
         mapping = ";Q",
         close = true,
-        selection = function(source)
-          os.execute("git add -A")
-          return require("CopilotChat.select").gitdiff(source, true)
+        resolve = function(input, source)
+          return {
+            require("CopilotChat").context.gitdiff(input, source.bufnr),
+          }
         end,
         callback = function(response, source)
+          os.execute("git add -A")
           local copilot = require("CopilotChat")
           os.execute('git commit -m "' .. response .. '"')
 
@@ -156,8 +158,10 @@ local copilotPlugin = {
         description = "Commit staged with title only",
         mapping = ";q",
         close = true,
-        selection = function(source)
-          return require("CopilotChat.select").gitdiff(source, true)
+        resolve = function(input, source)
+          return {
+            require("CopilotChat").context.gitdiff(input, source.bufnr),
+          }
         end,
         callback = function(response, source)
           local copilot = require("CopilotChat")
