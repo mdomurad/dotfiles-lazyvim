@@ -106,11 +106,13 @@ local copilotPlugin = {
         description = "Stage all and commit",
         mapping = ";C",
         close = true,
-        selection = function(source)
-          os.execute("git add -A")
-          return require("CopilotChat.context").gitdiff(source, true)
+        resolve = function(input, source)
+          return {
+            require("CopilotChat").context.gitdiff(input, source.bufnr),
+          }
         end,
         callback = function(response, source)
+          os.execute("git add -A")
           local copilot = require("CopilotChat")
 
           formatGitResponse(response)
@@ -124,7 +126,11 @@ local copilotPlugin = {
         description = "Commit staged",
         mapping = ";c",
         close = true,
-        selection = selection,
+        resolve = function(input, source)
+          return {
+            require("CopilotChat").context.gitdiff(input, source.bufnr),
+          }
+        end,
         callback = function(response, source)
           local copilot = require("CopilotChat")
 
