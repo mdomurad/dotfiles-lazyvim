@@ -124,6 +124,7 @@ which_key.add({
 --   })
 -- else
 which_key.add({
+  mode = { "n" },
   { "<leader>t", group = "CopilotChat" },
   {
     "<leader>ta",
@@ -166,7 +167,9 @@ which_key.add({
 --     }
 --   )
 -- else
+
 which_key.add({
+  mode = { "v" },
   { "<leader>t", group = "CopilotChat" },
   {
     "<leader>ta",
