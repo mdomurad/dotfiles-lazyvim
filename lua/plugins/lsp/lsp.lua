@@ -84,7 +84,7 @@ return {
             RenameOptions = {
               RenameInComments = true,
               RenameOverloads = true,
-              RenameInStrings = true,
+              RenameInStrings = false,
             },
           },
         },
