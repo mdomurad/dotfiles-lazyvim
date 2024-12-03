@@ -160,15 +160,10 @@ local copilotPlugin = {
         end,
       },
       QuickCommitStaged = {
-        prompt = "Write commit title for the change with commitizen convention. Provide information about scope of the change. If only one file was updated provide its name. Make sure the title has maximum 50 characters. Do not add any surrounding quotes.",
+        prompt = "> #git:staged\n\nWrite commit title for the change with commitizen convention. Provide information about scope of the change. If only one file was updated provide its name. Make sure the title has maximum 50 characters. Do not add any surrounding quotes.",
         description = "Commit staged with title only",
         mapping = ";q",
         close = true,
-        resolve = function(input, source)
-          return {
-            require("CopilotChat").context.gitdiff(input, source.bufnr),
-          }
-        end,
         callback = function(response, source)
           local copilot = require("CopilotChat")
           os.execute('git commit -m "' .. response .. '"')
