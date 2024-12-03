@@ -102,15 +102,10 @@ local copilotPlugin = {
         end,
       },
       FullCommit = {
-        prompt = "Write commit message for the change with commitizen convention. Make sure the title has maximum 50 characters and message is wrapped at 72 characters. Do not add any surrounding quotes.",
+        prompt = "> #git:staged\n\nWrite commit message for the change with commitizen convention. Make sure the title has maximum 50 characters and message is wrapped at 72 characters. Do not add any surrounding quotes.",
         description = "Stage all and commit",
         mapping = ";C",
         close = true,
-        resolve = function(input, source)
-          return {
-            require("CopilotChat").context.gitdiff(input, source.bufnr),
-          }
-        end,
         callback = function(response, source)
           os.execute("git add -A")
           local copilot = require("CopilotChat")
@@ -122,15 +117,10 @@ local copilotPlugin = {
         end,
       },
       FullCommitStaged = {
-        prompt = "Write commit message for the change with commitizen convention. Make sure the title has maximum 50 characters and message is wrapped at 72 characters. Do not add any surrounding quotes.",
+        prompt = "> #git:staged\n\nWrite commit message for the change with commitizen convention. Make sure the title has maximum 50 characters and message is wrapped at 72 characters. Do not add any surrounding quotes.",
         description = "Commit staged",
         mapping = ";c",
         close = true,
-        resolve = function(input, source)
-          return {
-            require("CopilotChat").context.gitdiff(input, source.bufnr),
-          }
-        end,
         callback = function(response, source)
           local copilot = require("CopilotChat")
 
@@ -141,15 +131,10 @@ local copilotPlugin = {
         end,
       },
       QuickCommit = {
-        prompt = "Write commit title for the change with commitizen convention. Provide information about scope of the change. If only one file was updated provide its name. Make sure the title has maximum 50 characters. Do not add any surrounding quotes.",
+        prompt = "> #git:staged\n\nWrite commit title for the change with commitizen convention. Provide information about scope of the change. If only one file was updated provide its name. Make sure the title has maximum 50 characters. Do not add any surrounding quotes.",
         description = "Stage all and commit with title only",
         mapping = ";Q",
         close = true,
-        resolve = function(input, source)
-          return {
-            require("CopilotChat").context.gitdiff(input, source.bufnr),
-          }
-        end,
         callback = function(response, source)
           os.execute("git add -A")
           local copilot = require("CopilotChat")
