@@ -82,7 +82,7 @@ return {
               path = os.getenv("USERPROFILE") .. "\\scoop\\apps\\dotnet-sdk\\current",
             },
             RenameOptions = {
-              RenameInComments = true,
+              RenameInComments = false,
               RenameOverloads = true,
               RenameInStrings = false,
             },
