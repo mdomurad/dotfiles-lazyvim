@@ -106,7 +106,7 @@ local copilotPlugin = {
         description = "Stage all and commit",
         mapping = ";C",
         close = true,
-        callback = function(response, source)
+        callback = function(response)
           os.execute("git add -A")
           local copilot = require("CopilotChat")
 
@@ -121,7 +121,7 @@ local copilotPlugin = {
         description = "Commit staged",
         mapping = ";c",
         close = true,
-        callback = function(response, source)
+        callback = function(response)
           local copilot = require("CopilotChat")
 
           formatGitResponse(response)
@@ -135,7 +135,7 @@ local copilotPlugin = {
         description = "Stage all and commit with title only",
         mapping = ";Q",
         close = true,
-        callback = function(response, source)
+        callback = function(response)
           os.execute("git add -A")
           local copilot = require("CopilotChat")
           os.execute('git commit -m "' .. response .. '"')
@@ -149,7 +149,7 @@ local copilotPlugin = {
         description = "Commit staged with title only",
         mapping = ";q",
         close = true,
-        callback = function(response, source)
+        callback = function(response)
           local copilot = require("CopilotChat")
           os.execute('git commit -m "' .. response .. '"')
 
