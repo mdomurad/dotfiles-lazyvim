@@ -102,18 +102,19 @@ local copilotPlugin = {
         end,
       },
       FullCommit = {
-        prompt = "> #git:staged\n\nWrite commit message for the change with commitizen convention. Make sure the title has maximum 50 characters and message is wrapped at 72 characters. Do not add any surrounding quotes.",
+        prompt = "> #git:staged\n#git:unstaged\n\nWrite commit message for the change with commitizen convention. Make sure the title has maximum 50 characters and message is wrapped at 72 characters. Do not add any surrounding quotes.",
         description = "Stage all and commit",
         mapping = ";C",
         close = true,
         callback = function(response)
-          os.execute("git add -A")
           local copilot = require("CopilotChat")
+          vim.schedule(function()
+            os.execute("git add -A")
+            formatGitResponse(response)
 
-          formatGitResponse(response)
-
-          copilot.close()
-          echoCommitInfo(response)
+            copilot.close()
+            echoCommitInfo(response)
+          end)
         end,
       },
       FullCommitStaged = {
@@ -124,24 +125,27 @@ local copilotPlugin = {
         callback = function(response)
           local copilot = require("CopilotChat")
 
-          formatGitResponse(response)
-
-          copilot.close()
-          echoCommitInfo(response)
+          vim.schedule(function()
+            formatGitResponse(response)
+            copilot.close()
+            echoCommitInfo(response)
+          end)
         end,
       },
       QuickCommit = {
-        prompt = "> #git:staged\n\nWrite commit title for the change with commitizen convention. Provide information about scope of the change. If only one file was updated provide its name. Make sure the title has maximum 50 characters. Do not add any surrounding quotes.",
+        prompt = "> #git:staged\n#git:unstaged\n\nWrite commit title for the change with commitizen convention. Provide information about scope of the change. If only one file was updated provide its name. Make sure the title has maximum 50 characters. Do not add any surrounding quotes.",
         description = "Stage all and commit with title only",
         mapping = ";Q",
         close = true,
         callback = function(response)
-          os.execute("git add -A")
           local copilot = require("CopilotChat")
-          os.execute('git commit -m "' .. response .. '"')
 
-          copilot.close()
-          echoCommitInfo(response)
+          vim.schedule(function()
+            os.execute("git add -A")
+            os.execute('git commit -m "' .. response .. '"')
+            copilot.close()
+            echoCommitInfo(response)
+          end)
         end,
       },
       QuickCommitStaged = {
@@ -151,10 +155,12 @@ local copilotPlugin = {
         close = true,
         callback = function(response)
           local copilot = require("CopilotChat")
-          os.execute('git commit -m "' .. response .. '"')
+          vim.schedule(function()
+            os.execute('git commit -m "' .. response .. '"')
 
-          copilot.close()
-          echoCommitInfo(response)
+            copilot.close()
+            echoCommitInfo(response)
+          end)
         end,
       },
     },
