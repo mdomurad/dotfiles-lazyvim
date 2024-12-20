@@ -109,6 +109,9 @@ which_key.add({
   { "<leader>gp", "<cmd>G pull<CR>", desc = "Git pull --rebase" },
   { "<leader>gr", "<cmd>G commit --amend .<CR>", desc = "Reword latest commit" },
 
+  -- Flogit
+  { "gl", "<cmd>Flogsplit<CR>", desc = "Flogsplit" },
+
   -- Oil
   { ";O", "<cmd>Oil --float<CR>", desc = "Oil floated" },
   { ";o", "<cmd>Oil<CR>", desc = "Oil" },
