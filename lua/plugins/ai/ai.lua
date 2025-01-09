@@ -1,7 +1,9 @@
 local user = os.getenv("USERNAME")
 
 -- Common plugins that should be loaded for all users
-local commonPlugins = {}
+local commonPlugins = {
+  "github/copilot.vim",
+}
 local function echoCommitInfo(response)
   -- Get the list of files in the last commit
   local committedFiles = io.popen("git log -1 --name-only"):read("*all")
