@@ -141,7 +141,7 @@ which_key.add({
     "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').help_actions())<CR>",
     desc = "Help actions",
   },
-  { "<leader>ti", "<cmd>CopilotChatFixDiagnostics<CR>", desc = "Fix Diagnostics" },
+  { "<leader>ti", "<cmd>CopilotChatFixDiagnostic<CR>", desc = "Fix Diagnostics" },
   { "<leader>tl", "<cmd>CopilotChatLoad chat<CR>", desc = "Load" },
   { "<leader>tq", "<cmd>CopilotChatCommit<CR>", desc = "Commit Message" },
   { "<leader>ts", "<cmd>CopilotChatSave chat<CR>", desc = "Save" },
