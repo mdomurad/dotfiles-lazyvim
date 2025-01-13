@@ -93,6 +93,11 @@ local copilotPlugin = {
       width = 0.8,
       height = 0.6,
     },
+    mappings = {
+      complete = {
+        insert = "<C-z>",
+      },
+    },
     prompts = {
       FixGrammar = {
         prompt = "/COPILOT_GENERATE Rewrite text to improve clarity and style. Fix all grammar and spelling mistakes. Use language of the original text. Remove line numbers.",
