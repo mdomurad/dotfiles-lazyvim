@@ -55,8 +55,8 @@ local avantePlugin = {
       -- support for image pasting
       "HakonHarnes/img-clip.nvim",
       event = "VeryLazy",
+      config = function() end,
       opts = {
-        -- recommended settings
         default = {
           embed_image_as_base64 = false,
           prompt_for_file_name = false,
@@ -176,4 +176,8 @@ local copilotPlugin = {
 }
 -- See Commands section for default commands if you want to lazy load on them
 
-return { avantePlugin, copilotPlugin, commonPlugins }
+if user == "ianus" then
+  return { avantePlugin, copilotPlugin, commonPlugins }
+else
+  return { copilotPlugin, commonPlugins }
+end
