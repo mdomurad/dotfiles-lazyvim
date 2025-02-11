@@ -19,7 +19,6 @@ return {
       })
     end,
   },
-  { "Hoffs/omnisharp-extended-lsp.nvim" },
 
   -- lsp servers
   {
@@ -79,7 +78,7 @@ return {
               -- Specifies whether to include preview versions of the .NET SDK when
               -- determining which version to use for project loading.
               IncludePrereleases = true,
-              path = os.getenv("PROGRAMFILES") .. "\\dotnet\\sdk",
+              path = os.getenv("USERPROFILE") .. "\\scoop\\apps\\dotnet-sdk\\current",
             },
             RenameOptions = {
               RenameInComments = false,

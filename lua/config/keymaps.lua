@@ -60,32 +60,6 @@ keymap.set("n", "<C-j>", function()
   vim.diagnostic.goto_next()
 end, opts)
 
--- Omnisharp extended
--- replaces vim.lsp.buf.definition()
-keymap.set("n", "gd", '<cmd>lua require("omnisharp_extended").lsp_definition()<cr>', {})
-
--- replaces vim.lsp.buf.type_definition()
-keymap.set("n", "<leader>D", '<cmd>lua require("omnisharp_extended").lsp_type_definition()<cr>', {})
-
--- replaces vim.lsp.buf.references()
-keymap.set("n", "gr", '<cmd>lua require("omnisharp_extended").lsp_references()<cr>', {})
-
--- replaces vim.lsp.buf.implementation()
-keymap.set("n", "gi", '<cmd>lua require("omnisharp_extended").lsp_implementation()<cr>', {})
-
--- commands for telescope
-keymap.set("n", "gr", "<cmd>lua require('omnisharp_extended').telescope_lsp_references()<cr>", { noremap = true })
-
--- options are supported as well
-keymap.set(
-  "n",
-  "gd",
-  '<cmd>lua require("omnisharp_extended").telescope_lsp_definition({ jump_type = "vsplit" })<cr>',
-  {}
-)
-keymap.set("n", "<leader>D", '<cmd>lua require("omnisharp_extended").telescope_lsp_type_definition()<cr>', {})
-keymap.set("n", "gi", '<cmd>lua require("omnisharp_extended").telescope_lsp_implementation()<cr>', {})
-
 -- Color-picker
 keymap.set("n", "<C-x>", "<cmd>PickColor<cr>", opts)
 keymap.set("i", "<C-x>", "<cmd>PickColorInsert<cr>", opts)
