@@ -41,6 +41,7 @@ return {
           },
         },
         omnisharp = {
+          -- https://github.com/OmniSharp/omnisharp-roslyn/wiki/Configuration-Options
           settings = {
             FormattingOptions = {
               -- Enables support for reading code style, naming convention and analyzer
