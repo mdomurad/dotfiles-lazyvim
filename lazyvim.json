@@ -9,6 +9,7 @@
     "lazyvim.plugins.extras.dap.nlua",
     "lazyvim.plugins.extras.editor.dial",
     "lazyvim.plugins.extras.editor.inc-rename",
+    "lazyvim.plugins.extras.editor.telescope",
     "lazyvim.plugins.extras.lang.angular",
     "lazyvim.plugins.extras.lang.docker",
     "lazyvim.plugins.extras.lang.markdown",
@@ -26,9 +27,10 @@
     "lazyvim.plugins.extras.ui.mini-indentscope",
     "lazyvim.plugins.extras.util.dot"
   ],
+  "install_version": 7,
   "news": {
-    "NEWS.md": "10960",
+    "NEWS.md": "11229",
     "doc/news.txt": "14318"
   },
-  "version": 7
+  "version": 8
 }
