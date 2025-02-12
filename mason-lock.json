@@ -12,7 +12,6 @@
   "gitui": "v0.27.0",
   "hadolint": "v2.12.0",
   "html-lsp": "4.10.0",
-  "js-debug-adapter": "v1.97.0",
   "json-lsp": "4.10.0",
   "lemminx": "0.27.2",
   "lua-language-server": "3.13.6",
@@ -22,7 +21,7 @@
   "netcoredbg": "3.1.2-1054",
   "omnisharp": "v1.39.12",
   "prettier": "3.5.0",
-  "pyright": "1.1.393",
+  "pyright": "1.1.394",
   "python-lsp-server": "1.12.2",
   "ruff-lsp": "0.0.62",
   "rust-analyzer": "2025-02-10",
@@ -38,4 +37,3 @@
   "vtsls": "0.2.8",
   "yaml-language-server": "1.16.0"
 }
-
