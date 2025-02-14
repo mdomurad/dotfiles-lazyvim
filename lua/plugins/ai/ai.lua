@@ -1,9 +1,5 @@
 local user = os.getenv("USERNAME")
 
--- Common plugins that should be loaded for all users
-local commonPlugins = {
-  "github/copilot.vim",
-}
 local function echoCommitInfo(response)
   -- Get the list of files in the last commit
   local committedFiles = io.popen("git log -1 --name-only"):read("*all")
@@ -32,13 +28,15 @@ local function formatGitResponse(response)
   os.execute(commitCmd)
 end
 
+local avanteProvider = user == "ianus" and "claude" or "copilot"
+
 local avantePlugin = {
   "yetone/avante.nvim",
   event = "VeryLazy",
   lazy = false,
   version = false, -- set this if you want to always pull the latest change
   opts = {
-    -- add any opts here
+    provider = avanteProvider,
   },
   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
   -- build = "make",
@@ -176,8 +174,4 @@ local copilotPlugin = {
 }
 -- See Commands section for default commands if you want to lazy load on them
 
-if user == "ianus" then
-  return { avantePlugin, copilotPlugin, commonPlugins }
-else
-  return { copilotPlugin, commonPlugins }
-end
+return { avantePlugin, copilotPlugin }
