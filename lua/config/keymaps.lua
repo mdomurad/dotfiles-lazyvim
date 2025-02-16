@@ -60,10 +60,6 @@ keymap.set("n", "<C-j>", function()
   vim.diagnostic.goto_next()
 end, opts)
 
--- Color-picker
-keymap.set("n", "<C-x>", "<cmd>PickColor<cr>", opts)
-keymap.set("i", "<C-x>", "<cmd>PickColorInsert<cr>", opts)
-
 ----------------------------------------------------------------------------------------------------
 --- Leader mappings
 
@@ -82,6 +78,10 @@ which_key.add({
   { "<leader>gd", "<cmd>Gvdiffsplit<CR>", desc = "Git diff" },
   { "<leader>gp", "<cmd>G pull<CR>", desc = "Git pull --rebase" },
   { "<leader>gr", "<cmd>G commit --amend .<CR>", desc = "Reword latest commit" },
+
+  -- Color-picker
+  { "<leader>cp", "<cmd>PickColor<cr>", desc = "Pick Color" },
+  { "<leader>cP", "<cmd>PickColorInsert<cr>", desc = "Pick Color and Insert" },
 
   -- Flogit
   { "gl", "<cmd>Flogsplit<CR>", desc = "Flogsplit" },
