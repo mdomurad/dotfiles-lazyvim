@@ -28,6 +28,13 @@ local function formatGitResponse(response)
   os.execute(commitCmd)
 end
 
+-- Common Plugins
+local commonPlugins = {
+  "github/copilot.vim",
+}
+
+-- Avante
+
 local avanteProvider = user == "ianus" and "claude" or "copilot"
 
 local avantePlugin = {
@@ -45,13 +52,7 @@ local avantePlugin = {
     "stevearc/dressing.nvim",
     "nvim-lua/plenary.nvim",
     "MunifTanjim/nui.nvim",
-    --- The below dependencies are optional,
-    "hrsh7th/nvim-cmp", -- autocompletion for avante commands and mentions
-    "nvim-tree/nvim-web-devicons", -- or echasnovski/mini.icons
-    "zbirenbaum/copilot.lua", -- for providers='copilot'
-    {
-      -- support for image pasting
-      "HakonHarnes/img-clip.nvim",
+     "HakonHarnes/img-clip.nvim",
       event = "VeryLazy",
       config = function() end,
       opts = {
@@ -76,6 +77,8 @@ local avantePlugin = {
     },
   },
 }
+
+-- Copilot
 
 local copilotPlugin = {
   "CopilotC-Nvim/CopilotChat.nvim",
@@ -174,4 +177,4 @@ local copilotPlugin = {
 }
 -- See Commands section for default commands if you want to lazy load on them
 
-return { avantePlugin, copilotPlugin }
+return { avantePlugin, copilotPlugin, commonPlugins }
