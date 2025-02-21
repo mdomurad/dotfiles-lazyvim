@@ -71,13 +71,13 @@ end)
 --- WhichKey mappings
 -- Normal mode mappings
 which_key.add({
-
+  { "<leader>o", "<cmd>only<CR>", desc = "Hide Other Buffers" },
   { "<leader>bo", "<cmd>bufdo e | %bd | e#<CR>", desc = "Delete Other Buffers" },
-  { "<leader>gP", "<cmd>G push<CR>", desc = "Git push" },
-  { "<leader>ga", "<cmd>Gwrite<CR>", desc = "Stage current file" },
-  { "<leader>gd", "<cmd>Gvdiffsplit<CR>", desc = "Git diff" },
+  { "<leader>gP", "<cmd>G push<CR>", desc = "Git Push" },
+  { "<leader>ga", "<cmd>Gwrite<CR>", desc = "Stage Current file" },
+  { "<leader>gd", "<cmd>Gvdiffsplit<CR>", desc = "Git Diff" },
   { "<leader>gp", "<cmd>G pull<CR>", desc = "Git pull --rebase" },
-  { "<leader>gr", "<cmd>G commit --amend .<CR>", desc = "Reword latest commit" },
+  { "<leader>gr", "<cmd>G commit --amend .<CR>", desc = "Reword Latest Commit" },
 
   -- Color-picker
   { "<leader>cp", "<cmd>PickColor<cr>", desc = "Pick Color" },
@@ -87,10 +87,10 @@ which_key.add({
   { "gl", "<cmd>Flogsplit<CR>", desc = "Flogsplit" },
 
   -- Oil
-  { ";O", "<cmd>Oil --float<CR>", desc = "Oil floated" },
   { ";o", "<cmd>Oil<CR>", desc = "Oil" },
+  { ";O", "<cmd>Oil --float<CR>", desc = "Oil Floated" },
   -- Defualt overrides
-  { ";n", "<cmd>lua vim.diagnostic.goto_next()<CR>", desc = "Next diagnostic" },
+  { ";n", "<cmd>lua vim.diagnostic.goto_next()<CR>", desc = "Next Diagnostic" },
 })
 
 -- if user == "remove" then
@@ -106,20 +106,20 @@ which_key.add({
   {
     "<leader>ta",
     "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions())<CR>",
-    desc = "Prompt actions",
+    desc = "Prompt Actions",
   },
   { "<leader>tt", "<cmd>CopilotChat<CR>", desc = "CopilotChat" },
   { "<leader>tc", "<cmd>CopilotChatCommitStaged<CR>", desc = "Commit Message Staged" },
   {
     "<leader>th",
     "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').help_actions())<CR>",
-    desc = "Help actions",
+    desc = "Help Actions",
   },
   { "<leader>ti", "<cmd>CopilotChatFixDiagnostic<CR>", desc = "Fix Diagnostics" },
   { "<leader>tl", "<cmd>CopilotChatLoad chat<CR>", desc = "Load" },
   { "<leader>tq", "<cmd>CopilotChatCommit<CR>", desc = "Commit Message" },
   { "<leader>ts", "<cmd>CopilotChatSave chat<CR>", desc = "Save" },
-  { "<leader>tx", "<cmd>lua get_git_remote_url()<CR>", desc = "Get git remote url" },
+  { "<leader>tx", "<cmd>lua get_git_remote_url()<CR>", desc = "Get Fit Remote Url" },
 })
 
 -- Visual mode mappings
