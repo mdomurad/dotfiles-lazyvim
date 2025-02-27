@@ -1,4 +1,7 @@
 return {
+  {
+    "editorconfig/editorconfig-vim",
+  },
   -- Create annotations with one keybind, and jump your cursor in the inserted annotation
   {
     "danymat/neogen",
