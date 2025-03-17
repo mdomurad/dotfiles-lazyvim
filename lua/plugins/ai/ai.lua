@@ -28,11 +28,6 @@ local function formatGitResponse(response)
   os.execute(commitCmd)
 end
 
--- Common Plugins
-local commonPlugins = {
-  "github/copilot.vim",
-}
-
 -- Avante
 
 local avanteProvider = user == "ianus" and "claude" or "copilot"
@@ -89,8 +84,11 @@ local avantePlugin = {
 }
 
 -- Copilot
+local copilotVim = {
+  "github/copilot.vim",
+}
 
-local copilotPlugin = {
+local copilotChat = {
   "CopilotC-Nvim/CopilotChat.nvim",
   dependencies = {
     { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
@@ -187,4 +185,6 @@ local copilotPlugin = {
 }
 -- See Commands section for default commands if you want to lazy load on them
 
-return { avantePlugin, copilotPlugin, commonPlugins }
+local enabledPlugins = user == "ianus" and { avantePlugin } or { avantePlugin, copilotChat, copilotVim }
+
+return enabledPlugins
