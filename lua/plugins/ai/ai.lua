@@ -24,7 +24,6 @@ local function formatGitResponse(response)
     commitCmd = commitCmd .. ' -m "' .. table.concat(lines, " ") .. '"'
   end
 
-  
   -- Execute the git commit command
   os.execute(commitCmd)
 end
@@ -51,6 +50,87 @@ local chatGPT = {
     "nvim-telescope/telescope.nvim",
   },
 }
+
+-- [Minuet-ai]
+local minuet_ai = {
+  "milanglacier/minuet-ai.nvim",
+  priority = 1000,
+  config = function()
+    require("minuet").setup({
+      virtualtext = {
+        auto_trigger_ft = {},
+        keymap = {
+          -- accept whole completion
+          accept = "<A-A>",
+          -- accept one line
+          accept_line = "<A-a>",
+          -- accept n lines (prompts for number)
+          -- e.g. "A-z 2 CR" will accept 2 lines
+          accept_n_lines = "<A-z>",
+          -- Cycle to prev completion item, or manually invoke completion
+          prev = "<A-[>",
+          -- Cycle to next completion item, or manually invoke completion
+          next = "<A-]>",
+          dismiss = "<A-e>",
+        },
+      },
+      provider_options = {
+        openai = {
+          model = "gpt-4o-mini",
+          system = "see [Prompt] section for the default value",
+          few_shots = "see [Prompt] section for the default value",
+          chat_input = "See [Prompt Section for default value]",
+          stream = true,
+          api_key = "OPENAI_API_KEY",
+          optional = {
+            stop = { "end" },
+            max_tokens = 256,
+            top_p = 0.9,
+          },
+        },
+      },
+    })
+  end,
+}
+
+local kind_icons = {
+  -- LLM Provider icons
+  claude = "󰋦",
+  openai = "󱢆",
+  codestral = "󱎥",
+  gemini = "",
+  Groq = "",
+  Openrouter = "󱂇",
+  Ollama = "󰳆",
+  ["Llama.cpp"] = "󰳆",
+  Deepseek = "",
+}
+
+local blink_cmp_minuet = require("blink-cmp").setup({
+  appearance = {
+    use_nvim_cmp_as_default = true,
+    nerd_font_variant = "normal",
+    kind_icons = kind_icons,
+  },
+  -- keymap = {
+  -- Manually invoke minuet completion.
+  --   ["<A-y>"] = require("minuet").make_blink_map(),
+  -- },
+  sources = {
+    -- Enable minuet for autocomplete
+    default = { "lsp", "path", "buffer", "snippets", "minuet" },
+    -- For manual completion only, remove 'minuet' from default
+    providers = {
+      minuet = {
+        name = "minuet",
+        module = "minuet.blink",
+        score_offset = 8, -- Gives minuet higher priority among suggestions
+      },
+    },
+  },
+  -- Recommended to avoid unnecessary request
+  completion = { trigger = { prefetch_on_insert = false } },
+})
 
 -- [ Avante ]
 
@@ -209,6 +289,7 @@ local copilotChat = {
 }
 -- See Commands section for default commands if you want to lazy load on them
 
-local enabledPlugins = user == "ianus" and { avantePlugin, chatGPT } or { avantePlugin, copilotChat, copilotVim }
+local enabledPlugins = user == "ianus" and { avantePlugin, chatGPT, minuet_ai, blink_cmp_minuet }
+  or { avantePlugin, copilotChat, copilotVim }
 
 return enabledPlugins
