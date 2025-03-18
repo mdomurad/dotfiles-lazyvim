@@ -24,6 +24,7 @@ local function formatGitResponse(response)
     commitCmd = commitCmd .. ' -m "' .. table.concat(lines, " ") .. '"'
   end
 
+  
   -- Execute the git commit command
   os.execute(commitCmd)
 end
@@ -34,7 +35,11 @@ local chatGPT = {
   event = "VeryLazy",
   config = function()
     require("chatgpt").setup({
+      actions_paths = { "chatGPTactions.json" },
       openai_params = {
+        model = "gpt-4o-mini",
+      },
+      openai_edit_params = {
         model = "gpt-4o-mini",
       },
     })
