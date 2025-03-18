@@ -93,75 +93,78 @@ which_key.add({
   { ";n", "<cmd>lua vim.diagnostic.goto_next()<CR>", desc = "Next Diagnostic" },
 })
 
--- if user == "remove" then
---   which_key.add({
---     -- JackMort/ChatGPT
---     { "<leader>t", group = "ChatGPT" },
---     { "<leader>tt", "<cmd>ChatGPT<CR>", desc = "ChatGPT" },
---   })
--- else
-which_key.add({
-  mode = { "n" },
-  { "<leader>t", group = "CopilotChat" },
-  {
-    "<leader>ta",
-    "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions())<CR>",
-    desc = "Prompt Actions",
-  },
-  { "<leader>tt", "<cmd>CopilotChat<CR>", desc = "CopilotChat" },
-  { "<leader>tc", "<cmd>CopilotChatCommitStaged<CR>", desc = "Commit Message Staged" },
-  {
-    "<leader>th",
-    "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').help_actions())<CR>",
-    desc = "Help Actions",
-  },
-  { "<leader>ti", "<cmd>CopilotChatFixDiagnostic<CR>", desc = "Fix Diagnostics" },
-  { "<leader>tl", "<cmd>CopilotChatLoad chat<CR>", desc = "Load" },
-  { "<leader>tq", "<cmd>CopilotChatCommit<CR>", desc = "Commit Message" },
-  { "<leader>ts", "<cmd>CopilotChatSave chat<CR>", desc = "Save" },
-  { "<leader>tx", "<cmd>lua get_git_remote_url()<CR>", desc = "Get Fit Remote Url" },
-})
+-- [AI]
 
--- Visual mode mappings
--- if user == "remove" then
---   which_key.add(
---     -- JackMort/ChatGPT
---     {
---       mode = { "v" },
---       { "<leader>t", group = "ChatGPT" },
---       { "<leader>tc", ":'<,'>ChatGPTRun roxygen_edit<CR>", desc = "Roxygen Edit" },
---       { "<leader>td", ":'<,'>ChatGPTRun docstring<CR>", desc = "Docstring" },
---       { "<leader>te", ":'<,'>ChatGPTEditWithInstruction<CR>", desc = "Edit with instruction" },
---       { "<leader>tf", ":'<,'>ChatGPTRun fix_bugs<CR>", desc = "Fix Bugs" },
---       { "<leader>tg", ":'<,'>ChatGPTRun grammar_correction<CR>", desc = "Grammar Correction" },
---       { "<leader>tk", ":'<,'>ChatGPTRun keywords<CR>", desc = "Keywords" },
---       { "<leader>tl", ":'<,'>ChatGPTRun code_readability_analysis<CR>", desc = "Code Readability Analysis" },
---       { "<leader>to", ":'<,'>ChatGPTRun optimize_code<CR>", desc = "Optimize Code" },
---       { "<leader>tq", ":'<,'>ChatGPTRun add_tests<CR>", desc = "Add Tests" },
---       { "<leader>ts", ":'<,'>ChatGPTRun summarize<CR>", desc = "Summarize" },
---       { "<leader>tt", ":'<,'>ChatGPTRun translate<CR>", desc = "Translate" },
---       { "<leader>tx", ":'<,'>ChatGPTRun explain_code<CR>", desc = "Explain Code" },
---     }
---   )
--- else
+-- [JackMort/ChatGPT]
+if user == "ianus" then
+  which_key.add({
+    mode = { "v", "n" },
+    {
+      { "<leader>o", group = "ChatGPT" },
+      { "<leader>oe", "<cmd>ChatGPTEditWithInstruction<CR>", desc = "Edit with instruction" },
+      { "<leader>oa", "<cmd>ChatGPT<CR>", desc = "ChatGPT" },
+      { "<leader>og", "<cmd>ChatGPTRun grammar_correction<CR>", desc = "Grammar Correction" },
+    },
+  })
 
-which_key.add({
-  mode = { "v" },
-  { "<leader>t", group = "CopilotChat" },
-  {
-    "<leader>ta",
-    "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions())<CR>",
-    desc = "Prompt actions",
-  },
-  { "<leader>tc", "<cmd> lua quickChat() <CR>", desc = "CopilotChat - Quick chat" },
-  { "<leader>td", ":'<,'>CopilotChatDocs<CR>", desc = "Docstring" },
-  { "<leader>tf", ":'<,'>CopilotChatFix<CR>", desc = "Fix Bugs" },
-  { "<leader>to", ":'<,'>CopilotChatOptimize<CR>", desc = "Optimize Code" },
-  { "<leader>tq", ":'<,'>CopilotChatTests<CR>", desc = "Add Tests" },
-  { "<leader>tr", ":'<,'>CopilotChatReview<CR>", desc = "Review Code" },
-  { "<leader>tt", ":'<,'>CopilotChat<CR>", desc = "CopilotChat" },
-  { "<leader>tx", ":'<,'>CopilotChatExplain<CR>", desc = "Explain Code" },
-})
+  which_key.add({
+    mode = { "v" },
+    { "<leader>o", group = "ChatGPT" },
+    { "<leader>oc", ":'<,'>ChatGPTRun roxygen_edit<CR>", desc = "Roxygen Edit" },
+    { "<leader>od", ":'<,'>ChatGPTRun docstring<CR>", desc = "Docstring" },
+    { "<leader>of", ":'<,'>ChatGPTRun fix_bugs<CR>", desc = "Fix Bugs" },
+    { "<leader>ok", ":'<,'>ChatGPTRun keywords<CR>", desc = "Keywords" },
+    { "<leader>ol", ":'<,'>ChatGPTRun code_readability_analysis<CR>", desc = "Code Readability Analysis" },
+    { "<leader>oo", ":'<,'>ChatGPTRun optimize_code<CR>", desc = "Optimize Code" },
+    { "<leader>oq", ":'<,'>ChatGPTRun add_tests<CR>", desc = "Add Tests" },
+    { "<leader>os", ":'<,'>ChatGPTRun summarize<CR>", desc = "Summarize" },
+    { "<leader>ot", ":'<,'>ChatGPTRun translate<CR>", desc = "Translate" },
+    { "<leader>ox", ":'<,'>ChatGPTRun explain_code<CR>", desc = "Explain Code" },
+  })
+end
+
+-- [Copilot chat]
+if user ~= "ianus" then
+  which_key.add({
+    mode = { "n" },
+    { "<leader>o", group = "CopilotChat" },
+    {
+      "<leader>oa",
+      "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions())<CR>",
+      desc = "Prompt Actions",
+    },
+    { "<leader>ot", "<cmd>CopilotChat<CR>", desc = "CopilotChat" },
+    { "<leader>oc", "<cmd>CopilotChatCommitStaged<CR>", desc = "Commit Message Staged" },
+    {
+      "<leader>oh",
+      "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').help_actions())<CR>",
+      desc = "Help Actions",
+    },
+    { "<leader>oi", "<cmd>CopilotChatFixDiagnostic<CR>", desc = "Fix Diagnostics" },
+    { "<leader>ol", "<cmd>CopilotChatLoad chat<CR>", desc = "Load" },
+    { "<leader>oq", "<cmd>CopilotChatCommit<CR>", desc = "Commit Message" },
+    { "<leader>os", "<cmd>CopilotChatSave chat<CR>", desc = "Save" },
+    { "<leader>ox", "<cmd>lua get_git_remote_url()<CR>", desc = "Get Fit Remote Url" },
+  })
+
+  which_key.add({
+    mode = { "v" },
+    { "<leader>o", group = "CopilotChat" },
+    {
+      "<leader>oa",
+      "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions())<CR>",
+      desc = "Prompt actions",
+    },
+    { "<leader>oc", "<cmd> lua quickChat() <CR>", desc = "CopilotChat - Quick chat" },
+    { "<leader>od", ":'<,'>CopilotChatDocs<CR>", desc = "Docstring" },
+    { "<leader>of", ":'<,'>CopilotChatFix<CR>", desc = "Fix Bugs" },
+    { "<leader>oo", ":'<,'>CopilotChatOptimize<CR>", desc = "Optimize Code" },
+    { "<leader>oq", ":'<,'>CopilotChatTests<CR>", desc = "Add Tests" },
+    { "<leader>or", ":'<,'>CopilotChatReview<CR>", desc = "Review Code" },
+    { "<leader>ot", ":'<,'>CopilotChat<CR>", desc = "CopilotChat" },
+    { "<leader>ox", ":'<,'>CopilotChatExplain<CR>", desc = "Explain Code" },
+  })
+end
 
 -- cosco.vim
 keymap.set("n", ";;", "<Plug>(cosco-commaOrSemiColon)", opts)
