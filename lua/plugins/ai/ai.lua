@@ -28,7 +28,26 @@ local function formatGitResponse(response)
   os.execute(commitCmd)
 end
 
--- Avante
+-- [ chatGPT ]
+local chatGPT = {
+  "jackMort/ChatGPT.nvim",
+  event = "VeryLazy",
+  config = function()
+    require("chatgpt").setup({
+      openai_params = {
+        model = "gpt-4o-mini",
+      },
+    })
+  end,
+  dependencies = {
+    "MunifTanjim/nui.nvim",
+    "nvim-lua/plenary.nvim",
+    "folke/trouble.nvim",
+    "nvim-telescope/telescope.nvim",
+  },
+}
+
+-- [ Avante ]
 
 local avanteProvider = user == "ianus" and "claude" or "copilot"
 
@@ -185,6 +204,6 @@ local copilotChat = {
 }
 -- See Commands section for default commands if you want to lazy load on them
 
-local enabledPlugins = user == "ianus" and { avantePlugin } or { avantePlugin, copilotChat, copilotVim }
+local enabledPlugins = user == "ianus" and { avantePlugin, chatGPT } or { avantePlugin, copilotChat, copilotVim }
 
 return enabledPlugins
