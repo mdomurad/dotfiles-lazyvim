@@ -128,13 +128,13 @@ if user ~= "ianus" then
   which_key.add({
     mode = { "n" },
     { "<leader>o", group = "CopilotChat" },
-    { "<leader>oo", "<cmd>CopilotChat<CR>", desc = "CopilotChat" },
+    { "<leader>oc", "<cmd>CopilotChat<CR>", desc = "CopilotChat" },
     {
       "<leader>oa",
       "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions())<CR>",
       desc = "Prompt Actions",
     },
-    { "<leader>oc", "<cmd>CopilotChatCommitStaged<CR>", desc = "Commit Message Staged" },
+    { "<leader>ogs", "<cmd>CopilotChatCommitStaged<CR>", desc = "Commit Message Staged" },
     {
       "<leader>oh",
       "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').help_actions())<CR>",
@@ -142,7 +142,7 @@ if user ~= "ianus" then
     },
     { "<leader>oi", "<cmd>CopilotChatFixDiagnostic<CR>", desc = "Fix Diagnostics" },
     { "<leader>ol", "<cmd>CopilotChatLoad chat<CR>", desc = "Load" },
-    { "<leader>oq", "<cmd>CopilotChatCommit<CR>", desc = "Commit Message" },
+    { "<leader>ogc", "<cmd>CopilotChatCommit<CR>", desc = "Commit Message" },
     { "<leader>os", "<cmd>CopilotChatSave chat<CR>", desc = "Save" },
     { "<leader>ox", "<cmd>lua get_git_remote_url()<CR>", desc = "Get Fit Remote Url" },
   })
