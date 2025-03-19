@@ -102,7 +102,7 @@ if user == "ianus" then
     {
       { "<leader>o", group = "ChatGPT" },
       { "<leader>oe", "<cmd>ChatGPTEditWithInstruction<CR>", desc = "Edit with instruction" },
-      { "<leader>oa", "<cmd>ChatGPT<CR>", desc = "ChatGPT" },
+      { "<leader>oc", "<cmd>ChatGPT<CR>", desc = "ChatGPT" },
       { "<leader>og", "<cmd>ChatGPTRun grammar_correction<CR>", desc = "Grammar Correction" },
     },
   })
@@ -110,7 +110,7 @@ if user == "ianus" then
   which_key.add({
     mode = { "v" },
     { "<leader>o", group = "ChatGPT" },
-    { "<leader>oc", ":'<,'>ChatGPTRun roxygen_edit<CR>", desc = "Roxygen Edit" },
+    { "<leader>or", ":'<,'>ChatGPTRun roxygen_edit<CR>", desc = "Roxygen Edit" },
     { "<leader>od", ":'<,'>ChatGPTRun docstring<CR>", desc = "Docstring" },
     { "<leader>of", ":'<,'>ChatGPTRun fix_bugs<CR>", desc = "Fix Bugs" },
     { "<leader>ok", ":'<,'>ChatGPTRun keywords<CR>", desc = "Keywords" },
