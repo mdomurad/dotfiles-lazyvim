@@ -155,13 +155,13 @@ if user ~= "ianus" then
       "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions())<CR>",
       desc = "Prompt actions",
     },
-    { "<leader>oc", "<cmd> lua quickChat() <CR>", desc = "CopilotChat - Quick chat" },
+    { "<leader>oc", ":'<,'>CopilotChat<CR>", desc = "CopilotChat" },
+    { "<leader>o1", "<cmd> lua quickChat() <CR>", desc = "CopilotChat - Quick chat" },
     { "<leader>od", ":'<,'>CopilotChatDocs<CR>", desc = "Docstring" },
     { "<leader>of", ":'<,'>CopilotChatFix<CR>", desc = "Fix Bugs" },
     { "<leader>oo", ":'<,'>CopilotChatOptimize<CR>", desc = "Optimize Code" },
-    { "<leader>oq", ":'<,'>CopilotChatTests<CR>", desc = "Add Tests" },
+    { "<leader>ot", ":'<,'>CopilotChatTests<CR>", desc = "Add Tests" },
     { "<leader>or", ":'<,'>CopilotChatReview<CR>", desc = "Review Code" },
-    { "<leader>ot", ":'<,'>CopilotChat<CR>", desc = "CopilotChat" },
     { "<leader>ox", ":'<,'>CopilotChatExplain<CR>", desc = "Explain Code" },
   })
 end
