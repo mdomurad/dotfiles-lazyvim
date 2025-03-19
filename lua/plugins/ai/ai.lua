@@ -106,31 +106,35 @@ local kind_icons = {
   Deepseek = "",
 }
 
-local blink_cmp_minuet = require("blink-cmp").setup({
-  appearance = {
-    use_nvim_cmp_as_default = true,
-    nerd_font_variant = "normal",
-    kind_icons = kind_icons,
-  },
-  -- keymap = {
-  -- Manually invoke minuet completion.
-  --   ["<A-y>"] = require("minuet").make_blink_map(),
-  -- },
-  sources = {
-    -- Enable minuet for autocomplete
-    default = { "lsp", "path", "buffer", "snippets", "minuet" },
-    -- For manual completion only, remove 'minuet' from default
-    providers = {
-      minuet = {
-        name = "minuet",
-        module = "minuet.blink",
-        score_offset = 8, -- Gives minuet higher priority among suggestions
+-- [ Blink-cmp ]
+-- configuration for minuet
+if user == "ianus" then
+  require("blink-cmp").setup({
+    appearance = {
+      use_nvim_cmp_as_default = true,
+      nerd_font_variant = "normal",
+      kind_icons = kind_icons,
+    },
+    -- keymap = {
+    -- Manually invoke minuet completion.
+    --   ["<A-y>"] = require("minuet").make_blink_map(),
+    -- },
+    sources = {
+      -- Enable minuet for autocomplete
+      default = { "lsp", "path", "buffer", "snippets", "minuet" },
+      -- For manual completion only, remove 'minuet' from default
+      providers = {
+        minuet = {
+          name = "minuet",
+          module = "minuet.blink",
+          score_offset = 8, -- Gives minuet higher priority among suggestions
+        },
       },
     },
-  },
-  -- Recommended to avoid unnecessary request
-  completion = { trigger = { prefetch_on_insert = false } },
-})
+    -- Recommended to avoid unnecessary request
+    completion = { trigger = { prefetch_on_insert = false } },
+  })
+end
 
 -- [ Avante ]
 
@@ -289,7 +293,7 @@ local copilotChat = {
 }
 -- See Commands section for default commands if you want to lazy load on them
 
-local enabledPlugins = user == "ianus" and { avantePlugin, chatGPT, minuet_ai, blink_cmp_minuet }
+local enabledPlugins = user == "ianus" and { avantePlugin, chatGPT, minuet_ai }
   or { avantePlugin, copilotChat, copilotVim }
 
 return enabledPlugins
