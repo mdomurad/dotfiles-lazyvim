@@ -74,14 +74,9 @@ local minuet_ai = {
       --     dismiss = "<A-e>",
       --   },
       -- },
+      provider = "openai",
       provider_options = {
         openai = {
-          model = "gpt-4o-mini",
-          system = "see [Prompt] section for the default value",
-          few_shots = "see [Prompt] section for the default value",
-          chat_input = "See [Prompt Section for default value]",
-          stream = true,
-          api_key = "OPENAI_API_KEY",
           optional = {
             stop = { "end" },
             max_tokens = 256,
@@ -108,33 +103,58 @@ local kind_icons = {
 
 -- [ Blink-cmp ]
 -- configuration for minuet
-if user == "ianus" then
-  require("blink-cmp").setup({
-    appearance = {
-      use_nvim_cmp_as_default = true,
-      nerd_font_variant = "normal",
-      kind_icons = kind_icons,
+-- if user == "ianus" then
+--   require("blink-cmp").setup({
+--     appearance = {
+--       use_nvim_cmp_as_default = false,
+--       nerd_font_variant = "normal",
+--       kind_icons = kind_icons,
+--     },
+--     -- keymap = {
+--     -- Manually invoke minuet completion.
+--     --   ["<A-y>"] = require("minuet").make_blink_map(),
+--     -- },
+--     sources = {
+--       -- Enable minuet for autocomplete
+--       default = { "lsp", "path", "buffer", "snippets", "minuet" },
+--       -- For manual completion only, remove 'minuet' from default
+--       providers = {
+--         minuet = {
+--           name = "minuet",
+--           module = "minuet.blink",
+--           score_offset = 8, -- Gives minuet higher priority among suggestions
+--         },
+--       },
+--     },
+--     -- Recommended to avoid unnecessary request
+--     completion = { trigger = { prefetch_on_insert = false } },
+--   })
+-- end
+local blink_minuet = {
+  "saghen/blink.cmp",
+  optional = true,
+  version = "*",
+  opts = {
+    keymap = {
+      ["<A-y>"] = {
+        function(cmp)
+          cmp.show({ providers = { "minuet" } })
+        end,
+      },
     },
-    -- keymap = {
-    -- Manually invoke minuet completion.
-    --   ["<A-y>"] = require("minuet").make_blink_map(),
-    -- },
     sources = {
-      -- Enable minuet for autocomplete
-      default = { "lsp", "path", "buffer", "snippets", "minuet" },
-      -- For manual completion only, remove 'minuet' from default
+      -- if you want to use auto-complete
+      default = { "minuet" },
       providers = {
         minuet = {
           name = "minuet",
           module = "minuet.blink",
-          score_offset = 8, -- Gives minuet higher priority among suggestions
+          score_offset = 100,
         },
       },
     },
-    -- Recommended to avoid unnecessary request
-    completion = { trigger = { prefetch_on_insert = false } },
-  })
-end
+  },
+}
 
 -- [ Avante ]
 
@@ -293,7 +313,7 @@ local copilotChat = {
 }
 -- See Commands section for default commands if you want to lazy load on them
 
-local enabledPlugins = user == "ianus" and { avantePlugin, chatGPT, minuet_ai }
+local enabledPlugins = user == "ianus" and { avantePlugin, chatGPT, minuet_ai, blink_minuet }
   or { avantePlugin, copilotChat, copilotVim }
 
 return enabledPlugins
