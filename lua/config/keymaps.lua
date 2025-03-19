@@ -128,12 +128,12 @@ if user ~= "ianus" then
   which_key.add({
     mode = { "n" },
     { "<leader>o", group = "CopilotChat" },
+    { "<leader>oo", "<cmd>CopilotChat<CR>", desc = "CopilotChat" },
     {
       "<leader>oa",
       "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions())<CR>",
       desc = "Prompt Actions",
     },
-    { "<leader>ot", "<cmd>CopilotChat<CR>", desc = "CopilotChat" },
     { "<leader>oc", "<cmd>CopilotChatCommitStaged<CR>", desc = "Commit Message Staged" },
     {
       "<leader>oh",
