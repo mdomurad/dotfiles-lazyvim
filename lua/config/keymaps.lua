@@ -71,7 +71,7 @@ end)
 --- WhichKey mappings
 -- Normal mode mappings
 which_key.add({
-  { "<leader>o", "<cmd>only<CR>", desc = "Hide Other Buffers" },
+  { ";x", "<cmd>only<CR>", desc = "Hide Other Buffers" },
   { "<leader>bo", "<cmd>bufdo e | %bd | e#<CR>", desc = "Delete Other Buffers" },
   { "<leader>gP", "<cmd>G push<CR>", desc = "Git Push" },
   { "<leader>ga", "<cmd>Gwrite<CR>", desc = "Stage Current file" },
