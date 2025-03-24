@@ -52,28 +52,28 @@ local chatGPT = {
 }
 
 -- [Minuet-ai]
-local minuet_ai = {
+local minuet_ai_openai = {
   "milanglacier/minuet-ai.nvim",
   priority = 1000,
   config = function()
     require("minuet").setup({
-      -- virtualtext = {
-      --   auto_trigger_ft = {},
-      --   keymap = {
-      --     -- accept whole completion
-      --     accept = "<A-A>",
-      --     -- accept one line
-      --     accept_line = "<A-a>",
-      --     -- accept n lines (prompts for number)
-      --     -- e.g. "A-z 2 CR" will accept 2 lines
-      --     accept_n_lines = "<A-z>",
-      --     -- Cycle to prev completion item, or manually invoke completion
-      --     prev = "<A-[>",
-      --     -- Cycle to next completion item, or manually invoke completion
-      --     next = "<A-]>",
-      --     dismiss = "<A-e>",
-      --   },
-      -- },
+      virtualtext = {
+        auto_trigger_ft = {},
+        keymap = {
+          -- accept whole completion
+          accept = "<A-A>",
+          -- accept one line
+          accept_line = "<A-a>",
+          -- accept n lines (prompts for number)
+          -- e.g. "A-z 2 CR" will accept 2 lines
+          accept_n_lines = "<A-z>",
+          -- Cycle to prev completion item, or manually invoke completion
+          prev = "<A-[>",
+          -- Cycle to next completion item, or manually invoke completion
+          next = "<A-]>",
+          dismiss = "<A-e>",
+        },
+      },
       provider = "openai",
       provider_options = {
         openai = {
@@ -85,6 +85,28 @@ local minuet_ai = {
         },
       },
     })
+  end,
+}
+
+local minuet_ai_deepseek = {
+
+  "milanglacier/minuet-ai.nvim",
+  priority = 1000,
+  request_timeout = 10.0,
+  config = function()
+    require("minuet").setup({
+      provider = "openai_fim_compatible",
+      provider_options = {
+        openai_fim_compatible = {
+          api_key = "DEEPSEEK_API_KEY",
+          name = "deepseek",
+          optional = {
+            max_tokens = 256,
+            top_p = 0.9,
+          },
+        },
+      },
+    }) -- Removed the extra comma and parenthesis here
   end,
 }
 
@@ -313,7 +335,7 @@ local copilotChat = {
 }
 -- See Commands section for default commands if you want to lazy load on them
 
-local enabledPlugins = user == "ianus" and { avantePlugin, chatGPT, minuet_ai, blink_minuet }
+local enabledPlugins = user == "ianus" and { avantePlugin, chatGPT, minuet_ai_openai }
   or { avantePlugin, copilotChat, copilotVim }
 
 return enabledPlugins
