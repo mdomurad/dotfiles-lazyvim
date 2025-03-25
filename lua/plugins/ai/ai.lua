@@ -61,16 +61,16 @@ local minuet_ai_openai = {
         auto_trigger_ft = {},
         keymap = {
           -- accept whole completion
-          accept = "<A-A>",
+          accept = "<Tab>",
           -- accept one line
-          accept_line = "<A-a>",
+          accept_line = "<A-l>",
           -- accept n lines (prompts for number)
           -- e.g. "A-z 2 CR" will accept 2 lines
           accept_n_lines = "<A-z>",
           -- Cycle to prev completion item, or manually invoke completion
-          prev = "<A-[>",
+          prev = "<A-p>",
           -- Cycle to next completion item, or manually invoke completion
-          next = "<A-]>",
+          next = "<A-n>",
           dismiss = "<A-e>",
         },
       },
