@@ -57,23 +57,23 @@ local minuet_ai_openai = {
   priority = 1000,
   config = function()
     require("minuet").setup({
-      virtualtext = {
-        auto_trigger_ft = {},
-        keymap = {
-          -- accept whole completion
-          accept = "<Tab>",
-          -- accept one line
-          accept_line = "<A-l>",
-          -- accept n lines (prompts for number)
-          -- e.g. "A-z 2 CR" will accept 2 lines
-          accept_n_lines = "<A-z>",
-          -- Cycle to prev completion item, or manually invoke completion
-          prev = "<A-p>",
-          -- Cycle to next completion item, or manually invoke completion
-          next = "<A-n>",
-          dismiss = "<A-e>",
-        },
-      },
+      -- virtualtext = {
+      --   auto_trigger_ft = {},
+      --   keymap = {
+      --     -- accept whole completion
+      --     accept = "<Tab>",
+      --     -- accept one line
+      --     accept_line = "<A-l>",
+      --     -- accept n lines (prompts for number)
+      --     -- e.g. "A-z 2 CR" will accept 2 lines
+      --     accept_n_lines = "<A-z>",
+      --     -- Cycle to prev completion item, or manually invoke completion
+      --     prev = "<A-p>",
+      --     -- Cycle to next completion item, or manually invoke completion
+      --     next = "<A-n>",
+      --     dismiss = "<A-e>",
+      --   },
+      -- },
       provider = "openai",
       provider_options = {
         openai = {
@@ -335,7 +335,7 @@ local copilotChat = {
 }
 -- See Commands section for default commands if you want to lazy load on them
 
-local enabledPlugins = user == "ianus" and { avantePlugin, chatGPT, minuet_ai_openai }
+local enabledPlugins = user == "ianus" and { avantePlugin, chatGPT, minuet_ai_openai, blink_minuet }
   or { avantePlugin, copilotChat, copilotVim }
 
 return enabledPlugins
