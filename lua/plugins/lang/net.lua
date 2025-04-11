@@ -1,4 +1,9 @@
 return {
+  {
+    "MoaidHathot/dotnet.nvim",
+    cmd = "DotnetUI",
+    opts = {},
+  },
   -- "seblyng/roslyn.nvim",
   -- ft = "cs",
   -- ---@module 'roslyn.config'
