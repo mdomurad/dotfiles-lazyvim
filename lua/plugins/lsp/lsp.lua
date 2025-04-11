@@ -3,6 +3,8 @@ return {
   {
     "williamboman/mason.nvim",
     opts = function(_, opts)
+      -- Ensure opts.ensure_installed is a table
+      opts.ensure_installed = opts.ensure_installed or {}
       vim.list_extend(opts.ensure_installed, {
         "stylua",
         "selene",
@@ -16,6 +18,13 @@ return {
         "emmet-language-server",
         "svelte-language-server",
         "python-lsp-server",
+      })
+
+      -- Ensure opts.registries is a table
+      opts.registries = opts.registries or {}
+      vim.list_extend(opts.registries, {
+        "github:mason-org/mason-registry",
+        "github:Crashdummyy/mason-registry",
       })
     end,
   },
