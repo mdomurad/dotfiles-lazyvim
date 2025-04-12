@@ -123,39 +123,10 @@ local kind_icons = {
   Deepseek = "",
 }
 
--- [ Blink-cmp ]
--- configuration for minuet
--- if user == "ianus" then
---   require("blink-cmp").setup({
---     appearance = {
---       use_nvim_cmp_as_default = false,
---       nerd_font_variant = "normal",
---       kind_icons = kind_icons,
---     },
---     -- keymap = {
---     -- Manually invoke minuet completion.
---     --   ["<A-y>"] = require("minuet").make_blink_map(),
---     -- },
---     sources = {
---       -- Enable minuet for autocomplete
---       default = { "lsp", "path", "buffer", "snippets", "minuet" },
---       -- For manual completion only, remove 'minuet' from default
---       providers = {
---         minuet = {
---           name = "minuet",
---           module = "minuet.blink",
---           score_offset = 8, -- Gives minuet higher priority among suggestions
---         },
---       },
---     },
---     -- Recommended to avoid unnecessary request
---     completion = { trigger = { prefetch_on_insert = false } },
---   })
--- end
 local blink_minuet = {
   "saghen/blink.cmp",
   optional = true,
-  version = "*",
+  version = not vim.g.lazyvim_blink_main and "*",
   opts = {
     keymap = {
       ["<A-y>"] = {
@@ -163,6 +134,11 @@ local blink_minuet = {
           cmp.show({ providers = { "minuet" } })
         end,
       },
+    },
+    appearance = {
+      use_nvim_cmp_as_default = true,
+      nerd_font_variant = "mono",
+      kind_icons = kind_icons,
     },
     sources = {
       -- if you want to use auto-complete
