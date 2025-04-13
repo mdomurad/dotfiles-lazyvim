@@ -28,13 +28,19 @@ local function formatGitResponse(response)
   os.execute(commitCmd)
 end
 
+local current_dir = vim.fn.expand("<sfile>:p:h")
+local actions_path = current_dir .. "\\lua\\plugins\\ai\\chatGPTactions.json"
+print(actions_path)
+
 -- [ chatGPT ]
 local chatGPT = {
   "jackMort/ChatGPT.nvim",
   event = "VeryLazy",
   config = function()
     require("chatgpt").setup({
-      actions_paths = { "chatGPTactions.json" },
+      actions_paths = {
+        actions_path,
+      },
       openai_params = {
         model = "gpt-4o-mini",
       },
@@ -311,7 +317,6 @@ local copilotChat = {
 }
 -- See Commands section for default commands if you want to lazy load on them
 
-local enabledPlugins = user == "ianus" and { avantePlugin, chatGPT, minuet_ai_openai, blink_minuet }
-  or { avantePlugin, copilotChat, copilotVim }
+local enabledPlugins = user == "ianus" and { avantePlugin, chatGPT } or { avantePlugin, copilotChat, copilotVim }
 
 return enabledPlugins

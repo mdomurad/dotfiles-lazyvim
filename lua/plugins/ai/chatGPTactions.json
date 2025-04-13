@@ -1,4 +1,13 @@
 {
+  "git_commit": {
+    "type": "chat",
+    "opts": {
+      "template": "> #git:staged\n#git:unstaged\n\nWrite a commit message for the change with commitizen convention. Make sure the title has a maximum of 50 characters and the message is wrapped at 72 characters. Do not add any surrounding quotes.",
+      "strategy": "display",
+      "params": {
+        "model": "gpt-4o-mini"
+      }
+  },
   "swear": {
     "type": "chat",
     "opts": {
