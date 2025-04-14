@@ -4,12 +4,13 @@ return {
     cmd = "DotnetUI",
     opts = {},
   },
-  -- "seblyng/roslyn.nvim",
-  -- ft = "cs",
-  -- ---@module 'roslyn.config'
-  -- ---@type RoslynNvimConfig
-  -- opts = {
-  -- },
+  {
+    "seblyng/roslyn.nvim",
+    ft = "cs",
+    ---@module 'roslyn.config'
+    ---@type RoslynNvimConfig
+    opts = {},
+  },
   -- Configuration is throwing an error
   -- TODO: track issue
   -- https://github.com/GustavEikaas/easy-dotnet.nvim/issues/304
