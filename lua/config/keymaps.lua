@@ -79,6 +79,12 @@ which_key.add({
   { "<leader>gp", "<cmd>G pull<CR>", desc = "Git pull --rebase" },
   { "<leader>gr", "<cmd>G commit --amend .<CR>", desc = "Reword Latest Commit" },
 
+  -- Roslyn
+  { "<leader>r", group = "Roslyn" },
+  { "<leader>rr", "<cmd>Roslyn restart<CR>", desc = "Roslyn restart" },
+  { "<leader>rs", "<cmd>Roslyn stop<CR>", desc = "Roslyn stop" },
+  { "<leader>rt", "<cmd>Roslyn target<CR>", desc = "Roslyn target" },
+
   -- Color-picker
   { "<leader>cp", "<cmd>PickColor<cr>", desc = "Pick Color" },
   { "<leader>cP", "<cmd>PickColorInsert<cr>", desc = "Pick Color and Insert" },
