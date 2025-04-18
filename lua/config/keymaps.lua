@@ -61,13 +61,6 @@ keymap.set("n", "<C-j>", function()
 end, opts)
 
 ----------------------------------------------------------------------------------------------------
---- Leader mappings
-
-keymap.set("n", "<leader>r", function()
-  require("md.utils").replaceHexWithHSL()
-end)
-
-----------------------------------------------------------------------------------------------------
 --- WhichKey mappings
 -- Normal mode mappings
 which_key.add({
