@@ -15,6 +15,7 @@ return {
         "tailwindcss-language-server",
         "typescript-language-server",
         "css-lsp",
+        "roslyn",
         "emmet-language-server",
         "svelte-language-server",
         "python-lsp-server",
