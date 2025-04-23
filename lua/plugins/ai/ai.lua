@@ -30,7 +30,6 @@ end
 
 local current_dir = vim.fn.expand("<sfile>:p:h")
 local actions_path = current_dir .. "\\lua\\plugins\\ai\\chatGPTactions.json"
-print(actions_path)
 
 -- [ chatGPT ]
 local chatGPT = {
