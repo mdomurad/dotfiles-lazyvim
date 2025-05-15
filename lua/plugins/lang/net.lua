@@ -36,10 +36,12 @@ return {
             dotnet_enable_tests_code_lens = true,
           },
           ["csharp|symbol_search"] = {
+            dotnet_organize_imports_on_format = true,
             dotnet_search_reference_assemblies = true,
           },
-          ["csharp|symbol_search"] = {
-            dotnet_organize_imports_on_format = true,
+          ["csharp|background_analysis"] = {
+            dotnet_analyzer_diagnostics_scope = "fullSolution",
+            dotnet_compiler_diagnostics_scope = "fullSolution",
           },
         },
       },
