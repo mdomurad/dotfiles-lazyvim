@@ -10,6 +10,7 @@ return {
     ---@module 'roslyn.config'
     ---@type RoslynNvimConfig
     opts = {
+      filewatching = "roslyn",
       config = {
         settings = {
           -- ["csharp|inlay_hints"] = {
