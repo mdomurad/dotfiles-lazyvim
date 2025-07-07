@@ -208,6 +208,28 @@ local copilotChat = {
           end)
         end,
       },
+      FixDiagnostic = {
+        prompt = "/COPILOT_GENERATE Fix the following diagnostic: ",
+        description = "Fix diagnostic on current line",
+        mapping = "<leader>oi",
+        close = true,
+        callback = function(response)
+          vim.schedule(function()
+            local copilot = require("CopilotChat")
+            local diagnostic = vim.diagnostic.get(0, { lnum = vim.api.nvim_win_get_cursor(0)[1] - 1 })[1]
+            if diagnostic then
+              response = response .. "\n\nDiagnostic: " .. diagnostic.message
+              vim.api.nvim_echo({ { "Fixing diagnostic: " .. diagnostic.message, "HighlightGroup" } }, true, {})
+              print(response)
+              return response
+            end
+          end)
+        end,
+        -- selection = function(source)
+        --   local select = require("CopilotChat.select")
+        --   return select.visual(source) or select.buffer(source)
+        -- end,
+      },
     },
   },
 }
