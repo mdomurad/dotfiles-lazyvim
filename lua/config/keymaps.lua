@@ -72,10 +72,10 @@ local function build_next_diagnostic_prompt()
     .. " : "
     .. (diagnostic.message or "")
     .. "\n\nDiagnostic line location start: "
-    .. diagnostic.lnum
+    .. diagnostic.lnum + 1
 
   if diagnostic.end_lnum then
-    prompt = prompt .. " End: " .. diagnostic.end_lnum
+    prompt = prompt .. " End: " .. diagnostic.end_lnum + 1
   end
   return prompt
 end
