@@ -60,6 +60,22 @@ keymap.set("n", "<C-j>", function()
   vim.diagnostic.goto_next()
 end, opts)
 
+--- Fixes the next diagnostic in the buffer using CopilotChat.
+-- This function retrieves the next diagnostic and sends it to CopilotChat
+-- for an AI-generated fix suggestion.
+function CopilotFixDiagnostic()
+  local diagnostic = vim.diagnostic.get_next()
+  if diagnostic then
+    local prompt = "/COPILOT_GENERATE Fix the following diagnostic: " .. diagnostic.message
+    local selection = require("CopilotChat.select").visual
+    if not selection then
+      selection = require("CopilotChat.select").line
+    end
+
+    require("CopilotChat").ask(prompt, { selection = selection })
+  end
+end
+
 ----------------------------------------------------------------------------------------------------
 --- WhichKey mappings
 -- Normal mode mappings
@@ -139,7 +155,7 @@ if user ~= "ianus" then
       "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').help_actions())<CR>",
       desc = "Help Actions",
     },
-    { "<leader>oi", "<cmd>CopilotChatFixDiagnostic<CR>", desc = "Fix Diagnostics" },
+    { "<leader>oi", ":'<,'>lua CopilotFixDiagnostic()<CR>", desc = "Fix Diagnostics" },
     { "<leader>ol", "<cmd>CopilotChatLoad chat<CR>", desc = "Load" },
     { "<leader>ogc", "<cmd>CopilotChatCommit<CR>", desc = "Commit Message" },
     { "<leader>os", "<cmd>CopilotChatSave chat<CR>", desc = "Save" },
@@ -158,6 +174,7 @@ if user ~= "ianus" then
     { "<leader>o1", "<cmd> lua quickChat() <CR>", desc = "CopilotChat - Quick chat" },
     { "<leader>od", ":'<,'>CopilotChatDocs<CR>", desc = "Docstring" },
     { "<leader>of", ":'<,'>CopilotChatFix<CR>", desc = "Fix Bugs" },
+    { "<leader>oi", ":'<,'>lua CopilotFixDiagnostic()<CR>", desc = "Fix Diagnostics" },
     { "<leader>oo", ":'<,'>CopilotChatOptimize<CR>", desc = "Optimize Code" },
     { "<leader>ot", ":'<,'>CopilotChatTests<CR>", desc = "Add Tests" },
     { "<leader>or", ":'<,'>CopilotChatReview<CR>", desc = "Review Code" },
