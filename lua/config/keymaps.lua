@@ -66,9 +66,16 @@ end, opts)
 function CopilotFixNextDiagnostic()
   local diagnostic = vim.diagnostic.get_next()
   if diagnostic then
-    local prompt = "/COPILOT_GENERATE Fix diagnostic: " .. diagnostic.code .. " : " .. diagnostic.message
+    local prompt = "/COPILOT_FIX Fix diagnostic: "
+      .. (diagnostic.code or "")
+      .. " : "
+      .. (diagnostic.message or "")
+      .. "\n\nDiagnostic line location start: "
+      .. diagnostic.lnum
 
-    print(prompt)
+    if diagnostic.end_lnum then
+      prompt = prompt .. " End: " .. diagnostic.end_lnum
+    end
 
     require("CopilotChat").ask(prompt, { selection = require("CopilotChat.select").buffer })
   end
