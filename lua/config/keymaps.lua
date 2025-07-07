@@ -63,16 +63,14 @@ end, opts)
 --- Fixes the next diagnostic in the buffer using CopilotChat.
 -- This function retrieves the next diagnostic and sends it to CopilotChat
 -- for an AI-generated fix suggestion.
-function CopilotFixDiagnostic()
+function CopilotFixNextDiagnostic()
   local diagnostic = vim.diagnostic.get_next()
   if diagnostic then
-    local prompt = "/COPILOT_GENERATE Fix the following diagnostic: " .. diagnostic.message
-    local selection = require("CopilotChat.select").visual
-    if not selection then
-      selection = require("CopilotChat.select").line
-    end
+    local prompt = "/COPILOT_GENERATE Fix diagnostic: " .. diagnostic.code .. " : " .. diagnostic.message
 
-    require("CopilotChat").ask(prompt, { selection = selection })
+    print(prompt)
+
+    require("CopilotChat").ask(prompt, { selection = require("CopilotChat.select").buffer })
   end
 end
 
@@ -155,11 +153,16 @@ if user ~= "ianus" then
       "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').help_actions())<CR>",
       desc = "Help Actions",
     },
-    { "<leader>oi", ":'<,'>lua CopilotFixDiagnostic()<CR>", desc = "Fix Diagnostics" },
+    {
+      "<leader>oi",
+      function()
+        CopilotFixNextDiagnostic()
+      end,
+      desc = "Fix Next Diagnostic",
+    },
     { "<leader>ol", "<cmd>CopilotChatLoad chat<CR>", desc = "Load" },
     { "<leader>ogc", "<cmd>CopilotChatCommit<CR>", desc = "Commit Message" },
     { "<leader>os", "<cmd>CopilotChatSave chat<CR>", desc = "Save" },
-    { "<leader>ox", "<cmd>lua get_git_remote_url()<CR>", desc = "Get Fit Remote Url" },
   })
 
   which_key.add({
@@ -171,10 +174,15 @@ if user ~= "ianus" then
       desc = "Prompt actions",
     },
     { "<leader>oc", ":'<,'>CopilotChat<CR>", desc = "CopilotChat" },
-    { "<leader>o1", "<cmd> lua quickChat() <CR>", desc = "CopilotChat - Quick chat" },
+    {
+      "<leader>o1",
+      function()
+        quickChat()
+      end,
+      desc = "CopilotChat - Quick chat",
+    },
     { "<leader>od", ":'<,'>CopilotChatDocs<CR>", desc = "Docstring" },
     { "<leader>of", ":'<,'>CopilotChatFix<CR>", desc = "Fix Bugs" },
-    { "<leader>oi", ":'<,'>lua CopilotFixDiagnostic()<CR>", desc = "Fix Diagnostics" },
     { "<leader>oo", ":'<,'>CopilotChatOptimize<CR>", desc = "Optimize Code" },
     { "<leader>ot", ":'<,'>CopilotChatTests<CR>", desc = "Add Tests" },
     { "<leader>or", ":'<,'>CopilotChatReview<CR>", desc = "Review Code" },
