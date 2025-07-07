@@ -60,27 +60,41 @@ keymap.set("n", "<C-j>", function()
   vim.diagnostic.goto_next()
 end, opts)
 
---- Fixes the next diagnostic in the buffer using CopilotChat.
--- This function retrieves the next diagnostic and sends it to CopilotChat
--- for an AI-generated fix suggestion.
-function CopilotFixNextDiagnostic()
+--- Helper to build a CopilotChat prompt for the next diagnostic.
+-- @return prompt string or nil if no diagnostic found
+local function build_next_diagnostic_prompt()
   local diagnostic = vim.diagnostic.get_next()
-  if diagnostic then
-    local prompt = "/COPILOT_FIX Fix diagnostic: "
-      .. (diagnostic.code or "")
-      .. " : "
-      .. (diagnostic.message or "")
-      .. "\n\nDiagnostic line location start: "
-      .. diagnostic.lnum
+  if not diagnostic then
+    return nil
+  end
+  local prompt = "/COPILOT_GENERATE Fix diagnostic: "
+    .. (diagnostic.code or "")
+    .. " : "
+    .. (diagnostic.message or "")
+    .. "\n\nDiagnostic line location start: "
+    .. diagnostic.lnum
 
-    if diagnostic.end_lnum then
-      prompt = prompt .. " End: " .. diagnostic.end_lnum
-    end
+  if diagnostic.end_lnum then
+    prompt = prompt .. " End: " .. diagnostic.end_lnum
+  end
+  return prompt
+end
 
+--- Fixes the next diagnostic using the buffer as context.
+function CopilotFixNextDiagnosticProvideBuffer()
+  local prompt = build_next_diagnostic_prompt()
+  if prompt then
     require("CopilotChat").ask(prompt, { selection = require("CopilotChat.select").buffer })
   end
 end
 
+--- Fixes the next diagnostic using the current selection as context.
+function CopilotFixNextDiagnosticProvideSelection()
+  local prompt = build_next_diagnostic_prompt()
+  if prompt then
+    require("CopilotChat").ask(prompt, { selection = require("CopilotChat.select").visual })
+  end
+end
 ----------------------------------------------------------------------------------------------------
 --- WhichKey mappings
 -- Normal mode mappings
@@ -160,16 +174,16 @@ if user ~= "ianus" then
       "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').help_actions())<CR>",
       desc = "Help Actions",
     },
-    {
-      "<leader>oi",
-      function()
-        CopilotFixNextDiagnostic()
-      end,
-      desc = "Fix Next Diagnostic",
-    },
     { "<leader>ol", "<cmd>CopilotChatLoad chat<CR>", desc = "Load" },
     { "<leader>ogc", "<cmd>CopilotChatCommit<CR>", desc = "Commit Message" },
     { "<leader>os", "<cmd>CopilotChatSave chat<CR>", desc = "Save" },
+    {
+      "<leader>oi",
+      function()
+        CopilotFixNextDiagnosticProvideBuffer()
+      end,
+      desc = "Fix Next Diagnostic",
+    },
   })
 
   which_key.add({
@@ -194,6 +208,16 @@ if user ~= "ianus" then
     { "<leader>ot", ":'<,'>CopilotChatTests<CR>", desc = "Add Tests" },
     { "<leader>or", ":'<,'>CopilotChatReview<CR>", desc = "Review Code" },
     { "<leader>ox", ":'<,'>CopilotChatExplain<CR>", desc = "Explain Code" },
+    {
+      "<leader>oi",
+      function()
+        CopilotFixNextDiagnosticProvideSelection()
+      end,
+      desc = "Fix Next Diagnostic",
+    },
+  })
+  which_key.add({
+    mode = { "v", "n" },
   })
 end
 
