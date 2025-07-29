@@ -103,10 +103,11 @@ which_key.add({
   { "<leader>bo", "<cmd>bufdo e | %bd | e#<CR>", desc = "Delete Other Buffers" },
   { "<leader>gP", "<cmd>G push<CR>", desc = "Git Push" },
   { "<leader>ga", "<cmd>Gwrite<CR>", desc = "Stage current file" },
-  { "<leader>gA", "<cmd>G add -all<CR>", desc = "Stage all files" },
+  { "<leader>gA", "<cmd>G add --all<CR>", desc = "Stage all files" },
   { "<leader>gd", "<cmd>Gvdiffsplit<CR>", desc = "Git Diff" },
   { "<leader>gp", "<cmd>G pull<CR>", desc = "Git pull --rebase" },
-  { "<leader>gr", "<cmd>G commit --amend<CR>", desc = "Reword Latest Commit" },
+  { "<leader>gr", "<cmd>G commit --amend<CR>", desc = "Reword latest commit" },
+  { "<leader>gR", "<cmd>G reset --soft HEAD~1<CR>", desc = "Reset latest commit" },
 
   -- Roslyn
   { "<leader>r", group = "Roslyn" },
