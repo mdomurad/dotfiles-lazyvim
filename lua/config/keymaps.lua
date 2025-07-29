@@ -105,7 +105,7 @@ which_key.add({
   { "<leader>ga", "<cmd>Gwrite<CR>", desc = "Stage Current file" },
   { "<leader>gd", "<cmd>Gvdiffsplit<CR>", desc = "Git Diff" },
   { "<leader>gp", "<cmd>G pull<CR>", desc = "Git pull --rebase" },
-  { "<leader>gr", "<cmd>G commit --amend .<CR>", desc = "Reword Latest Commit" },
+  { "<leader>gr", "<cmd>G commit --amend<CR>", desc = "Reword Latest Commit" },
 
   -- Roslyn
   { "<leader>r", group = "Roslyn" },
