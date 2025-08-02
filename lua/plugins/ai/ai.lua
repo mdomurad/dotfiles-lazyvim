@@ -31,6 +31,31 @@ end
 local current_dir = vim.fn.expand("<sfile>:p:h")
 local actions_path = current_dir .. "\\lua\\plugins\\ai\\chatGPTactions.json"
 
+-- [ cmp-ai ]
+-- lua/plugins/minuet.lua
+local minuet = {
+  "milanglacier/minuet-ai.nvim",
+  dependencies = { "nvim-lua/plenary.nvim" },
+  config = function()
+    require("minuet").setup({
+      provider = "openai",
+
+      virtualtext = {
+        auto_trigger_ft = {}, -- All file types
+
+        keymap = {
+          accept = "<Tab>",
+          accept_line = "<S-Tab>",
+          accept_word = "<C-Right>",
+          next = "<A-l>",
+          prev = "<A-j>",
+          dismiss = "<Esc>",
+        },
+      },
+    })
+  end,
+}
+
 -- [ chatGPT ]
 local chatGPT = {
   "jackMort/ChatGPT.nvim",
@@ -213,6 +238,7 @@ local copilotChat = {
 }
 -- See Commands section for default commands if you want to lazy load on them
 
-local enabledPlugins = user == "ianus" and { avantePlugin, chatGPT } or { avantePlugin, copilotChat, copilotVim }
+local enabledPlugins = user == "ianus" and { avantePlugin, chatGPT, minuet }
+  or { avantePlugin, copilotChat, copilotVim }
 
 return enabledPlugins
