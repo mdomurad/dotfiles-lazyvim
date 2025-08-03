@@ -139,7 +139,6 @@ if user == "ianus" then
       { "<leader>o", group = "ChatGPT" },
       { "<leader>oe", "<cmd>ChatGPTEditWithInstruction<CR>", desc = "Edit with instruction" },
       { "<leader>oc", "<cmd>ChatGPT<CR>", desc = "ChatGPT" },
-      { "<leader>og", "<cmd>ChatGPTRun grammar_correction<CR>", desc = "Grammar Correction" },
     },
   })
 
@@ -153,6 +152,7 @@ if user == "ianus" then
     { "<leader>ol", ":'<,'>ChatGPTRun code_readability_analysis<CR>", desc = "Code Readability Analysis" },
     { "<leader>oo", ":'<,'>ChatGPTRun optimize_code<CR>", desc = "Optimize Code" },
     { "<leader>oq", ":'<,'>ChatGPTRun add_tests<CR>", desc = "Add Tests" },
+    { "<leader>og", "<cmd>ChatGPTRun grammar_correction<CR>", desc = "Grammar Correction" },
     { "<leader>os", ":'<,'>ChatGPTRun summarize<CR>", desc = "Summarize" },
     { "<leader>ot", ":'<,'>ChatGPTRun translate<CR>", desc = "Translate" },
     { "<leader>ox", ":'<,'>ChatGPTRun explain_code<CR>", desc = "Explain Code" },
