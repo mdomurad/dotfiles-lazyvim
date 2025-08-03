@@ -142,55 +142,52 @@ if user == "ianus" then
     },
   })
 
-  --- Toggles a terminal running Gemini.
-  -- If a terminal with a running 'gemini' process exists, it focuses that terminal.
-  -- Otherwise, it opens a new vertical split with a 'gemini' terminal.
-  local function toggle_gemini_terminal()
+  function _G.ToggleGeminiTerminal()
     local gemini_buf_nr = nil
-    -- Find an existing terminal buffer marked as our gemini terminal
+    local gemini_win_id = -1
+
+    -- Find an existing terminal buffer and window marked as our gemini terminal
     for _, buf in ipairs(vim.api.nvim_list_bufs()) do
       if vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].buftype == "terminal" and vim.b[buf].is_gemini_terminal then
-        -- Check if the terminal process is still running
         if vim.fn.jobwait({ vim.b[buf].terminal_job_id }, 0)[1] == -1 then
           gemini_buf_nr = buf
+          gemini_win_id = vim.fn.bufwinid(buf)
           break
         end
       end
     end
 
-    if gemini_buf_nr then
-      -- If we found a buffer, focus its window
-      local win_id = vim.fn.bufwinid(gemini_buf_nr)
-      if win_id and win_id ~= -1 then
-        vim.api.nvim_set_current_win(win_id)
-      else
-        -- If the buffer exists but has no window, create a new vsplit for it
-        vim.cmd("vsplit")
-        vim.api.nvim_set_current_buf(gemini_buf_nr)
-      end
-    else
-      -- If no buffer was found, create a new terminal
-      vim.cmd("vsplit")
-      vim.cmd("terminal")
-      -- Mark the new terminal buffer so we can find it later
-      vim.b[vim.api.nvim_get_current_buf()].is_gemini_terminal = true
+    -- If the terminal is the current window, hide it
+    if gemini_win_id > 0 and gemini_win_id == vim.api.nvim_get_current_win() then
+      vim.cmd("hide")
+      return
     end
-    -- Always enter insert mode in the terminal
+
+    -- If the terminal window exists, focus it
+    if gemini_win_id > 0 then
+      vim.api.nvim_set_current_win(gemini_win_id)
+    else
+      -- Find project root
+      local root = vim.fn.fnamemodify(vim.fn.finddir(".git", ".;", 1), ":h")
+      if root == "" or root == "." then
+        root = vim.fn.getcwd()
+      end
+
+      -- If the buffer exists but has no window, or doesn't exist at all
+      vim.cmd("vsplit")
+      vim.cmd("tcd " .. root)
+      if gemini_buf_nr then
+        vim.api.nvim_set_current_buf(gemini_buf_nr)
+      else
+        vim.cmd("terminal")
+        vim.b[vim.api.nvim_get_current_buf()].is_gemini_terminal = true
+      end
+    end
     vim.cmd("startinsert")
   end
 
-  which_key.add({
-    mode = { "n" },
-    {
-      {
-        "<C-\\>",
-        function()
-          toggle_gemini_terminal()
-        end,
-        desc = "Gemini CLI",
-      },
-    },
-  })
+  vim.keymap.set("n", "<C-\\>", "<CMD>lua _G.ToggleGeminiTerminal()<CR>", { desc = "Toggle Gemini CLI" })
+  vim.keymap.set("t", "<C-\\>", "<CMD>lua _G.ToggleGeminiTerminal()<CR>", { desc = "Toggle Gemini CLI" })
 
   which_key.add({
     mode = { "v" },
