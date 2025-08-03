@@ -271,5 +271,8 @@ if user ~= "ianus" then
   })
 end
 
+-- Keymap to exit terminal mode
+keymap.set("t", "<esc>", [[<C-\><C-n>]], { noremap = true, silent = true })
+
 -- cosco.vim
 keymap.set("n", ";;", "<Plug>(cosco-commaOrSemiColon)", opts)
