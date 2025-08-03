@@ -132,16 +132,6 @@ which_key.add({
 -- [AI]
 
 if user == "ianus" then
-  -- [ minuet ]
-  which_key.add({
-    mode = { "n" },
-    {
-      "<leader>om",
-      "<cmd>Minuet virtualtext toggle<CR>",
-      desc = "Minuet toggle completions",
-    },
-  })
-
   -- [JackMort/ChatGPT]
   which_key.add({
     mode = { "v", "n" },
