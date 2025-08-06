@@ -238,6 +238,6 @@ local copilotChat = {
 }
 -- See Commands section for default commands if you want to lazy load on them
 
-local enabledPlugins = user == "ianus" and { avantePlugin, chatGPT } or { avantePlugin, copilotChat, copilotVim }
+local enabledPlugins = user == "ianus" and { chatGPT } or { copilotChat, copilotVim }
 
 return enabledPlugins
