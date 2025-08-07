@@ -318,4 +318,8 @@ return {
     -- available after the first executing of it or after a keymap of text-case.nvim has been used.
     lazy = false,
   },
+  {
+    "gbprod/substitute.nvim",
+    opts = {},
+  },
 }
