@@ -39,10 +39,6 @@ keymap.set("n", "<C-m>", "<C-i>", opts)
 -- New tab
 keymap.set("n", "te", ":tabedit")
 
--- Split window
-keymap.set("n", "ss", ":split<Return>", opts)
-keymap.set("n", "sv", ":vsplit<Return>", opts)
-
 -- Move window
 keymap.set("n", "sh", "<C-w>h")
 keymap.set("n", "sk", "<C-w>k")
