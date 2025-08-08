@@ -172,7 +172,7 @@ local copilotChat = {
         end,
       },
       FullCommit = {
-        prompt = "#gitdiff:staged\n#git:unstaged\n\nWrite commit message for the change with commitizen convention. Make sure the title has maximum 72 characters and message is wrapped at 72 characters. Do not add any surrounding quotes.",
+        prompt = "Write commit message for the change:\n\n#gitdiff:staged\n\n#gitdiff:unstaged\n\n with commitizen convention. Make sure the title has maximum 72 characters and message is wrapped at 72 characters. Do not add any surrounding quotes.",
         description = "Stage all and commit",
         mapping = ";C",
         close = true,
@@ -188,7 +188,7 @@ local copilotChat = {
         end,
       },
       FullCommitStaged = {
-        prompt = "#gitdiff:staged\n\nWrite commit message for the change with commitizen convention. Make sure the title has maximum 72 characters and message is wrapped at 72 characters . Do not add any surrounding quotes.",
+        prompt = "Write commit message for the change:\n\n #gitdiff:staged\n\n with commitizen convention. Make sure the title has maximum 72 characters and message is wrapped at 72 characters . Do not add any surrounding quotes.",
         description = "Commit staged",
         mapping = ";c",
         close = true,
@@ -203,7 +203,7 @@ local copilotChat = {
         end,
       },
       QuickCommit = {
-        prompt = "#gitdiff:staged\n#git:unstaged\n\nWrite commit title for the change with commitizen convention. Provide information about scope of the change. If only one file was updated provide its name. Make sure the title has maximum 50 characters. Do not add any surrounding quotes.",
+        prompt = "Write commit title for the change:\n\n #gitdiff:staged\n\n#gitdiff:unstaged\n\n with commitizen convention. Provide information about scope of the change. If only one file was updated provide its name. Make sure the title has maximum 50 characters. Do not add any surrounding quotes.",
         description = "Stage all and commit with title only",
         mapping = ";Q",
         close = true,
@@ -219,7 +219,7 @@ local copilotChat = {
         end,
       },
       QuickCommitStaged = {
-        prompt = "Write commit title for the change with commitizen convention for changes: #gitdiff:staged . Provide information about scope of the change. If only one file was updated provide its name. Make sure the title has maximum 72 characters. Do not add any surrounding quotes.",
+        prompt = "Write commit title for the change with commitizen convention for changes:\n\n#gitdiff:staged\n\nProvide information about scope of the change. If only one file was updated provide its name. Make sure the title has maximum 72 characters. Do not add any surrounding quotes.",
         description = "Commit staged with title only",
         mapping = ";q",
         close = true,
