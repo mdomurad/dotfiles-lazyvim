@@ -1,5 +1,9 @@
 return {
   {
+    "DestopLine/boilersharp.nvim",
+    opts = {},
+  },
+  {
     "MoaidHathot/dotnet.nvim",
     cmd = "DotnetUI",
     opts = {},
