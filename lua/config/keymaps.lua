@@ -19,6 +19,36 @@ function quickChat()
 end
 
 ----------------------------------------------------------------------------------------------------
+
+--- This function enables key mappings for ChatGPT.
+local function enableChatGpt()
+  which_key.add({
+    mode = { "v", "n" },
+    {
+      { "<leader>o", group = "ChatGPT" },
+      { "<leader>oe", "<cmd>ChatGPTEditWithInstruction<CR>", desc = "Edit with instruction" },
+      { "<leader>oc", "<cmd>ChatGPT<CR>", desc = "ChatGPT" },
+    },
+  })
+
+  which_key.add({
+    mode = { "v" },
+    { "<leader>o", group = "ChatGPT" },
+    { "<leader>or", ":'<,'>ChatGPTRun roxygen_edit<CR>", desc = "Roxygen Edit" },
+    { "<leader>od", ":'<,'>ChatGPTRun docstring<CR>", desc = "Docstring" },
+    { "<leader>of", ":'<,'>ChatGPTRun fix_bugs<CR>", desc = "Fix Bugs" },
+    { "<leader>ok", ":'<,'>ChatGPTRun keywords<CR>", desc = "Keywords" },
+    { "<leader>ol", ":'<,'>ChatGPTRun code_readability_analysis<CR>", desc = "Code Readability Analysis" },
+    { "<leader>oo", ":'<,'>ChatGPTRun optimize_code<CR>", desc = "Optimize Code" },
+    { "<leader>oq", ":'<,'>ChatGPTRun add_tests<CR>", desc = "Add Tests" },
+    { "<leader>og", "<cmd>ChatGPTRun grammar_correction<CR>", desc = "Grammar Correction" },
+    { "<leader>os", ":'<,'>ChatGPTRun summarize<CR>", desc = "Summarize" },
+    { "<leader>ot", ":'<,'>ChatGPTRun translate<CR>", desc = "Translate" },
+    { "<leader>ox", ":'<,'>ChatGPTRun explain_code<CR>", desc = "Explain Code" },
+  })
+end
+
+----------------------------------------------------------------------------------------------------
 --- Key mappings
 
 keymap.set("n", "x", '"_x')
@@ -133,16 +163,6 @@ which_key.add({
 -- [AI]
 
 if user == "ianus" then
-  -- [JackMort/ChatGPT]
-  which_key.add({
-    mode = { "v", "n" },
-    {
-      { "<leader>o", group = "ChatGPT" },
-      { "<leader>oe", "<cmd>ChatGPTEditWithInstruction<CR>", desc = "Edit with instruction" },
-      { "<leader>oc", "<cmd>ChatGPT<CR>", desc = "ChatGPT" },
-    },
-  })
-
   function _G.ToggleGeminiTerminal()
     local gemini_buf_nr = nil
     local gemini_win_id = -1
@@ -190,86 +210,73 @@ if user == "ianus" then
   vim.keymap.set("n", "<C-\\>", "<CMD>lua _G.ToggleGeminiTerminal()<CR>", { desc = "Toggle Gemini CLI" })
   vim.keymap.set("t", "<C-\\>", "<CMD>lua _G.ToggleGeminiTerminal()<CR>", { desc = "Toggle Gemini CLI" })
 
-  which_key.add({
-    mode = { "v" },
-    { "<leader>o", group = "ChatGPT" },
-    { "<leader>or", ":'<,'>ChatGPTRun roxygen_edit<CR>", desc = "Roxygen Edit" },
-    { "<leader>od", ":'<,'>ChatGPTRun docstring<CR>", desc = "Docstring" },
-    { "<leader>of", ":'<,'>ChatGPTRun fix_bugs<CR>", desc = "Fix Bugs" },
-    { "<leader>ok", ":'<,'>ChatGPTRun keywords<CR>", desc = "Keywords" },
-    { "<leader>ol", ":'<,'>ChatGPTRun code_readability_analysis<CR>", desc = "Code Readability Analysis" },
-    { "<leader>oo", ":'<,'>ChatGPTRun optimize_code<CR>", desc = "Optimize Code" },
-    { "<leader>oq", ":'<,'>ChatGPTRun add_tests<CR>", desc = "Add Tests" },
-    { "<leader>og", "<cmd>ChatGPTRun grammar_correction<CR>", desc = "Grammar Correction" },
-    { "<leader>os", ":'<,'>ChatGPTRun summarize<CR>", desc = "Summarize" },
-    { "<leader>ot", ":'<,'>ChatGPTRun translate<CR>", desc = "Translate" },
-    { "<leader>ox", ":'<,'>ChatGPTRun explain_code<CR>", desc = "Explain Code" },
-  })
+  -- [JackMort/ChatGPT]
+  -- enableChatGpt()
 end
 
 -- [Copilot chat]
-if user ~= "ianus" then
-  which_key.add({
-    mode = { "n" },
-    { "<leader>o", group = "CopilotChat" },
-    { "<leader>oc", "<cmd>CopilotChat<CR>", desc = "CopilotChat" },
-    {
-      "<leader>oa",
-      "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions())<CR>",
-      desc = "Prompt Actions",
-    },
-    { "<leader>ogs", "<cmd>CopilotChatCommitStaged<CR>", desc = "Commit Message Staged" },
-    {
-      "<leader>oh",
-      "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').help_actions())<CR>",
-      desc = "Help Actions",
-    },
-    { "<leader>ol", "<cmd>CopilotChatLoad chat<CR>", desc = "Load" },
-    { "<leader>ogc", "<cmd>CopilotChatCommit<CR>", desc = "Commit Message" },
-    { "<leader>os", "<cmd>CopilotChatSave chat<CR>", desc = "Save" },
-    {
-      "<leader>oi",
-      function()
-        CopilotFixNextDiagnosticProvideBuffer()
-      end,
-      desc = "Fix Next Diagnostic",
-    },
-  })
+-- if user ~= "ianus" then
+which_key.add({
+  mode = { "n" },
+  { "<leader>o", group = "CopilotChat" },
+  { "<leader>oc", "<cmd>CopilotChat<CR>", desc = "CopilotChat" },
+  {
+    "<leader>oa",
+    "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions())<CR>",
+    desc = "Prompt Actions",
+  },
+  { "<leader>ogs", "<cmd>CopilotChatCommitStaged<CR>", desc = "Commit Message Staged" },
+  {
+    "<leader>oh",
+    "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').help_actions())<CR>",
+    desc = "Help Actions",
+  },
+  { "<leader>ol", "<cmd>CopilotChatLoad chat<CR>", desc = "Load" },
+  { "<leader>ogc", "<cmd>CopilotChatCommit<CR>", desc = "Commit Message" },
+  { "<leader>os", "<cmd>CopilotChatSave chat<CR>", desc = "Save" },
+  {
+    "<leader>oi",
+    function()
+      CopilotFixNextDiagnosticProvideBuffer()
+    end,
+    desc = "Fix Next Diagnostic",
+  },
+})
 
-  which_key.add({
-    mode = { "v" },
-    { "<leader>o", group = "CopilotChat" },
-    {
-      "<leader>oa",
-      "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions())<CR>",
-      desc = "Prompt actions",
-    },
-    { "<leader>oc", ":'<,'>CopilotChat<CR>", desc = "CopilotChat" },
-    {
-      "<leader>o1",
-      function()
-        quickChat()
-      end,
-      desc = "CopilotChat - Quick chat",
-    },
-    { "<leader>od", ":'<,'>CopilotChatDocs<CR>", desc = "Docstring" },
-    { "<leader>of", ":'<,'>CopilotChatFix<CR>", desc = "Fix Bugs" },
-    { "<leader>oo", ":'<,'>CopilotChatOptimize<CR>", desc = "Optimize Code" },
-    { "<leader>ot", ":'<,'>CopilotChatTests<CR>", desc = "Add Tests" },
-    { "<leader>or", ":'<,'>CopilotChatReview<CR>", desc = "Review Code" },
-    { "<leader>ox", ":'<,'>CopilotChatExplain<CR>", desc = "Explain Code" },
-    {
-      "<leader>oi",
-      function()
-        CopilotFixNextDiagnosticProvideSelection()
-      end,
-      desc = "Fix Next Diagnostic",
-    },
-  })
-  which_key.add({
-    mode = { "v", "n" },
-  })
-end
+which_key.add({
+  mode = { "v" },
+  { "<leader>o", group = "CopilotChat" },
+  {
+    "<leader>oa",
+    "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions())<CR>",
+    desc = "Prompt actions",
+  },
+  { "<leader>oc", ":'<,'>CopilotChat<CR>", desc = "CopilotChat" },
+  {
+    "<leader>o1",
+    function()
+      quickChat()
+    end,
+    desc = "CopilotChat - Quick chat",
+  },
+  { "<leader>od", ":'<,'>CopilotChatDocs<CR>", desc = "Docstring" },
+  { "<leader>of", ":'<,'>CopilotChatFix<CR>", desc = "Fix Bugs" },
+  { "<leader>oo", ":'<,'>CopilotChatOptimize<CR>", desc = "Optimize Code" },
+  { "<leader>ot", ":'<,'>CopilotChatTests<CR>", desc = "Add Tests" },
+  { "<leader>or", ":'<,'>CopilotChatReview<CR>", desc = "Review Code" },
+  { "<leader>ox", ":'<,'>CopilotChatExplain<CR>", desc = "Explain Code" },
+  {
+    "<leader>oi",
+    function()
+      CopilotFixNextDiagnosticProvideSelection()
+    end,
+    desc = "Fix Next Diagnostic",
+  },
+})
+which_key.add({
+  mode = { "v", "n" },
+})
+-- end
 
 -- Keymap to exit terminal mode
 keymap.set("t", "<C-q>", [[<C-\><C-n>]], { noremap = true, silent = true })
