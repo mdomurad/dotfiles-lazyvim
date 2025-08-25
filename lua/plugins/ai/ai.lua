@@ -1,5 +1,16 @@
 local user = os.getenv("USERNAME")
 
+local function extract_commit_msg(response)
+  local msg = response
+  if type(msg) == "table" then
+    msg = msg.content
+    if type(msg) == "table" then
+      msg = vim.inspect(msg)
+    end
+  end
+  return msg
+end
+
 local function echoCommitInfo(response)
   -- Get the list of files in the last commit
   local committedFiles = io.popen("git log -1 --name-only"):read("*all")
@@ -179,11 +190,12 @@ local copilotChat = {
         callback = function(response)
           local copilot = require("CopilotChat")
           vim.schedule(function()
-            os.execute("git add -A")
-            formatGitResponse(response)
-
+            vim.fn.system({ "git", "add", "-A" })
+            local msg = extract_commit_msg(response)
+            formatGitResponse(msg)
+            vim.fn.system({ "git", "commit", "-m", msg })
             copilot.close()
-            echoCommitInfo(response)
+            echoCommitInfo(msg)
           end)
         end,
       },
@@ -196,9 +208,11 @@ local copilotChat = {
           local copilot = require("CopilotChat")
 
           vim.schedule(function()
-            formatGitResponse(response)
+            local msg = extract_commit_msg(response)
+            formatGitResponse(msg)
+            vim.fn.system({ "git", "commit", "-m", msg })
             copilot.close()
-            echoCommitInfo(response)
+            echoCommitInfo(msg)
           end)
         end,
       },
@@ -211,10 +225,11 @@ local copilotChat = {
           local copilot = require("CopilotChat")
 
           vim.schedule(function()
-            os.execute("git add -A")
-            os.execute('git commit -m "' .. response .. '"')
+            vim.fn.system({ "git", "add", "-A" })
+            local msg = extract_commit_msg(response)
+            vim.fn.system({ "git", "commit", "-m", msg })
             copilot.close()
-            echoCommitInfo(response)
+            echoCommitInfo(msg)
           end)
         end,
       },
@@ -226,10 +241,12 @@ local copilotChat = {
         callback = function(response)
           local copilot = require("CopilotChat")
           vim.schedule(function()
-            os.execute('git commit -m "' .. response .. '"')
+            local msg = extract_commit_msg(response)
+            vim.inspect(msg)
+            vim.fn.system({ "git", "commit", "-m", msg })
 
             copilot.close()
-            echoCommitInfo(response)
+            echoCommitInfo(msg)
           end)
         end,
       },
