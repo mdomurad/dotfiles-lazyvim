@@ -253,8 +253,32 @@ local copilotChat = {
     },
   },
 }
+
+local codeCompanion = {
+  "olimorris/codecompanion.nvim",
+  opts = {},
+  config = function()
+    require("codecompanion").setup({
+      strategies = {
+        chat = {
+          name = "copilot",
+          model = "gpt-4.1",
+        },
+        inline = {
+          adapter = "copilot",
+        },
+      },
+    })
+  end,
+  dependencies = {
+    "nvim-lua/plenary.nvim",
+    "nvim-treesitter/nvim-treesitter",
+  },
+}
+
 -- See Commands section for default commands if you want to lazy load on them
 
-local enabledPlugins = user == "ianus" and { copilotChat, copilotVim } or { copilotChat, copilotVim }
+local enabledPlugins = user == "ianus" and { copilotChat, copilotVim, codeCompanion }
+  or { copilotChat, copilotVim, codeCompanion }
 
 return enabledPlugins
