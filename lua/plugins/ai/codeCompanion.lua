@@ -162,6 +162,7 @@ return {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
       "ravitemer/mcphub.nvim",
+      "Davidyz/VectorCode",
       "ravitemer/codecompanion-history.nvim",
     },
   },
@@ -174,5 +175,11 @@ return {
     config = function()
       require("mcphub").setup()
     end,
+  },
+  {
+    "Davidyz/VectorCode",
+    version = "*",
+    build = "uv tool upgrade vectorcode",
+    dependencies = { "nvim-lua/plenary.nvim" },
   },
 }
