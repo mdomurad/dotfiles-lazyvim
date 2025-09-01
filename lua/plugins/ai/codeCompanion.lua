@@ -171,7 +171,7 @@ return {
     dependencies = {
       "nvim-lua/plenary.nvim",
     },
-    build = "npm install -g mcp-hub@latest", -- Installs `mcp-hub` node binary globally
+    build = "npm install -g mcp-hub@latest --native-tls", -- Installs `mcp-hub` node binary globally
     config = function()
       require("mcphub").setup()
     end,
@@ -179,7 +179,7 @@ return {
   {
     "Davidyz/VectorCode",
     version = "*",
-    build = "uv tool upgrade vectorcode",
+    build = "uv tool upgrade vectorcode --native-tls",
     dependencies = { "nvim-lua/plenary.nvim" },
   },
 }
