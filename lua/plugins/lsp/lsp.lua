@@ -1,7 +1,7 @@
 return {
   -- tools
   {
-    "williamboman/mason.nvim",
+    "mason-org/mason.nvim",
     opts = function(_, opts)
       -- Ensure opts.ensure_installed is a table
       opts.ensure_installed = opts.ensure_installed or {}
