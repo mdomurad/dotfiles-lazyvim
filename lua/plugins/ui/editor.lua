@@ -150,7 +150,7 @@ return {
         ";s",
         function()
           local builtin = require("telescope.builtin")
-          builtin.treesitter()
+          builtin.lsp_document_symbols()
         end,
         desc = "Lists Function names, variables, from Treesitter",
       },
