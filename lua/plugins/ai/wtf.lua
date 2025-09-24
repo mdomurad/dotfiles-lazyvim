@@ -6,6 +6,11 @@ return {
       "MunifTanjim/nui.nvim",
       "nvim-telescope/telescope.nvim", -- Optional: For WtfGrepHistory
     },
+    config = function()
+      require("wtf").setup({
+        provider = "copilot",
+      })
+    end,
     opts = {},
     keys = {
       {
