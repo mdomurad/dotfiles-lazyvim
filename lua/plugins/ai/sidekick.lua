@@ -4,6 +4,11 @@ return {
     opts = {
       -- add any options here
       cli = {
+        win = {
+          keys = {
+            win_p = { "<c-l>", "blur" }, -- leave the cli window
+          },
+        },
         mux = {
           backend = "zellij",
           enabled = false,
@@ -56,7 +61,7 @@ return {
     },
     -- Example of a keybinding to open Claude directly
     {
-      "<leader>ac",
+      "<leader>ag",
       function() require("sidekick.cli").toggle({ name = "gemini", focus = true }) end,
       desc = "Sidekick Gemini Toggle",
       mode = { "n", "v" },
