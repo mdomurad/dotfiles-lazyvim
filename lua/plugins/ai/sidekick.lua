@@ -18,7 +18,7 @@ return {
   -- stylua: ignore
   keys = {
     {
-      "<tab>",
+      "<c-;>",
       function()
         -- if there is a next edit, jump to it, otherwise apply it if any
         if not require("sidekick").nes_jump_or_apply() then
@@ -63,7 +63,13 @@ return {
     {
       "<leader>ag",
       function() require("sidekick.cli").toggle({ name = "gemini", focus = true }) end,
-      desc = "Sidekick Gemini Toggle",
+      desc = "sidekick gemini toggle",
+      mode = { "n", "v" },
+    },
+    {
+      "<leader>ac",
+      function() require("sidekick.cli").toggle({ name = "copilot", focus = true }) end,
+      desc = "sidekick copilot toggle",
       mode = { "n", "v" },
     },
   },
