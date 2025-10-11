@@ -153,11 +153,16 @@ which_key.add({
   -- Flogit
   { "gl", "<cmd>Flogsplit<CR>", desc = "Flogsplit" },
 
+  -- Flote
+  { ";n", "<cmd>Flote<CR>", desc = "Flote" },
+  { ";N", "<cmd>Flote global<CR>", desc = "Flote" },
+
   -- Oil
   { ";o", "<cmd>Oil<CR>", desc = "Oil" },
   { ";O", "<cmd>Oil --float<CR>", desc = "Oil Floated" },
+
   -- Defualt overrides
-  { ";n", "<cmd>lua vim.diagnostic.goto_next()<CR>", desc = "Next Diagnostic" },
+  { ";d", "<cmd>lua vim.diagnostic.goto_next()<CR>", desc = "Next Diagnostic" },
 })
 
 -- [AI]

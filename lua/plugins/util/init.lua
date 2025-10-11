@@ -3,4 +3,5 @@ return {
   require("plugins.util.obsidian"),
   require("plugins.util.todo"),
   require("plugins.util.vim-coach"),
+  require("plugins.util.flote"),
 }
