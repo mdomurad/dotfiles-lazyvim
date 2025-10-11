@@ -7,7 +7,9 @@ return {
         window_style = "minimal",
         window_border = "solid",
         window_title = true,
-        notes_dir = if os.getenv("USERNAME") == "ianus" and "C:\\clouds\\mega\\tbb\\dev\\notes\\flote" or "~/notes/flote",
+        notes_dir = (
+          os.getenv("USERNAME") == "ianus" and "C:\\clouds\\mega\\tbb\\dev\\notes\\flote" or "~/notes/flote"
+        ),
         files = {
           global = "flote-global.md",
           cwd = function()
