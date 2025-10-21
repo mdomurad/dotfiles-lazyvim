@@ -161,8 +161,9 @@ which_key.add({
   { ";o", "<cmd>Oil<CR>", desc = "Oil" },
   { ";O", "<cmd>Oil --float<CR>", desc = "Oil Floated" },
 
-  -- Defualt overrides
-  { ";d", "<cmd>lua vim.diagnostic.goto_next()<CR>", desc = "Next Diagnostic" },
+  -- Diagnostic
+  { ";l", "<cmd>lua vim.diagnostic.goto_next()<CR>", desc = "Next Diagnostic" },
+  { ";j", "<cmd>lua vim.diagnostic.goto_prev()<CR>", desc = "Previous Diagnostic" },
 })
 
 -- [AI]

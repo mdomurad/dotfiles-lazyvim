@@ -92,7 +92,7 @@ return {
         desc = "Resume the previous telescope picker",
       },
       {
-        ";e",
+        ";d",
         function()
           local builtin = require("telescope.builtin")
           builtin.diagnostics()
