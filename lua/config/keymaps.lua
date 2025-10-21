@@ -159,7 +159,6 @@ which_key.add({
 
   -- Oil
   { ";o", "<cmd>Oil<CR>", desc = "Oil" },
-  { ";O", "<cmd>Oil --float<CR>", desc = "Oil Floated" },
 
   -- Diagnostic
   { ";l", "<cmd>lua vim.diagnostic.goto_next()<CR>", desc = "Next Diagnostic" },
