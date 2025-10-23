@@ -109,3 +109,29 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.diagnostic.enable(false)
   end,
 })
+
+-- Automatically set working directory to closest .csproj or .sln file for .cs files only
+local function set_csharp_root_dir()
+  local path = vim.fn.expand("%:p:h")
+  local function find_root(dir)
+    while dir ~= "" and dir ~= "/" do
+      local csproj = vim.fn.globpath(dir, "*.csproj")
+      local sln = vim.fn.globpath(dir, "*.sln")
+      if csproj ~= "" or sln ~= "" then
+        return dir
+      end
+      dir = vim.fn.fnamemodify(dir, ":h")
+    end
+    return nil
+  end
+
+  local root = find_root(path)
+  if root then
+    vim.cmd("lcd " .. vim.fn.fnameescape(root))
+  end
+end
+
+vim.api.nvim_create_autocmd("BufEnter", {
+  pattern = "*.cs",
+  callback = set_csharp_root_dir,
+})
