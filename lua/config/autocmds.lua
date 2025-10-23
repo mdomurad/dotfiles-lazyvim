@@ -27,6 +27,10 @@ vim.api.nvim_create_autocmd("BufEnter", {
 vim.api.nvim_create_autocmd("BufEnter", {
   pattern = "*",
   callback = function()
+    -- Skip .cs files, let the dedicated autocmd handle them
+    if vim.fn.expand("%:e") == "cs" then
+      return
+    end
     local dir = vim.fn.expand("%:p:h")
     if dir ~= "" and vim.fn.isdirectory(dir) == 1 then
       vim.cmd("cd " .. dir)
