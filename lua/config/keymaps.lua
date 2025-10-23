@@ -195,11 +195,8 @@ which_key.add({
   { "<leader>gr", "<cmd>G commit --amend<CR>", desc = "Reword latest commit" },
   { "<leader>gR", "<cmd>G reset --soft HEAD~1<CR>", desc = "Reset latest commit" },
 
-  -- Roslyn
-  { "<leader>r", group = "net" },
-  { "<leader>rr", "<cmd>Roslyn restart<CR>", desc = "Roslyn restart" },
-
   -- NET
+  { "<leader>r", group = "net" },
   {
     "<leader>rb",
     function()
