@@ -126,6 +126,61 @@ function CopilotFixNextDiagnosticProvideSelection()
     require("CopilotChat").ask(prompt, { selection = require("CopilotChat.select").visual })
   end
 end
+
+local pickers = require("telescope.pickers")
+local finders = require("telescope.finders")
+local actions = require("telescope.actions")
+local action_state = require("telescope.actions.state")
+local conf = require("telescope.config").values
+
+-- Build .NET project for Revit using Telescope to select build type and version
+function DotnetBuildRevitTelescope()
+  local build_types = { "debug", "release" }
+  local versions = { "2020", "2021", "2022", "2023", "2024", "2025" }
+
+  pickers
+    .new({}, {
+      prompt_title = "Select Build Type",
+      finder = finders.new_table({ results = build_types }),
+      sorter = conf.generic_sorter({}),
+      attach_mappings = function(prompt_bufnr, map)
+        actions.select_default:replace(function()
+          local selection = action_state.get_selected_entry()
+          local build_type = selection[1]
+          actions._close(prompt_bufnr)
+          pickers
+            .new({}, {
+              prompt_title = "Select Revit Version",
+              finder = finders.new_table({ results = versions }),
+              sorter = conf.generic_sorter({}),
+              attach_mappings = function(prompt_bufnr2, map2)
+                actions.select_default:replace(function()
+                  local selection2 = action_state.get_selected_entry()
+                  local versionYear = selection2[1]
+                  local version = versionYear:gsub("^20", "")
+                  actions._close(prompt_bufnr2)
+                  DotnetBuildRevit(build_type, version)
+                end)
+                return true
+              end,
+            })
+            :find()
+        end)
+        return true
+      end,
+    })
+    :find()
+end
+
+-- Helper function to run dotnet build command for Revit
+function DotnetBuildRevit(build_type, version)
+  local config = (build_type == "release" and "Release" or "Debug") .. " R" .. version
+  local cmd = 'dotnet build -c "' .. config .. '"'
+  vim.cmd("vsplit")
+  vim.cmd("enew")
+  vim.fn.termopen(cmd)
+end
+
 ----------------------------------------------------------------------------------------------------
 --- WhichKey mappings
 -- Normal mode mappings
@@ -141,10 +196,17 @@ which_key.add({
   { "<leader>gR", "<cmd>G reset --soft HEAD~1<CR>", desc = "Reset latest commit" },
 
   -- Roslyn
-  { "<leader>r", group = "Roslyn" },
+  { "<leader>r", group = "net" },
   { "<leader>rr", "<cmd>Roslyn restart<CR>", desc = "Roslyn restart" },
-  { "<leader>rs", "<cmd>Roslyn stop<CR>", desc = "Roslyn stop" },
-  { "<leader>rt", "<cmd>Roslyn target<CR>", desc = "Roslyn target" },
+
+  -- NET
+  {
+    "<leader>rb",
+    function()
+      DotnetBuildRevitTelescope()
+    end,
+    desc = "Revit dotnet build",
+  },
 
   -- Color-picker
   { "<leader>cp", "<cmd>PickColor<cr>", desc = "Pick Color" },
