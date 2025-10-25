@@ -15,66 +15,8 @@ return {
       vim.o.autoread = true
 
       local which_key = require("which-key")
-
-      -- Register keymaps with which-key
       which_key.add({
-        { "<leader>oo", group = "+opencode" },
-        {
-          "<leader>ooa",
-          function()
-            require("opencode").ask("@this: ", { submit = true })
-          end,
-          desc = "Ask about this",
-        },
-        {
-          "<leader>oos",
-          function()
-            require("opencode").select()
-          end,
-          desc = "Select prompt",
-        },
-        {
-          "<leader>oo+",
-          function()
-            require("opencode").prompt("@this")
-          end,
-          desc = "Add this",
-        },
-        {
-          "<leader>oot",
-          function()
-            require("opencode").toggle()
-          end,
-          desc = "Toggle embedded",
-        },
-        {
-          "<leader>ooc",
-          function()
-            require("opencode").command()
-          end,
-          desc = "Select command",
-        },
-        {
-          "<leader>oon",
-          function()
-            require("opencode").command("session_new")
-          end,
-          desc = "New session",
-        },
-        {
-          "<leader>ooi",
-          function()
-            require("opencode").command("session_interrupt")
-          end,
-          desc = "Interrupt session",
-        },
-        {
-          "<leader>ooA",
-          function()
-            require("opencode").command("agent_cycle")
-          end,
-          desc = "Cycle selected agent",
-        },
+        { "<leader>ao", group = "+opencode" },
       })
 
       -- Non-leader keymaps (not handled by which-key)
@@ -85,5 +27,63 @@ return {
         require("opencode").command("messages_half_page_down")
       end, { desc = "Messages half page down" })
     end,
+    keys = {
+      {
+        "<leader>aoa",
+        function()
+          require("opencode").ask("@this: ", { submit = true })
+        end,
+        desc = "Ask about this",
+      },
+      {
+        "<leader>aos",
+        function()
+          require("opencode").select()
+        end,
+        desc = "Select prompt",
+      },
+      {
+        "<leader>ao+",
+        function()
+          require("opencode").prompt("@this")
+        end,
+        desc = "Add this",
+      },
+      {
+        "<leader>aot",
+        function()
+          require("opencode").toggle()
+        end,
+        desc = "Toggle embedded",
+      },
+      {
+        "<leader>aoc",
+        function()
+          require("opencode").command()
+        end,
+        desc = "Select command",
+      },
+      {
+        "<leader>aon",
+        function()
+          require("opencode").command("session_new")
+        end,
+        desc = "New session",
+      },
+      {
+        "<leader>aoi",
+        function()
+          require("opencode").command("session_interrupt")
+        end,
+        desc = "Interrupt session",
+      },
+      {
+        "<leader>aoA",
+        function()
+          require("opencode").command("agent_cycle")
+        end,
+        desc = "Cycle selected agent",
+      },
+    },
   },
 }

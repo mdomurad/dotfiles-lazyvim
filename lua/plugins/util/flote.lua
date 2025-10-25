@@ -26,5 +26,17 @@ return {
         },
       })
     end,
+    keys = {
+      {
+        ";f",
+        "<cmd>Flote<cr>",
+        desc = "Open Note",
+      },
+      {
+        ";F",
+        "<cmd>Flote global<cr>",
+        desc = "Open Global Note",
+      },
+    },
   },
 }

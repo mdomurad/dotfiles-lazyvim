@@ -192,10 +192,6 @@ which_key.add({
   -- Flogit
   { "gl", "<cmd>Flogsplit<CR>", desc = "Flogsplit" },
 
-  -- Flote
-  { ";n", "<cmd>Flote<CR>", desc = "Flote" },
-  { ";N", "<cmd>Flote global<CR>", desc = "Flote" },
-
   -- Oil
   { ";o", "<cmd>Oil<CR>", desc = "Oil" },
 
