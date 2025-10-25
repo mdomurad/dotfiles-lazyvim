@@ -52,29 +52,22 @@ local copilotChat = {
     require("which-key").add({
       mode = { "n" },
       { "<leader>o", group = "CopilotChat" },
-      { "<leader>oc", "<cmd>CopilotChat<CR>", desc = "CopilotChat" },
+      { "<leader>occ", "<cmd>CopilotChat<CR>", desc = "CopilotChat" },
       {
-        "<leader>oa",
+        "<leader>oca",
         "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions())<CR>",
         desc = "Prompt Actions",
       },
-      { "<leader>ogs", "<cmd>CopilotChatCommitStaged<CR>", desc = "Commit Message Staged" },
       {
-        "<leader>oh",
+        "<leader>och",
         "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').help_actions())<CR>",
         desc = "Help Actions",
       },
-      { "<leader>ol", "<cmd>CopilotChatLoad chat<CR>", desc = "Load" },
-      { "<leader>ogc", "<cmd>CopilotChatCommit<CR>", desc = "Commit Message" },
-      { "<leader>os", "<cmd>CopilotChatSave chat<CR>", desc = "Save" },
-      { "<leader>og", desc = "Fix Grammar" },
-      { ";C", desc = "Stage all and commit" },
-      { ";c", desc = "Commit staged" },
-      { ";Q", desc = "Stage all and commit (title)" },
-      { ";q", desc = "Commit staged (title)" },
+      { "<leader>ocl", "<cmd>CopilotChatLoad chat<CR>", desc = "Load" },
+      { "<leader>ocs", "<cmd>CopilotChatSave chat<CR>", desc = "Save" },
     })
 
-    vim.keymap.set("n", "<leader>og", function()
+    vim.keymap.set("n", "<leader>ocg", function()
       local select = require("CopilotChat.select")
       local source = select.visual() or select.line()
       require("CopilotChat").ask(
