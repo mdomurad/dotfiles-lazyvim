@@ -50,11 +50,19 @@ local copilotChat = {
   opts = {
     debug = true, -- Enable debugging
     window = {
-      layout = "float",
+      layout = "vertical",
       relative = "editor",
       width = 0.8,
       height = 0.6,
     },
+    headers = {
+      user = "👤 You",
+      assistant = "🤖 Copilot",
+      tool = "🔧 Tool",
+    },
+
+    separator = "━━",
+    auto_fold = true, -- Automatically folds non-assistant messages
     mappings = {
       complete = {
         insert = "<C-z>",
@@ -142,3 +150,4 @@ local copilotChat = {
 }
 
 return { copilotVim, copilotChat }
+
