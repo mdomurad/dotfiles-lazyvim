@@ -52,10 +52,10 @@ local copilotChat = {
 
     local which_key = require("which-key")
     which_key.add({
-      { "<leader>ac", group = "+copilot" },
+      { "<leader>o", group = "+copilot" },
     })
 
-    vim.keymap.set("n", "<leader>acg", function()
+    vim.keymap.set("n", "<leader>og", function()
       local select = require("CopilotChat.select")
       local source = select.visual() or select.line()
       require("CopilotChat").ask(
@@ -137,21 +137,21 @@ local copilotChat = {
   end,
   keys = {
     { "<leader>o", group = "CopilotChat", mode = { "n" } },
-    { "<leader>acc", "<cmd>CopilotChat<CR>", desc = "CopilotChat", mode = { "n" } },
+    { "<leader>oc", "<cmd>CopilotChat<CR>", desc = "CopilotChat", mode = { "n" } },
     {
-      "<leader>aca",
+      "<leader>oa",
       "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions())<CR>",
       desc = "Prompt Actions",
       mode = { "n" },
     },
     {
-      "<leader>ach",
+      "<leader>oh",
       "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').help_actions())<CR>",
       desc = "Help Actions",
       mode = { "n" },
     },
-    { "<leader>acl", "<cmd>CopilotChatLoad chat<CR>", desc = "Load", mode = { "n" } },
-    { "<leader>acs", "<cmd>CopilotChatSave chat<CR>", desc = "Save", mode = { "n" } },
+    { "<leader>ol", "<cmd>CopilotChatLoad chat<CR>", desc = "Load", mode = { "n" } },
+    { "<leader>os", "<cmd>CopilotChatSave chat<CR>", desc = "Save", mode = { "n" } },
   },
   opts = {
     debug = true, -- Enable debugging
