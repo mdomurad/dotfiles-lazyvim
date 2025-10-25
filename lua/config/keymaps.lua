@@ -222,11 +222,8 @@ which_key.add({
   { "<leader>oc", "<cmd>CopilotChat<CR>", desc = "CopilotChat" },
   {
     "<leader>oa",
-    function()
-      -- Replace with FZF-based picker if available, or fallback to a simple menu
-      vim.notify("CopilotChat FZF picker not implemented. Please use prompt actions manually.", vim.log.levels.INFO)
-    end,
-    desc = "Prompt Actions (FZF not implemented)",
+    "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions())<CR>",
+    desc = "Prompt Actions",
   },
   { "<leader>ogs", "<cmd>CopilotChatCommitStaged<CR>", desc = "Commit Message Staged" },
   {
