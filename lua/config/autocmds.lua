@@ -98,25 +98,57 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- Automatically set working directory to closest .csproj or .sln file for .cs files only
 local function set_csharp_root_dir()
   local path = vim.fn.expand("%:p:h")
-  local function find_root(dir)
-    while dir ~= "" and dir ~= "/" do
-      local csproj = vim.fn.globpath(dir, "*.csproj")
-      local sln = vim.fn.globpath(dir, "*.sln")
-      if csproj ~= "" or sln ~= "" then
-        return dir
-      end
-      dir = vim.fn.fnamemodify(dir, ":h")
+  local dir = path
+  local closest = nil
+
+  -- Step 1: Find closest .csproj or .sln upwards
+  while dir ~= "" and dir ~= "/" do
+    local csproj = vim.fn.globpath(dir, "*.csproj")
+    local sln = vim.fn.globpath(dir, "*.sln")
+    if sln ~= "" then
+      closest = { type = "sln", path = sln, dir = dir }
+      break
+    elseif csproj ~= "" then
+      closest = { type = "csproj", path = csproj, dir = dir }
+      break
     end
-    return nil
+    dir = vim.fn.fnamemodify(dir, ":h")
   end
 
-  local root = find_root(path)
-  if root then
-    vim.cmd("lcd " .. vim.fn.fnameescape(root))
+  if not closest then
+    return
   end
+
+  -- Step 2: If closest is .sln, set dir
+  if closest.type == "sln" then
+    vim.cmd("lcd " .. vim.fn.fnameescape(closest.dir))
+    return
+  end
+
+  -- Step 3: If closest is .csproj, look upwards for .sln
+  local csproj_path = closest.path
+  local csproj_dir = closest.dir
+  local csproj_filename = vim.fn.fnamemodify(csproj_path, ":t")
+  dir = csproj_dir
+  while dir ~= "" and dir ~= "/" do
+    local sln = vim.fn.globpath(dir, "*.sln")
+    if sln ~= "" then
+      local sln_content = vim.fn.readfile(sln)
+      for _, line in ipairs(sln_content) do
+        if line:find(csproj_filename, 1, true) then
+          vim.cmd("lcd " .. vim.fn.fnameescape(dir))
+          return
+        end
+      end
+      break -- found .sln but not containing csproj, stop searching
+    end
+    dir = vim.fn.fnamemodify(dir, ":h")
+  end
+
+  -- Step 4: Fallback to csproj dir
+  vim.cmd("lcd " .. vim.fn.fnameescape(csproj_dir))
 end
 
 vim.api.nvim_create_autocmd("BufEnter", {
