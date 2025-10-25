@@ -5,12 +5,12 @@ local plugins = {
   -- require("plugins.ai.minuet"),
   -- require("plugins.ai.chatgpt"),
   -- require("plugins.ai.avante"),
+  -- require("plugins.ai.opencode"),
 
   -- Enabled plugins
   require("plugins.ai.copilot"),
   require("plugins.ai.codeCompanion"),
   require("plugins.ai.wtf"),
-  require("plugins.ai.opencode"),
   require("plugins.ai.sidekick"),
 }
 
