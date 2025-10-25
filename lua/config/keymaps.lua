@@ -205,6 +205,11 @@ which_key.add({
     desc = "Revit dotnet build",
   },
 
+  -- easy-dotnet
+  -- coordinate with testrunner mappings located in easy-dotnet setup
+  { "<leader>rtt", "<cmd>Dotnet test<CR>", desc = "Run Tests" },
+  { "<leader>rtr", "<cmd>Dotnet testrunner<CR>", desc = "Toggle Test Runner" },
+
   -- Color-picker
   { "<leader>cp", "<cmd>PickColor<cr>", desc = "Pick Color" },
   { "<leader>cP", "<cmd>PickColorInsert<cr>", desc = "Pick Color and Insert" },
