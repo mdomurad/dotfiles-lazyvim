@@ -166,6 +166,24 @@ return {
         { ";a", "<cmd>CodeCompanionChat Toggle<cr>", desc = "Toggle CodeCompanion Chat" },
         { ";A", "<cmd>CodeCompanionActions<cr>", desc = "CodeCompanion Actions" },
         { ";h", "<cmd>CodeCompanionHistory<cr>", desc = "CodeCompanion History" },
+        { "<leader>od", ":'<,'>CodeCompanion Add documentation for the selected code<cr>", desc = "Add docs" },
+        { "<leader>or", ":'<,'>CodeCompanion Review the selected code<cr>", desc = "Review selection" },
+        { "<leader>ot", ":'<,'>CodeCompanion Add tests for the selected code<cr>", desc = "Add tests" },
+        {
+          "<leader>of",
+          ":'<,'>CodeCompanion There is a problem in this code. Identify the issues and rewrite the code with fixes. Explain what was wrong and how your changes address the problems.<cr>",
+          desc = "Fix bugs",
+        },
+        {
+          "<leader>oo",
+          ":'<,'>CodeCompanion Optimize the selected code to improve performance and readability. Explain your optimization strategy and the benefits of your changes.<cr>",
+          desc = "Optimize code",
+        },
+        {
+          "<leader>ox",
+          ":'<,'>CodeCompanion Write an explanation for the selected code as paragraphs of text<cr>",
+          desc = "Explain selection",
+        },
       })
       which_key.add({
         mode = "v",

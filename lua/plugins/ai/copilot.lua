@@ -148,24 +148,37 @@ local copilotChat = {
       )
     end, { desc = "Commit staged (title)" })
   end,
-  keys = {
-    { "<leader>o", group = "CopilotChat", mode = { "n" } },
-    { "<leader>oc", "<cmd>CopilotChat<CR>", desc = "CopilotChat", mode = { "n" } },
-    {
-      "<leader>oa",
-      "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions())<CR>",
-      desc = "Prompt Actions",
-      mode = { "n" },
-    },
-    {
-      "<leader>oh",
-      "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').help_actions())<CR>",
-      desc = "Help Actions",
-      mode = { "n" },
-    },
-    { "<leader>ol", "<cmd>CopilotChatLoad chat<CR>", desc = "Load", mode = { "n" } },
-    { "<leader>os", "<cmd>CopilotChatSave chat<CR>", desc = "Save", mode = { "n" } },
-  },
+  -- keys = {
+  --   { "<leader>o", group = "CopilotChat", mode = { "n" } },
+  --   { "<leader>oc", "<cmd>CopilotChat<CR>", desc = "CopilotChat", mode = { "n" } },
+  --   {
+  --     "<leader>oa",
+  --     "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions())<CR>",
+  --     desc = "Prompt Actions",
+  --     mode = { "n" },
+  --   },
+  --   {
+  --     "<leader>oh",
+  --     "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').help_actions())<CR>",
+  --     desc = "Help Actions",
+  --     mode = { "n" },
+  --   },
+  --   {
+  --     "<leader>o1",
+  --     function()
+  --       quickChat()
+  --     end,
+  --     desc = "CopilotChat - Quick chat",
+  --   },
+  --   { "<leader>ol", "<cmd>CopilotChatLoad chat<CR>", desc = "Load", mode = { "n" } },
+  --   { "<leader>os", "<cmd>CopilotChatSave chat<CR>", desc = "Save", mode = { "n" } },
+  --   { "<leader>od", ":'<,'>CopilotChatDocs<CR>", desc = "Docstring" },
+  --   { "<leader>of", ":'<,'>CopilotChatFix<CR>", desc = "Fix Bugs" },
+  --   { "<leader>oo", ":'<,'>CopilotChatOptimize<CR>", desc = "Optimize Code" },
+  --   { "<leader>ot", ":'<,'>CopilotChatTests<CR>", desc = "Add Tests" },
+  --   { "<leader>or", ":'<,'>CopilotChatReview<CR>", desc = "Review Code" },
+  --   { "<leader>ox", ":'<,'>CopilotChatExplain<CR>", desc = "Explain Code" },
+  -- },
   opts = {
     debug = true, -- Enable debugging
     window = {
