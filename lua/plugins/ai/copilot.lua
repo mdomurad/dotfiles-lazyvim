@@ -9,6 +9,19 @@ local function extract_commit_msg(response)
   return msg
 end
 
+--- This function initiates a quick chat.
+-- It prompts the user for input and if the input is not an empty string,
+-- it calls the 'ask' function from the 'CopilotChat' module with the user's input
+-- and the current buffer as the selection.
+-- @param None
+-- @return None
+function quickChat()
+  local input = vim.fn.input("Quick Chat: ")
+  if input ~= "" then
+    require("CopilotChat").ask(input, { selection = require("CopilotChat.select").buffer })
+  end
+end
+
 local function echoCommitInfo(response)
   -- Get the list of files in the last commit
   local committedFiles = io.popen("git log -1 --name-only"):read("*all")
