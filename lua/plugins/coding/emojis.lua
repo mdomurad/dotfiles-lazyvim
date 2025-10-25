@@ -6,8 +6,6 @@ return {
     dependencies = {
       -- util for handling paths
       "nvim-lua/plenary.nvim",
-      -- optional for telescope integration
-      "nvim-telescope/telescope.nvim",
       -- optional for fzf-lua integration via vim.ui.select
       "ibhagwan/fzf-lua",
     },
@@ -17,9 +15,9 @@ return {
     },
     config = function(_, opts)
       require("emoji").setup(opts)
-      -- optional for telescope integration
-      local ts = require("telescope").load_extension("emoji")
-      vim.keymap.set("n", "<leader>se", ts.emoji, { desc = "[S]earch [E]moji" })
+      -- Set vim.ui.select to use fzf-lua
+      vim.ui.select = require("fzf-lua").ui_select
+      vim.keymap.set("n", "<leader>se", "<cmd>Emoji<CR>", { desc = "[S]earch [E]moji" })
     end,
   },
   -- Blink cmp integration
