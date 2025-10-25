@@ -127,7 +127,7 @@ which_key.add({
   { "<leader>gR", "<cmd>G reset --soft HEAD~1<CR>", desc = "Reset latest commit" },
 
   -- NET
-  { "<leader>r", group = "net" },
+  { "<leader>r", group = "+net" },
   {
     "<leader>rb",
     function()
@@ -138,8 +138,8 @@ which_key.add({
 
   -- easy-dotnet
   -- coordinate with testrunner mappings located in easy-dotnet setup
-  { "<leader>rtt", "<cmd>Dotnet test<CR>", desc = "Run Tests" },
-  { "<leader>rtr", "<cmd>Dotnet testrunner<CR>", desc = "Toggle Test Runner" },
+  { "<leader>rtr", "<cmd>Dotnet test<CR>", desc = "Run Tests" },
+  { "<leader>rtt", "<cmd>Dotnet testrunner<CR>", desc = "Toggle Test Runner" },
 
   -- Color-picker
   { "<leader>cp", "<cmd>PickColor<cr>", desc = "Pick Color" },
