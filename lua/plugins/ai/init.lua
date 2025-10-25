@@ -8,10 +8,9 @@ local plugins = {
 
   -- Enabled plugins
   require("plugins.ai.copilot"),
-
-  -- Other AI plugins
-  require("plugins.ai.wtf"),
   require("plugins.ai.codeCompanion"),
+  require("plugins.ai.wtf"),
+  require("plugins.ai.opencode"),
   require("plugins.ai.sidekick"),
 }
 

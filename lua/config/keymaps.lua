@@ -119,14 +119,6 @@ function CopilotFixNextDiagnosticProvideBuffer()
   end
 end
 
---- Fixes the next diagnostic using the current selection as context.
-function CopilotFixNextDiagnosticProvideSelection()
-  local prompt = build_next_diagnostic_prompt()
-  if prompt then
-    require("CopilotChat").ask(prompt, { selection = require("CopilotChat.select").visual })
-  end
-end
-
 -- Use fzf-lua for fuzzy finding
 local fzf = require("fzf-lua")
 
@@ -211,74 +203,6 @@ which_key.add({
   { ";l", "<cmd>lua vim.diagnostic.goto_next()<CR>", desc = "Next Diagnostic" },
   { ";j", "<cmd>lua vim.diagnostic.goto_prev()<CR>", desc = "Previous Diagnostic" },
 })
-
--- [AI]
-
--- [Copilot chat]
--- if user ~= "ianus" then
-which_key.add({
-  mode = { "n" },
-  { "<leader>o", group = "CopilotChat" },
-  { "<leader>oc", "<cmd>CopilotChat<CR>", desc = "CopilotChat" },
-  {
-    "<leader>oa",
-    "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions())<CR>",
-    desc = "Prompt Actions",
-  },
-  { "<leader>ogs", "<cmd>CopilotChatCommitStaged<CR>", desc = "Commit Message Staged" },
-  {
-    "<leader>oh",
-    "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').help_actions())<CR>",
-    desc = "Help Actions",
-  },
-  { "<leader>ol", "<cmd>CopilotChatLoad chat<CR>", desc = "Load" },
-  { "<leader>ogc", "<cmd>CopilotChatCommit<CR>", desc = "Commit Message" },
-  { "<leader>os", "<cmd>CopilotChatSave chat<CR>", desc = "Save" },
-  {
-    "<leader>oi",
-    function()
-      CopilotFixNextDiagnosticProvideBuffer()
-    end,
-    desc = "Fix Next Diagnostic",
-  },
-})
-
-which_key.add({
-  mode = { "v" },
-  { "<leader>o", group = "CopilotChat" },
-  {
-    "<leader>oa",
-    function()
-      vim.notify("CopilotChat FZF picker not implemented. Please use prompt actions manually.", vim.log.levels.INFO)
-    end,
-    desc = "Prompt actions (FZF not implemented)",
-  },
-  { "<leader>oc", ":'<,'>CopilotChat<CR>", desc = "CopilotChat" },
-  {
-    "<leader>o1",
-    function()
-      quickChat()
-    end,
-    desc = "CopilotChat - Quick chat",
-  },
-  { "<leader>od", ":'<,'>CopilotChatDocs<CR>", desc = "Docstring" },
-  { "<leader>of", ":'<,'>CopilotChatFix<CR>", desc = "Fix Bugs" },
-  { "<leader>oo", ":'<,'>CopilotChatOptimize<CR>", desc = "Optimize Code" },
-  { "<leader>ot", ":'<,'>CopilotChatTests<CR>", desc = "Add Tests" },
-  { "<leader>or", ":'<,'>CopilotChatReview<CR>", desc = "Review Code" },
-  { "<leader>ox", ":'<,'>CopilotChatExplain<CR>", desc = "Explain Code" },
-  {
-    "<leader>oi",
-    function()
-      CopilotFixNextDiagnosticProvideSelection()
-    end,
-    desc = "Fix Next Diagnostic",
-  },
-})
-which_key.add({
-  mode = { "v", "n" },
-})
--- end
 
 -- Keymap to exit terminal mode
 keymap.set("t", "<C-q>", [[<C-\><C-n>]], { noremap = true, silent = true })

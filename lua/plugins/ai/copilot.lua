@@ -47,20 +47,125 @@ local copilotChat = {
     { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
     { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
   },
+  config = function(_, opts)
+    require("CopilotChat").setup(opts)
+    require("which-key").add({
+      mode = { "n" },
+      { "<leader>o", group = "CopilotChat" },
+      { "<leader>oc", "<cmd>CopilotChat<CR>", desc = "CopilotChat" },
+      {
+        "<leader>oa",
+        "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions())<CR>",
+        desc = "Prompt Actions",
+      },
+      { "<leader>ogs", "<cmd>CopilotChatCommitStaged<CR>", desc = "Commit Message Staged" },
+      {
+        "<leader>oh",
+        "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').help_actions())<CR>",
+        desc = "Help Actions",
+      },
+      { "<leader>ol", "<cmd>CopilotChatLoad chat<CR>", desc = "Load" },
+      { "<leader>ogc", "<cmd>CopilotChatCommit<CR>", desc = "Commit Message" },
+      { "<leader>os", "<cmd>CopilotChatSave chat<CR>", desc = "Save" },
+      { "<leader>og", desc = "Fix Grammar" },
+      { ";C", desc = "Stage all and commit" },
+      { ";c", desc = "Commit staged" },
+      { ";Q", desc = "Stage all and commit (title)" },
+      { ";q", desc = "Commit staged (title)" },
+    })
+
+    vim.keymap.set("n", "<leader>og", function()
+      local select = require("CopilotChat.select")
+      local source = select.visual() or select.line()
+      require("CopilotChat").ask(
+        "/COPILOT_GENERATE Rewrite text to improve clarity and style. Fix all grammar and spelling mistakes. Use language of the original text. Remove line numbers.",
+        { selection = source }
+      )
+    end, { desc = "Fix Grammar" })
+
+    vim.keymap.set("n", ";C", function()
+      require("CopilotChat").ask(
+        "You are an expert at following the Conventional Commit specification. Given the git diff listed below, write commit message for the change:\n#gitdiff:staged\n#gitdiff:unstaged\n with commitizen convention. Make sure the title has maximum 72 characters and message is wrapped at 72 characters. Do not add any surrounding quotes.",
+        {
+          callback = function(response)
+            local copilot = require("CopilotChat")
+            vim.schedule(function()
+              vim.fn.system({ "git", "add", "-A" })
+              local msg = extract_commit_msg(response)
+              formatGitResponse(msg)
+              copilot.close()
+              echoCommitInfo(msg)
+            end)
+          end,
+        }
+      )
+    end, { desc = "Stage all and commit" })
+
+    vim.keymap.set("n", ";c", function()
+      require("CopilotChat").ask(
+        "You are an expert at following the Conventional Commit specification. Given the git diff listed below, write commit message for the change:\n#gitdiff:staged\nwith commitizen convention. Make sure the title has maximum 72 characters and message is wrapped at 72 characters . Do not add any surrounding quotes.",
+        {
+          callback = function(response)
+            local copilot = require("CopilotChat")
+            vim.schedule(function()
+              local msg = extract_commit_msg(response)
+              formatGitResponse(msg)
+              copilot.close()
+              echoCommitInfo(msg)
+            end)
+          end,
+        }
+      )
+    end, { desc = "Commit staged" })
+
+    vim.keymap.set("n", ";Q", function()
+      require("CopilotChat").ask(
+        "You are an expert at following the Conventional Commit specification. Given the git diff listed below, write commit title for the change:\n#gitdiff:staged\n#gitdiff:unstaged\nwith commitizen convention. Provide information about scope of the change. If only one file was updated provide its name. Make sure the title has maximum 50 characters. Do not add any surrounding quotes.",
+        {
+          callback = function(response)
+            local copilot = require("CopilotChat")
+            vim.schedule(function()
+              vim.fn.system({ "git", "add", "-A" })
+              local msg = extract_commit_msg(response)
+              vim.fn.system({ "git", "commit", "-m", msg })
+              copilot.close()
+              echoCommitInfo(msg)
+            end)
+          end,
+        }
+      )
+    end, { desc = "Stage all and commit (title)" })
+
+    vim.keymap.set("n", ";q", function()
+      require("CopilotChat").ask(
+        "You are an expert at following the Conventional Commit specification. Given the git diff listed below, write commit title for the change with commitizen convention for changes:\n#gitdiff:staged\nProvide information about scope of the change. If only one file was updated provide its name. Make sure the title has maximum 72 characters. Do not add any surrounding quotes.",
+        {
+          callback = function(response)
+            local copilot = require("CopilotChat")
+            vim.schedule(function()
+              local msg = extract_commit_msg(response)
+              vim.inspect(msg)
+              vim.fn.system({ "git", "commit", "-m", msg })
+              copilot.close()
+              echoCommitInfo(msg)
+            end)
+          end,
+        }
+      )
+    end, { desc = "Commit staged (title)" })
+  end,
   opts = {
     debug = true, -- Enable debugging
     window = {
       layout = "vertical",
       relative = "editor",
-      width = 0.8,
-      height = 0.6,
+      width = 0.3,
     },
     headers = {
       user = "👤 You",
       assistant = "🤖 Copilot",
       tool = "🔧 Tool",
     },
-
     separator = "━━",
     auto_fold = true, -- Automatically folds non-assistant messages
     mappings = {
@@ -68,86 +173,8 @@ local copilotChat = {
         insert = "<C-z>",
       },
     },
-    prompts = {
-      FixGrammar = {
-        prompt = "/COPILOT_GENERATE Rewrite text to improve clarity and style. Fix all grammar and spelling mistakes. Use language of the original text. Remove line numbers.",
-        description = "Fix spelling and grammar",
-        mapping = "<leader>og",
-        close = true,
-        selection = function(source)
-          local select = require("CopilotChat.select")
-          return select.visual(source) or select.line(source)
-        end,
-      },
-      FullCommit = {
-        prompt = "You are an expert at following the Conventional Commit specification. Given the git diff listed below, write commit message for the change:\n#gitdiff:staged\n#gitdiff:unstaged\n with commitizen convention. Make sure the title has maximum 72 characters and message is wrapped at 72 characters. Do not add any surrounding quotes.",
-        description = "Stage all and commit",
-        mapping = ";C",
-        close = true,
-        callback = function(response)
-          local copilot = require("CopilotChat")
-          vim.schedule(function()
-            vim.fn.system({ "git", "add", "-A" })
-            local msg = extract_commit_msg(response)
-            formatGitResponse(msg)
-            copilot.close()
-            echoCommitInfo(msg)
-          end)
-        end,
-      },
-      FullCommitStaged = {
-        prompt = "You are an expert at following the Conventional Commit specification. Given the git diff listed below, write commit message for the change:\n#gitdiff:staged\nwith commitizen convention. Make sure the title has maximum 72 characters and message is wrapped at 72 characters . Do not add any surrounding quotes.",
-        description = "Commit staged",
-        mapping = ";c",
-        close = true,
-        callback = function(response)
-          local copilot = require("CopilotChat")
-
-          vim.schedule(function()
-            local msg = extract_commit_msg(response)
-            formatGitResponse(msg)
-            copilot.close()
-            echoCommitInfo(msg)
-          end)
-        end,
-      },
-      QuickCommit = {
-        prompt = "You are an expert at following the Conventional Commit specification. Given the git diff listed below, write commit title for the change:\n#gitdiff:staged\n#gitdiff:unstaged\nwith commitizen convention. Provide information about scope of the change. If only one file was updated provide its name. Make sure the title has maximum 50 characters. Do not add any surrounding quotes.",
-        description = "Stage all and commit with title only",
-        mapping = ";Q",
-        close = true,
-        callback = function(response)
-          local copilot = require("CopilotChat")
-
-          vim.schedule(function()
-            vim.fn.system({ "git", "add", "-A" })
-            local msg = extract_commit_msg(response)
-            vim.fn.system({ "git", "commit", "-m", msg })
-            copilot.close()
-            echoCommitInfo(msg)
-          end)
-        end,
-      },
-      QuickCommitStaged = {
-        prompt = "You are an expert at following the Conventional Commit specification. Given the git diff listed below, write commit title for the change with commitizen convention for changes:\n#gitdiff:staged\nProvide information about scope of the change. If only one file was updated provide its name. Make sure the title has maximum 72 characters. Do not add any surrounding quotes.",
-        description = "Commit staged with title only",
-        mapping = ";q",
-        close = true,
-        callback = function(response)
-          local copilot = require("CopilotChat")
-          vim.schedule(function()
-            local msg = extract_commit_msg(response)
-            vim.inspect(msg)
-            vim.fn.system({ "git", "commit", "-m", msg })
-
-            copilot.close()
-            echoCommitInfo(msg)
-          end)
-        end,
-      },
-    },
+    prompts = {},
   },
 }
 
 return { copilotVim, copilotChat }
-

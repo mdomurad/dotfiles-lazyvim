@@ -159,10 +159,18 @@ return {
       require("mcphub").setup({ port = 37373 })
 
       -- keymaps
-      vim.keymap.set({ "n", "v" }, ";A", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true })
-      vim.keymap.set({ "n", "v" }, ";a", "<cmd>CodeCompanionChat Toggle<cr>", { noremap = true, silent = true })
-      vim.keymap.set({ "n", "v" }, ";h", "<cmd>CodeCompanionHistory<cr>", { noremap = true, silent = true })
-      vim.keymap.set("v", "ga", "<cmd>CodeCompanionChat Add<cr>", { noremap = true, silent = true })
+      local which_key = require("which-key")
+
+      which_key.add({
+        mode = { "n", "v" },
+        { ";a", "<cmd>CodeCompanionChat Toggle<cr>", desc = "Toggle CodeCompanion Chat" },
+        { ";A", "<cmd>CodeCompanionActions<cr>", desc = "CodeCompanion Actions" },
+        { ";h", "<cmd>CodeCompanionHistory<cr>", desc = "CodeCompanion History" },
+      })
+      which_key.add({
+        mode = "v",
+        { "ga", "<cmd>CodeCompanionChat Add<cr>", desc = "CodeCompanion Chat Add" },
+      })
 
       -- Expand 'cc' into 'CodeCompanion' in the command line
       vim.cmd([[cab cc CodeCompanion]])

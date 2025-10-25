@@ -1,2 +1,0 @@
--- This file has been refactored and its contents moved to individual plugin files in the same directory.
--- It can be safely deleted.
