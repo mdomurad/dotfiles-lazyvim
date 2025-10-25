@@ -127,49 +127,32 @@ function CopilotFixNextDiagnosticProvideSelection()
   end
 end
 
-local pickers = require("telescope.pickers")
-local finders = require("telescope.finders")
-local actions = require("telescope.actions")
-local action_state = require("telescope.actions.state")
-local conf = require("telescope.config").values
+-- Use fzf-lua for fuzzy finding
+local fzf = require("fzf-lua")
 
--- Build .NET project for Revit using Telescope to select build type and version
-function DotnetBuildRevitTelescope()
+-- Build .NET project for Revit using FZF-Lua to select build type and version
+function DotnetBuildRevitFzf()
   local build_types = { "debug", "release" }
   local versions = { "2020", "2021", "2022", "2023", "2024", "2025" }
 
-  pickers
-    .new({}, {
-      prompt_title = "Select Build Type",
-      finder = finders.new_table({ results = build_types }),
-      sorter = conf.generic_sorter({}),
-      attach_mappings = function(prompt_bufnr, map)
-        actions.select_default:replace(function()
-          local selection = action_state.get_selected_entry()
-          local build_type = selection[1]
-          actions._close(prompt_bufnr)
-          pickers
-            .new({}, {
-              prompt_title = "Select Revit Version",
-              finder = finders.new_table({ results = versions }),
-              sorter = conf.generic_sorter({}),
-              attach_mappings = function(prompt_bufnr2, map2)
-                actions.select_default:replace(function()
-                  local selection2 = action_state.get_selected_entry()
-                  local versionYear = selection2[1]
-                  local version = versionYear:gsub("^20", "")
-                  actions._close(prompt_bufnr2)
-                  DotnetBuildRevit(build_type, version)
-                end)
-                return true
-              end,
-            })
-            :find()
-        end)
-        return true
+  fzf.fzf_exec(build_types, {
+    prompt = "Select Build Type> ",
+    actions = {
+      ["default"] = function(selected)
+        local build_type = selected[1]
+        fzf.fzf_exec(versions, {
+          prompt = "Select Revit Version> ",
+          actions = {
+            ["default"] = function(selected2)
+              local versionYear = selected2[1]
+              local version = versionYear:gsub("^20", "")
+              DotnetBuildRevit(build_type, version)
+            end,
+          },
+        })
       end,
-    })
-    :find()
+    },
+  })
 end
 
 -- Helper function to run dotnet build command for Revit
@@ -200,7 +183,7 @@ which_key.add({
   {
     "<leader>rb",
     function()
-      DotnetBuildRevitTelescope()
+      DotnetBuildRevitFzf()
     end,
     desc = "Revit dotnet build",
   },
@@ -248,8 +231,11 @@ which_key.add({
   { "<leader>oc", "<cmd>CopilotChat<CR>", desc = "CopilotChat" },
   {
     "<leader>oa",
-    "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions())<CR>",
-    desc = "Prompt Actions",
+    function()
+      -- Replace with FZF-based picker if available, or fallback to a simple menu
+      vim.notify("CopilotChat FZF picker not implemented. Please use prompt actions manually.", vim.log.levels.INFO)
+    end,
+    desc = "Prompt Actions (FZF not implemented)",
   },
   { "<leader>ogs", "<cmd>CopilotChatCommitStaged<CR>", desc = "Commit Message Staged" },
   {
@@ -274,8 +260,10 @@ which_key.add({
   { "<leader>o", group = "CopilotChat" },
   {
     "<leader>oa",
-    "<cmd>lua require('CopilotChat.actions'); require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions())<CR>",
-    desc = "Prompt actions",
+    function()
+      vim.notify("CopilotChat FZF picker not implemented. Please use prompt actions manually.", vim.log.levels.INFO)
+    end,
+    desc = "Prompt actions (FZF not implemented)",
   },
   { "<leader>oc", ":'<,'>CopilotChat<CR>", desc = "CopilotChat" },
   {
