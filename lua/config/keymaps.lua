@@ -75,11 +75,11 @@ function CopilotFixNextDiagnosticProvideBuffer()
   end
 end
 
--- Use Snacks picker for .NET project build selection
-function DotnetBuildRevitSnacks()
-  local build_types = { "debug", "release" }
-  local versions = { "2020", "2021", "2022", "2023", "2024", "2025" }
+local build_types = { "debug", "release" }
+local versions = { "2020", "2021", "2022", "2023", "2024", "2025" }
 
+-- Use Snacks picker for Revit .NET project build selection
+function DotnetBuildRevit()
   vim.ui.select(build_types, { prompt = "Select Build Type" }, function(build_type)
     if not build_type then
       return
@@ -92,6 +92,31 @@ function DotnetBuildRevitSnacks()
       DotnetBuildRevit(build_type, version)
     end)
   end)
+end
+
+-- Use Snacks picker for Revit .NET project clean selection
+function DotnetCleanRevit()
+  vim.ui.select(build_types, { prompt = "Select Build Type" }, function(build_type)
+    if not build_type then
+      return
+    end
+    vim.ui.select(versions, { prompt = "Select Revit Version" }, function(versionYear)
+      if not versionYear then
+        return
+      end
+      local version = versionYear:gsub("^20", "")
+      DotnetCleanRevit(build_type, version)
+    end)
+  end)
+end
+
+-- Helper function to run dotnet clean command for Revit
+function DotnetCleanRevit(build_type, version)
+  local config = (build_type == "release" and "Release" or "Debug")
+  local cmd = 'dotnet clean -c "' .. config .. '"'
+  vim.cmd("vsplit")
+  vim.cmd("enew")
+  vim.fn.termopen(cmd)
 end
 
 -- Helper function to run dotnet build command for Revit
@@ -125,9 +150,16 @@ which_key.add({
   {
     ";rb",
     function()
-      DotnetBuildRevitSnacks()
+      DotnetBuildRevit()
     end,
     desc = "Revit dotnet build",
+  },
+  {
+    ";rc",
+    function()
+      DotnetCleanRevit()
+    end,
+    desc = "Revit dotnet clean",
   },
 
   -- easy-dotnet
