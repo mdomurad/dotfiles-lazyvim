@@ -79,7 +79,7 @@ local build_types = { "debug", "release" }
 local versions = { "2020", "2021", "2022", "2023", "2024", "2025" }
 
 -- Use Snacks picker for Revit .NET project build selection
-function DotnetBuildRevit()
+function DotnetBuildRevitSnacks()
   vim.ui.select(build_types, { prompt = "Select Build Type" }, function(build_type)
     if not build_type then
       return
@@ -95,7 +95,7 @@ function DotnetBuildRevit()
 end
 
 -- Use Snacks picker for Revit .NET project clean selection
-function DotnetCleanRevit()
+function DotnetCleanRevitSnacks()
   vim.ui.select(build_types, { prompt = "Select Build Type" }, function(build_type)
     if not build_type then
       return
@@ -150,14 +150,14 @@ which_key.add({
   {
     ";rb",
     function()
-      DotnetBuildRevit()
+      DotnetBuildRevitSnacks()
     end,
     desc = "Revit dotnet build",
   },
   {
     ";rc",
     function()
-      DotnetCleanRevit()
+      DotnetCleanRevitSnacks()
     end,
     desc = "Revit dotnet clean",
   },
