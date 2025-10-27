@@ -76,31 +76,25 @@ function CopilotFixNextDiagnosticProvideBuffer()
 end
 
 -- Use fzf-lua for fuzzy finding
-local fzf = require("fzf-lua")
 
 -- Build .NET project for Revit using FZF-Lua to select build type and version
-function DotnetBuildRevitFzf()
+-- Use Snacks picker for .NET project build selection
+function DotnetBuildRevitSnacks()
   local build_types = { "debug", "release" }
   local versions = { "2020", "2021", "2022", "2023", "2024", "2025" }
 
-  fzf.fzf_exec(build_types, {
-    prompt = "Select Build Type> ",
-    actions = {
-      ["default"] = function(selected)
-        local build_type = selected[1]
-        fzf.fzf_exec(versions, {
-          prompt = "Select Revit Version> ",
-          actions = {
-            ["default"] = function(selected2)
-              local versionYear = selected2[1]
-              local version = versionYear:gsub("^20", "")
-              DotnetBuildRevit(build_type, version)
-            end,
-          },
-        })
-      end,
-    },
-  })
+  vim.ui.select(build_types, { prompt = "Select Build Type" }, function(build_type)
+    if not build_type then
+      return
+    end
+    vim.ui.select(versions, { prompt = "Select Revit Version" }, function(versionYear)
+      if not versionYear then
+        return
+      end
+      local version = versionYear:gsub("^20", "")
+      DotnetBuildRevit(build_type, version)
+    end)
+  end)
 end
 
 -- Helper function to run dotnet build command for Revit
@@ -131,7 +125,7 @@ which_key.add({
   {
     "<leader>rb",
     function()
-      DotnetBuildRevitFzf()
+      DotnetBuildRevitSnacks()
     end,
     desc = "Revit dotnet build",
   },
