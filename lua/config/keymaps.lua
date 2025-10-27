@@ -164,8 +164,11 @@ which_key.add({
 
   -- easy-dotnet
   -- coordinate with testrunner mappings located in easy-dotnet setup
-  { "<leader>rtr", "<cmd>Dotnet test<CR>", desc = "Run Tests" },
-  { "<leader>rtt", "<cmd>Dotnet testrunner<CR>", desc = "Toggle Test Runner" },
+
+  { ";d", group = "+Net" },
+  { ";dd", "<cmd>Dotnet<CR>", desc = "Dotnet picker" },
+  { ";dt", "<cmd>Dotnet test<CR>", desc = "Run tests" },
+  { ";dr", "<cmd>Dotnet testrunner<CR>", desc = "Toggle test runner" },
 
   -- Color-picker
   { "<leader>cp", "<cmd>PickColor<cr>", desc = "Pick Color" },
