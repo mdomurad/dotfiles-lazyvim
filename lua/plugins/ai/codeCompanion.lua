@@ -163,9 +163,9 @@ return {
 
       which_key.add({
         mode = { "n", "v" },
-        { ";a", "<cmd>CodeCompanionChat Toggle<cr>", desc = "Toggle CodeCompanion Chat" },
-        { ";A", "<cmd>CodeCompanionActions<cr>", desc = "CodeCompanion Actions" },
-        { ";h", "<cmd>CodeCompanionHistory<cr>", desc = "CodeCompanion History" },
+        { "<leader>oc", "<cmd>CodeCompanionChat Toggle<cr>", desc = "Toggle CodeCompanion Chat" },
+        { "<leader>oa", "<cmd>CodeCompanionActions<cr>", desc = "CodeCompanion Actions" },
+        { "<leader>oh", "<cmd>CodeCompanionHistory<cr>", desc = "CodeCompanion History" },
         { "<leader>od", ":'<,'>CodeCompanion Add documentation for the selected code<cr>", desc = "Add docs" },
         { "<leader>or", ":'<,'>CodeCompanion Review the selected code<cr>", desc = "Review selection" },
         { "<leader>ot", ":'<,'>CodeCompanion Add tests for the selected code<cr>", desc = "Add tests" },
