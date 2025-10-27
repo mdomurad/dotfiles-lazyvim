@@ -49,10 +49,10 @@ return {
   },
   {
     "GustavEikaas/easy-dotnet.nvim",
-    dependencies = { "nvim-lua/plenary.nvim", "ibhagwan/fzf-lua" },
+    dependencies = { "nvim-lua/plenary.nvim", "folke/snacks.nvim" },
     config = function()
       require("easy-dotnet").setup({
-        picker = "fzf",
+        picker = "snacks",
         test_runner = {
           viewmode = "float",
           mappings = {
