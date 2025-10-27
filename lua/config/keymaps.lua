@@ -75,9 +75,6 @@ function CopilotFixNextDiagnosticProvideBuffer()
   end
 end
 
--- Use fzf-lua for fuzzy finding
-
--- Build .NET project for Revit using FZF-Lua to select build type and version
 -- Use Snacks picker for .NET project build selection
 function DotnetBuildRevitSnacks()
   local build_types = { "debug", "release" }
