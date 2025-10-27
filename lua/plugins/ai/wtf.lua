@@ -14,7 +14,7 @@ return {
     opts = {},
     keys = {
       {
-        ";wd",
+        "<leader>owd",
         mode = { "n", "x" },
         function()
           require("wtf").diagnose()
@@ -22,7 +22,7 @@ return {
         desc = "Debug diagnostic with AI",
       },
       {
-        ";wf",
+        "<leader>owf",
         mode = { "n", "x" },
         function()
           require("wtf").fix()
@@ -31,7 +31,7 @@ return {
       },
       {
         mode = { "n" },
-        ";ws",
+        "<leader>ows",
         function()
           require("wtf").search()
         end,
@@ -39,7 +39,7 @@ return {
       },
       {
         mode = { "n" },
-        ";wp",
+        "<leader>owp",
         function()
           require("wtf").pick_provider()
         end,
@@ -47,7 +47,7 @@ return {
       },
       {
         mode = { "n" },
-        ";wh",
+        "<leader>owh",
         function()
           require("wtf").history()
         end,
@@ -55,7 +55,7 @@ return {
       },
       {
         mode = { "n" },
-        ";wg",
+        "<leader>owg",
         function()
           require("wtf").grep_history()
         end,
