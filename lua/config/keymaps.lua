@@ -117,6 +117,9 @@ which_key.add({
   { "<leader>gr", "<cmd>G commit --amend<CR>", desc = "Reword latest commit" },
   { "<leader>gR", "<cmd>G reset --soft HEAD~1<CR>", desc = "Reset latest commit" },
 
+  -- wtf.nvim
+  { "<leader>ow", group = "+wtf" },
+
   -- NET
   { "<leader>r", group = "+net" },
   {
@@ -145,10 +148,10 @@ which_key.add({
   -- Diagnostic
   { ";l", "<cmd>lua vim.diagnostic.goto_next()<CR>", desc = "Next Diagnostic" },
   { ";j", "<cmd>lua vim.diagnostic.goto_prev()<CR>", desc = "Previous Diagnostic" },
+
+  -- Cosco comma or semicolon
+  { ";;", "<Plug>(cosco-commaOrSemiColon)", desc = "Cosco Comma or Semicolon" },
+
+  -- Exit terminal mode
+  { "<C-q>", "<C-\\><C-n>", mode = "t", desc = "Exit Terminal Mode" },
 })
-
--- Keymap to exit terminal mode
-keymap.set("t", "<C-q>", [[<C-\><C-n>]], { noremap = true, silent = true })
-
--- cosco.vim
-keymap.set("n", ";;", "<Plug>(cosco-commaOrSemiColon)", opts)
