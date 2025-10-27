@@ -6,8 +6,6 @@ return {
     dependencies = {
       -- util for handling paths
       "nvim-lua/plenary.nvim",
-      -- optional for fzf-lua integration via vim.ui.select
-      "ibhagwan/fzf-lua",
     },
     opts = {
       -- default is false, also needed for blink.cmp integration!
