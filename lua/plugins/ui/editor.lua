@@ -24,7 +24,7 @@ return {
   -- Multiple cursors plugin
   { "mg979/vim-visual-multi" },
 
-    -- Snacks picker keymaps moved to keymaps.lua
+  -- Snacks picker keymaps moved to keymaps.lua
   {
     "ziontee113/color-picker.nvim",
     config = function()
@@ -53,7 +53,7 @@ return {
   -- { "vim-pandoc/vim-pandoc-syntax" },
   {
     "johmsalas/text-case.nvim",
-    dependencies = { "ibhagwan/fzf-lua" },
+    dependencies = { "foldke/snacks.nvim" },
     config = function()
       require("textcase").setup({})
     end,
