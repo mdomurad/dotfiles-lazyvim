@@ -28,12 +28,12 @@ return {
     end,
     keys = {
       {
-        ";f",
+        ";n",
         "<cmd>Flote<cr>",
         desc = "Open Note",
       },
       {
-        ";F",
+        ";N",
         "<cmd>Flote global<cr>",
         desc = "Open Global Note",
       },
