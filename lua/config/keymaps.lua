@@ -120,10 +120,10 @@ which_key.add({
   -- wtf.nvim
   { "<leader>ow", group = "+wtf" },
 
-  -- NET
-  { "<leader>r", group = "+net" },
+  -- Revit addins
+  { ";r", group = "+Revit" },
   {
-    "<leader>rb",
+    ";rb",
     function()
       DotnetBuildRevitSnacks()
     end,
