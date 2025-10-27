@@ -4,7 +4,6 @@ local plugins = {
   -- Disabled plugins, uncomment to enable
   -- require("plugins.ai.minuet"),
   -- require("plugins.ai.chatgpt"),
-  -- require("plugins.ai.avante"),
   -- require("plugins.ai.opencode"),
 
   -- Enabled plugins
