@@ -13,12 +13,6 @@ return {
       -- default is false, also needed for blink.cmp integration!
       enable_cmp_integration = true,
     },
-    config = function(_, opts)
-      require("emoji").setup(opts)
-      -- Set vim.ui.select to use fzf-lua
-      vim.ui.select = require("fzf-lua").ui_select
-      vim.keymap.set("n", "<leader>se", "<cmd>Emoji<CR>", { desc = "[S]earch [E]moji" })
-    end,
   },
   -- Blink cmp integration
   {
