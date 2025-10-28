@@ -202,4 +202,4 @@ local copilotChat = {
   },
 }
 
-return { copilotVim, copilotChat }
+return { copilotChat }
