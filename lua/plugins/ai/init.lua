@@ -10,7 +10,6 @@ local plugins = {
   require("plugins.ai.copilot"),
   require("plugins.ai.codeCompanion"),
   require("plugins.ai.wtf"),
-  require("plugins.ai.sidekick"),
 }
 
 if user == "ianus" then
