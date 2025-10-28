@@ -62,7 +62,7 @@ vim.api.nvim_create_autocmd("Filetype", {
 
 -- Roslyn
 vim.api.nvim_create_autocmd({ "InsertLeave" }, {
-  pattern = "*",
+  pattern = "*.cs",
   callback = function()
     local clients = vim.lsp.get_clients({ name = "roslyn" })
     if not clients or #clients == 0 then
@@ -72,6 +72,9 @@ vim.api.nvim_create_autocmd({ "InsertLeave" }, {
     local buffers = vim.lsp.get_buffers_by_client_id(clients[1].id)
     for _, buf in ipairs(buffers) do
       vim.lsp.util._refresh("textDocument/diagnostic", { bufnr = buf })
+      vim.diagnostic.enable(true, { bufnr = buf })
+      vim.lsp.codelens.refresh({ bufnr = buf })
+      vim.diagnostic.config({ virtual_text = true, signs = true, underline = true })
     end
   end,
 })
