@@ -170,7 +170,7 @@ local function set_csharp_root_dir()
   vim.cmd("lcd " .. vim.fn.fnameescape(csproj_dir))
 end
 
-vim.api.nvim_create_autocmd("BufEnter", {
-  pattern = "*.cs",
-  callback = set_csharp_root_dir,
-})
+-- vim.api.nvim_create_autocmd("BufEnter", {
+--   pattern = "*.cs",
+--   callback = set_csharp_root_dir,
+-- })
