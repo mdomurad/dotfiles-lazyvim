@@ -1,3 +1,3 @@
 return {
-  -- require("plugins.dap.net"),
+  require("plugins.dap.net"),
 }
