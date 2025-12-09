@@ -121,9 +121,11 @@ local function set_csharp_root_dir()
   local path = vim.fn.expand("%:p:h")
   local dir = path
   local closest = nil
+  local max_depth = 10
+  local depth = 0
 
   -- Step 1: Find closest .csproj or .sln upwards
-  while dir ~= "" and dir ~= "/" do
+  while dir ~= "" and dir ~= "/" and depth < max_depth do
     local csproj = vim.fn.globpath(dir, "*.csproj")
     local sln = vim.fn.globpath(dir, "*.sln")
     if sln ~= "" then
@@ -134,6 +136,7 @@ local function set_csharp_root_dir()
       break
     end
     dir = vim.fn.fnamemodify(dir, ":h")
+    depth = depth + 1
   end
 
   if not closest then
@@ -151,7 +154,8 @@ local function set_csharp_root_dir()
   local csproj_dir = closest.dir
   local csproj_filename = vim.fn.fnamemodify(csproj_path, ":t")
   dir = csproj_dir
-  while dir ~= "" and dir ~= "/" do
+  depth = 0
+  while dir ~= "" and dir ~= "/" and depth < max_depth do
     local sln = vim.fn.globpath(dir, "*.sln")
     if sln ~= "" then
       local sln_content = vim.fn.readfile(sln)
@@ -164,6 +168,7 @@ local function set_csharp_root_dir()
       break -- found .sln but not containing csproj, stop searching
     end
     dir = vim.fn.fnamemodify(dir, ":h")
+    depth = depth + 1
   end
 
   -- Step 4: Fallback to csproj dir
