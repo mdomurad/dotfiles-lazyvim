@@ -7,7 +7,7 @@ return {
         strategies = {
           chat = {
             name = "copilot",
-            model = "gpt-4.1",
+            model = "claude-sonnet-4.5",
           },
           inline = {
             adapter = "copilot",
