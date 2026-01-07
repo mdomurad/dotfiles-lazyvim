@@ -37,6 +37,24 @@ return {
       inlay_hints = { enabled = true },
       ---@type lspconfig.options
       servers = {
+        roslyn = {
+          on_attach = function(client, bufnr)
+            -- Enable diagnostics
+            vim.diagnostic.enable(true, { bufnr = bufnr })
+            vim.diagnostic.config({
+              virtual_text = true,
+              signs = true,
+              underline = true,
+            }, bufnr)
+            -- Refresh codelens on save
+            vim.api.nvim_create_autocmd("BufWritePost", {
+              buffer = bufnr,
+              callback = function()
+                vim.lsp.codelens.refresh()
+              end,
+            })
+          end,
+        },
         cssls = {},
         pyright = {
           settings = {
