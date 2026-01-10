@@ -1,5 +1,8 @@
 return {
   {
+    "Nsidorenco/neotest-vstest",
+  },
+  {
     "nvim-neotest/neotest",
     optional = true,
     dependencies = {
