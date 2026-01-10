@@ -70,6 +70,7 @@ return {
             },
           },
         },
+        omnisharp = {},
         -- omnisharp = {
         --   -- https://github.com/OmniSharp/omnisharp-roslyn/wiki/Configuration-Options
         --   settings = {
