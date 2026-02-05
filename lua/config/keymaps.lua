@@ -191,5 +191,5 @@ which_key.add({
   { "<C-q>", "<C-\\><C-n>", mode = "t", desc = "Exit Terminal Mode" },
 
   -- Sidekick NES
-  { "<C-i>", LazyVim.cmp.map({ "ai_nes" }, "<tab>"), mode = { "n" }, expr = true },
+  { "<C-p>", LazyVim.cmp.map({ "ai_nes" }, "<tab>"), mode = { "n" }, expr = true },
 })
