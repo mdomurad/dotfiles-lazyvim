@@ -23,6 +23,8 @@ return {
         "svelte",
         "lua",
         "sql",
+        "c_sharp",
+        "razor",
       },
 
       -- matchup = {
