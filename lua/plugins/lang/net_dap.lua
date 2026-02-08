@@ -2,34 +2,37 @@ return {
   {
     "mfussenegger/nvim-dap",
     optional = true,
-    opts = function()
+    opts = function(_, opts)
       local dap = require("dap")
-      if not dap.adapters["netcoredbg"] then
-        require("dap").adapters["netcoredbg"] = {
-          type = "executable",
-          command = vim.fn.exepath("netcoredbg"),
-          args = { "--interpreter=vscode" },
-          options = {
-            detached = false,
-          },
-        }
-      end
-      for _, lang in ipairs({ "cs", "fsharp", "vb" }) do
-        if not dap.configurations[lang] then
-          dap.configurations[lang] = {
-            {
-              type = "netcoredbg",
-              name = "Launch file",
-              request = "launch",
-              ---@diagnostic disable-next-line: redundant-parameter
-              program = function()
-                return vim.fn.input("Path to dll: ", vim.fn.getcwd() .. "/", "file")
-              end,
-              cwd = "${workspaceFolder}",
-            },
-          }
-        end
-      end
+      local mason_path = vim.fn.stdpath("data") .. "/mason/packages/netcoredbg/netcoredbg/netcoredbg.exe"
+      local command = vim.fn.executable(mason_path) == 1 and mason_path or "netcoredbg.exe"
+
+      -- Set adapters directly on the dap module and in opts for compatibility
+      local adapter = {
+        type = "executable",
+        command = command,
+        args = { "--interpreter=vscode" },
+      }
+
+      dap.adapters.coreclr = adapter
+      dap.adapters.netcoredbg = adapter
+
+      opts.adapters = opts.adapters or {}
+      opts.adapters.coreclr = adapter
+      opts.adapters.netcoredbg = adapter
+
+      opts.configurations = opts.configurations or {}
+      opts.configurations.cs = {
+        {
+          type = "coreclr",
+          name = "launch - netcoredbg",
+          request = "launch",
+          program = function()
+            return vim.fn.input("Path to dll: ", vim.fn.getcwd() .. "/bin/Debug/", "file")
+          end,
+        },
+      }
+      return opts
     end,
   },
 }
