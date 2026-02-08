@@ -18,6 +18,8 @@ return {
         "emmet-language-server",
         "svelte-language-server",
         "python-lsp-server",
+        "csharpier",
+        "prettier",
         "roslyn",
         "netcoredbg",
         "fantomas",
