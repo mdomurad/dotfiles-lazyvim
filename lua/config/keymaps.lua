@@ -170,10 +170,6 @@ which_key.add({
   { ";dt", "<cmd>Dotnet test<CR>", desc = "Run tests" },
   { ";dr", "<cmd>Dotnet testrunner<CR>", desc = "Toggle test runner" },
 
-  -- Color-picker
-  { "<leader>cp", "<cmd>PickColor<cr>", desc = "Pick Color" },
-  { "<leader>cP", "<cmd>PickColorInsert<cr>", desc = "Pick Color and Insert" },
-
   -- Flogit
   { "gl", "<cmd>Flogsplit<CR>", desc = "Flogsplit" },
 
