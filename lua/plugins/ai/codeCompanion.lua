@@ -29,46 +29,6 @@ return {
               make_slash_commands = true, -- Add MCP prompts as /slash commands
             },
           },
-          vectorcode = {
-            ---@type VectorCode.CodeCompanion.ExtensionOpts
-            opts = {
-              tool_group = {
-                -- this will register a tool group called `@vectorcode_toolbox` that contains all 3 tools
-                enabled = true,
-                -- a list of extra tools that you want to include in `@vectorcode_toolbox`.
-                -- if you use @vectorcode_vectorise, it'll be very handy to include
-                -- `file_search` here.
-                extras = {},
-                collapse = false, -- whether the individual tools should be shown in the chat
-              },
-              tool_opts = {
-                ---@type VectorCode.CodeCompanion.ToolOpts
-                ["*"] = {},
-                ---@type VectorCode.CodeCompanion.LsToolOpts
-                ls = {},
-                ---@type VectorCode.CodeCompanion.VectoriseToolOpts
-                vectorise = {},
-                ---@type VectorCode.CodeCompanion.QueryToolOpts
-                query = {
-                  max_num = { chunk = -1, document = -1 },
-                  default_num = { chunk = 50, document = 10 },
-                  include_stderr = false,
-                  use_lsp = false,
-                  no_duplicate = true,
-                  chunk_mode = false,
-                  ---@type VectorCode.CodeCompanion.SummariseOpts
-                  summarise = {
-                    ---@type boolean|(fun(chat: CodeCompanion.Chat, results: VectorCode.QueryResult[]):boolean)|nil
-                    enabled = false,
-                    adapter = nil,
-                    query_augmented = true,
-                  },
-                },
-                files_ls = {},
-                files_rm = {},
-              },
-            },
-          },
           history = {
 
             enabled = true,
@@ -134,24 +94,6 @@ return {
                   format_summary = nil, -- custom function to format generated summary e.g to remove <think/> tags from summary
                 },
               },
-
-              -- Memory system (requires VectorCode CLI)
-              memory = {
-                -- Automatically index summaries when they are generated
-                auto_create_memories_on_summary_generation = true,
-                -- Path to the VectorCode executable
-                vectorcode_exe = "vectorcode",
-                -- Tool configuration
-                tool_opts = {
-                  -- Default number of memories to retrieve
-                  default_num = 10,
-                },
-                -- Enable notifications for indexing progress
-                notify = true,
-                -- Index all existing memories on startup
-                -- (requires VectorCode 0.6.12+ for efficient incremental indexing)
-                index_on_startup = false,
-              },
             },
           },
         },
@@ -197,7 +139,6 @@ return {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
       "ravitemer/mcphub.nvim",
-      "Davidyz/VectorCode",
       "ravitemer/codecompanion-history.nvim",
     },
   },
@@ -210,11 +151,5 @@ return {
     config = function()
       require("mcphub").setup()
     end,
-  },
-  {
-    "Davidyz/VectorCode",
-    version = "*",
-    build = "uv tool upgrade vectorcode --native-tls",
-    dependencies = { "nvim-lua/plenary.nvim" },
   },
 }
