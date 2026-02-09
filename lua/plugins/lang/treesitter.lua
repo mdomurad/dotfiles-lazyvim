@@ -25,6 +25,7 @@ return {
         "sql",
         "c_sharp",
         "razor",
+        "nu",
       },
 
       -- matchup = {
