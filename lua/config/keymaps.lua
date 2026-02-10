@@ -188,4 +188,7 @@ which_key.add({
 
   -- Sidekick NES
   { "<C-p>", LazyVim.cmp.map({ "ai_nes" }, "<tab>"), mode = { "n" }, expr = true },
+
+  -- ccc.nvim color picker
+  { "<leader>cp", "<cmd>CccPick<cr>", desc = "Pick color" },
 })

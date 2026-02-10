@@ -1,3 +1,3 @@
 return {
-  require("plugins.themes.kanso"),
+  require("plugins.themes.kanagawa"),
 }
