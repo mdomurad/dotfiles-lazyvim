@@ -6,7 +6,7 @@ return {
   -- Use LazyVim's native `keys` table to define your mappings
   keys = {
     {
-      ";x",
+      "<leader>mx",
       "<Plug>(bullets-toggle-checkbox)",
       ft = "markdown",
       desc = "Toggle Checkbox",
