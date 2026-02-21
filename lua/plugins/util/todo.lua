@@ -41,6 +41,13 @@ return {
       mode = { "i" },
     },
     {
+      "<CR>",
+      "<Plug>(bullets-newline)",
+      ft = "markdown",
+      desc = "New Bullet Below (Insert Mode, Enter)",
+      mode = { "i" },
+    },
+    {
       "<leader>m>",
       "<Plug>(bullets-demote)",
       ft = "markdown",
