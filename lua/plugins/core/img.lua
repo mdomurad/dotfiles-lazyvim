@@ -17,9 +17,5 @@ return {
         },
       },
     },
-    keys = {
-      -- Binds the paste action to <leader>p
-      { "<leader>p", "<cmd>PasteImage<cr>", desc = "Paste image from system clipboard" },
-    },
   },
 }
