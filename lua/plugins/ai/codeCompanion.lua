@@ -4,14 +4,23 @@ return {
     opts = {},
     config = function()
       require("codecompanion").setup({
-        strategies = {
+        interactions = {
           chat = {
-            name = "copilot",
-            model = "gpt-5-mini",
+            adapter = {
+              name = "copilot",
+              model = "gpt-5-mini",
+            },
+          },
+          background = {
+            adapter = {
+              name = "copilot",
+              model = "gpt-5-mini",
+            },
           },
           inline = {
             adapter = "copilot",
           },
+          cmd = { adapter = "copilot" },
         },
         extensions = {
           mcphub = {
@@ -24,7 +33,7 @@ return {
               show_result_in_chat = true, -- Show tool results directly in chat buffer
               format_tool = nil, -- function(tool_name:string, tool: CodeCompanion.Agent.Tool) : string Function to format tool names to show in the chat buffer
               -- MCP Resources
-              make_vars = true, -- Convert MCP resources to #variables for prompts
+              make_vars = false, -- Convert MCP resources to #variables for prompts
               -- MCP Prompts
               make_slash_commands = true, -- Add MCP prompts as /slash commands
             },
