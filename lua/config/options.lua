@@ -19,8 +19,8 @@ vim.opt.expandtab = true
 vim.opt.scrolloff = 10
 
 -- Windows powershell config
-vim.opt.shell = "powershell.exe"
-vim.opt.shellcmdflag = "-nologo -noprofile -ExecutionPolicy RemoteSigned -command"
+vim.opt.shell = "nu.exe"
+vim.opt.shellcmdflag = "-c"
 vim.opt.shellxquote = ""
 
 vim.opt.backupskip = { "/tmp/*", "/private/tmp/*" }
