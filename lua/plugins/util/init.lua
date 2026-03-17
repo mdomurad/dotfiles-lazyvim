@@ -4,4 +4,5 @@ return {
   require("plugins.util.todo"),
   require("plugins.util.vim-coach"),
   require("plugins.util.flote"),
+  require("plugins.util.email"),
 }
