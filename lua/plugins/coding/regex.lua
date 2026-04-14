@@ -14,7 +14,6 @@ return {
           "tsx",
           "cjsx",
           "mjsx",
-          "cs",
         },
       })
     end,
