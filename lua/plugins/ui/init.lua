@@ -1,5 +1,5 @@
 return {
-  require("plugins.ui.filebrowser"),
+  require("plugins.ui.canola"),
   require("plugins.ui.editor"),
   require("plugins.ui.hop"),
   require("plugins.ui.lualine"),
