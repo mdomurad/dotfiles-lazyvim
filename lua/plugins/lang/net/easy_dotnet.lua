@@ -5,7 +5,7 @@ return {
     config = function()
       require("easy-dotnet").setup({
         picker = "snacks",
-        lsp = { enabled = false },
+        lsp = { enabled = true },
         test_runner = {
           viewmode = "float",
           mappings = {
