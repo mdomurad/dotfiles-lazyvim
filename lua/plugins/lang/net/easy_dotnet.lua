@@ -3,6 +3,10 @@ return {
     "GustavEikaas/easy-dotnet.nvim",
     dependencies = { "nvim-lua/plenary.nvim", "folke/snacks.nvim" },
     config = function()
+      -- Set MSBuild Configuration env var for Roslyn LSP (Revit SDK framework resolution)
+      vim.g.revit_lsp_config = vim.g.revit_lsp_config or "Debug R22"
+      vim.env.Configuration = vim.g.revit_lsp_config
+
       require("easy-dotnet").setup({
         picker = "snacks",
         lsp = { enabled = true },
@@ -57,12 +61,10 @@ return {
                 local qf_entries = {}
                 local seen = {}
                 for _, line in ipairs(lines) do
-                  local filepath, lnum, col, msg =
-                    line:match("^(.-)%((%d+),(%d+)%):%s+error%s+(.+)$")
+                  local filepath, lnum, col, msg = line:match("^(.-)%((%d+),(%d+)%):%s+error%s+(.+)$")
                   local entry_type = "E"
                   if not filepath then
-                    filepath, lnum, col, msg =
-                      line:match("^(.-)%((%d+),(%d+)%):%s+warning%s+(.+)$")
+                    filepath, lnum, col, msg = line:match("^(.-)%((%d+),(%d+)%):%s+warning%s+(.+)$")
                     entry_type = "W"
                   end
                   if filepath then
@@ -94,7 +96,9 @@ return {
 
           local function revit_build(build_type)
             vim.ui.select(revit_versions, { prompt = "Revit Version" }, function(year)
-              if not year then return end
+              if not year then
+                return
+              end
               local version = year:gsub("^20", "")
               local config = (build_type == "release" and "Release" or "Debug") .. " R" .. version
               dotnet_async_qf({ "dotnet", "build", "-c", config }, "Revit Build [" .. config .. "]")
@@ -104,6 +108,47 @@ return {
           local function revit_clean(build_type)
             local config = (build_type == "release" and "Release" or "Debug")
             dotnet_async_qf({ "dotnet", "clean", "-c", config }, "Revit Clean [" .. config .. "]")
+          end
+
+          ----------------------------------------------------------------
+          -- Revit LSP configuration switcher
+          --
+          -- Switches the MSBuild Configuration that Roslyn LSP uses to
+          -- evaluate projects, controlling TargetFramework resolution.
+          ----------------------------------------------------------------
+          local function revit_lsp_switch()
+            local configs = {}
+            for _, year in ipairs(revit_versions) do
+              local short = year:gsub("^20", "")
+              table.insert(configs, "Debug R" .. short)
+            end
+
+            vim.ui.select(configs, {
+              prompt = "Revit LSP Configuration",
+              format_item = function(item)
+                local mark = item == vim.g.revit_lsp_config and " * " or "   "
+                local short = tonumber(item:match("R(%d+)") or "0")
+                local year = short + 2000
+                local tfm = "net48"
+                if year >= 2027 then
+                  tfm = "net10.0-windows7.0"
+                elseif year >= 2025 then
+                  tfm = "net8.0-windows7.0"
+                end
+                return mark .. item .. "  ->  " .. tfm
+              end,
+            }, function(choice)
+              if not choice then
+                return
+              end
+              vim.g.revit_lsp_config = choice
+              vim.env.Configuration = choice
+              vim.notify("Revit LSP -> " .. choice .. " -- restarting...", vim.log.levels.INFO)
+              vim.lsp.stop_client(vim.lsp.get_clients())
+              vim.defer_fn(function()
+                vim.cmd("edit")
+              end, 500)
+            end)
           end
 
           ----------------------------------------------------------------
@@ -125,18 +170,45 @@ return {
             { "<localleader>o", "<cmd>Dotnet restore<CR>", desc = "Restore packages" },
 
             -- Revit build (pick version -> async build -> quickfix)
-            { "<localleader>rd", function() revit_build("debug") end, desc = "Revit build Debug" },
-            { "<localleader>rr", function() revit_build("release") end, desc = "Revit build Release" },
+            {
+              "<localleader>rr",
+              function()
+                revit_build("debug")
+              end,
+              desc = "Revit build Debug",
+            },
+            {
+              "<localleader>rb",
+              function()
+                revit_build("release")
+              end,
+              desc = "Revit build Release",
+            },
 
             -- Revit clean (async -> quickfix)
-            { "<localleader>rcd", function() revit_clean("debug") end, desc = "Revit clean Debug" },
-            { "<localleader>rcr", function() revit_clean("release") end, desc = "Revit clean Release" },
+            {
+              "<localleader>rcd",
+              function()
+                revit_clean("debug")
+              end,
+              desc = "Revit clean Debug",
+            },
+            {
+              "<localleader>rcr",
+              function()
+                revit_clean("release")
+              end,
+              desc = "Revit clean Release",
+            },
+
+            -- Revit LSP config switcher
+            { "<localleader>rl", revit_lsp_switch, desc = "Revit LSP config" },
           }
 
           if wk_ok then
             local wk_mappings = {
               { "<localleader>", group = "Dotnet", buffer = ev.buf },
-              { "<localleader>r", group = "Revit Build", buffer = ev.buf },
+              { "<localleader>r", group = "Revit", buffer = ev.buf },
               { "<localleader>rc", group = "Revit Clean", buffer = ev.buf },
             }
             for _, m in ipairs(mappings) do
