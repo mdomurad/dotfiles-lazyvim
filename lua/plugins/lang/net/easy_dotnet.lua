@@ -40,9 +40,37 @@ return {
           local map_opts = { buffer = ev.buf, noremap = true, silent = true }
 
           ----------------------------------------------------------------
-          -- Revit build/clean helpers
+          -- Revit build/clean helpers (async, quickfix)
           ----------------------------------------------------------------
           local revit_versions = { "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027" }
+
+          -- MSBuild error format for quickfix parsing
+          local msbuild_efm = table.concat({
+            "%f(%l,%c): error %m",
+            "%f(%l,%c): warning %m",
+          }, ",")
+
+          --- Run a dotnet command async and populate quickfix with results
+          ---@param cmd string[]
+          ---@param title string
+          local function dotnet_async_qf(cmd, title)
+            vim.notify(title .. "...", vim.log.levels.INFO)
+            vim.system(cmd, { text = true }, function(result)
+              vim.schedule(function()
+                local output = (result.stdout or "") .. "\n" .. (result.stderr or "")
+                local lines = vim.split(output, "\n", { trimempty = true })
+
+                vim.fn.setqflist({}, "r", { title = title, lines = lines, efm = msbuild_efm })
+
+                if result.code == 0 then
+                  vim.notify(title .. " succeeded", vim.log.levels.INFO)
+                else
+                  vim.notify(title .. " FAILED", vim.log.levels.ERROR)
+                  vim.cmd("copen")
+                end
+              end)
+            end)
+          end
 
           local function revit_build(build_type)
             vim.ui.select(revit_versions, { prompt = "Revit Version" }, function(year)
@@ -51,15 +79,13 @@ return {
               end
               local version = year:gsub("^20", "")
               local config = (build_type == "release" and "Release" or "Debug") .. " R" .. version
-              vim.cmd("vsplit | enew")
-              vim.fn.jobstart('dotnet build -c "' .. config .. '"')
+              dotnet_async_qf({ "dotnet", "build", "-c", config }, "Revit Build [" .. config .. "]")
             end)
           end
 
           local function revit_clean(build_type)
             local config = (build_type == "release" and "Release" or "Debug")
-            vim.cmd("vsplit | enew")
-            vim.fn.jobstart('dotnet clean -c "' .. config .. '"')
+            dotnet_async_qf({ "dotnet", "clean", "-c", config }, "Revit Clean [" .. config .. "]")
           end
 
           ----------------------------------------------------------------
@@ -80,7 +106,7 @@ return {
             { "<localleader>i", "<cmd>Dotnet diagnostic<CR>", desc = "Workspace diagnostics" },
             { "<localleader>o", "<cmd>Dotnet restore<CR>", desc = "Restore packages" },
 
-            -- Revit build (pick version → build)
+            -- Revit build (pick version → async build → quickfix)
             {
               "<localleader>rd",
               function()
@@ -96,7 +122,7 @@ return {
               desc = "Revit build Release",
             },
 
-            -- Revit clean (direct, no version needed)
+            -- Revit clean (async → quickfix)
             {
               "<localleader>rcd",
               function()
