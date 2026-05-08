@@ -153,7 +153,7 @@ return {
               vim.g.revit_lsp_config = choice
               vim.env.Configuration = choice
               vim.notify("Revit LSP -> " .. choice .. " -- restarting...", vim.log.levels.INFO)
-              vim.lsp.stop_client(vim.lsp.get_clients())
+              vim.lsp.stop(vim.lsp.get_clients())
               vim.defer_fn(function()
                 vim.cmd("edit")
               end, 500)
@@ -210,6 +210,19 @@ return {
               desc = "Revit clean Release",
             },
 
+            -- Entity Framework
+            { "<localleader>ea", "<cmd>Dotnet ef migrations add<CR>", desc = "EF migration add" },
+            { "<localleader>er", "<cmd>Dotnet ef migrations remove<CR>", desc = "EF migration remove" },
+            { "<localleader>el", "<cmd>Dotnet ef migrations list<CR>", desc = "EF migrations list" },
+            { "<localleader>eu", "<cmd>Dotnet ef database update<CR>", desc = "EF database update" },
+            { "<localleader>ep", "<cmd>Dotnet ef database update pick<CR>", desc = "EF database update (pick)" },
+            { "<localleader>ed", "<cmd>Dotnet ef database drop<CR>", desc = "EF database drop" },
+
+            -- LSP
+            { "<localleader>ls", "<cmd>Dotnet lsp start<CR>", desc = "LSP start" },
+            { "<localleader>lx", "<cmd>Dotnet lsp stop<CR>", desc = "LSP stop" },
+            { "<localleader>lr", "<cmd>Dotnet lsp restart<CR>", desc = "LSP restart" },
+
             -- Revit LSP config switcher
             { "<localleader>rl", revit_lsp_switch, desc = "Revit LSP config" },
           }
@@ -217,6 +230,8 @@ return {
           if wk_ok then
             local wk_mappings = {
               { "<localleader>", group = "Dotnet", buffer = ev.buf },
+              { "<localleader>e", group = "Entity Framework", buffer = ev.buf },
+              { "<localleader>l", group = "LSP", buffer = ev.buf },
               { "<localleader>r", group = "Revit", buffer = ev.buf },
               { "<localleader>rc", group = "Revit Clean", buffer = ev.buf },
             }
