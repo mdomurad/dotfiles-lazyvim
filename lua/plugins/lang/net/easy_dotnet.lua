@@ -51,32 +51,30 @@ return {
             vim.notify(title .. "...", vim.log.levels.INFO)
             vim.system(cmd, { text = true }, function(result)
               vim.schedule(function()
-                local output = (result.stdout or "") .. "\n" .. (result.stderr or "")
-                local lines = vim.split(output, "\n", { trimempty = true })
+                local lines = vim.split(result.stdout or "", "\n", { trimempty = true })
 
                 -- Parse MSBuild output: path(line,col): error/warning CODE: message [project]
                 local qf_entries = {}
+                local seen = {}
                 for _, line in ipairs(lines) do
                   local filepath, lnum, col, msg =
                     line:match("^(.-)%((%d+),(%d+)%):%s+error%s+(.+)$")
-                  if filepath then
-                    table.insert(qf_entries, {
-                      filename = filepath,
-                      lnum = tonumber(lnum),
-                      col = tonumber(col),
-                      text = msg,
-                      type = "E",
-                    })
-                  else
+                  local entry_type = "E"
+                  if not filepath then
                     filepath, lnum, col, msg =
                       line:match("^(.-)%((%d+),(%d+)%):%s+warning%s+(.+)$")
-                    if filepath then
+                    entry_type = "W"
+                  end
+                  if filepath then
+                    local key = filepath .. ":" .. lnum .. ":" .. col .. ":" .. msg
+                    if not seen[key] then
+                      seen[key] = true
                       table.insert(qf_entries, {
                         filename = filepath,
                         lnum = tonumber(lnum),
                         col = tonumber(col),
                         text = msg,
-                        type = "W",
+                        type = entry_type,
                       })
                     end
                   end
