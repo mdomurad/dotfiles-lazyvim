@@ -9,14 +9,14 @@ return {
         test_runner = {
           viewmode = "float",
           mappings = {
-            -- Buffer mappings (.cs files) — use <localleader> to avoid LazyVim conflicts
+            -- Buffer mappings (.cs files) — use <localleader> to avoid LazyVim conflicts
             run_test_from_buffer = { lhs = "<localleader>r", desc = "run test from buffer" },
             run_all_tests_from_buffer = { lhs = "<localleader>R", desc = "run all tests in file" },
             get_build_errors = { lhs = "<localleader>e", desc = "get build errors" },
             peek_stack_trace_from_buffer = { lhs = "<localleader>p", desc = "peek stack trace from buffer" },
             debug_test_from_buffer = { lhs = "<localleader>d", desc = "debug test from buffer" },
 
-            -- Test runner window mappings — simple keys for dedicated UI buffer
+            -- Test runner window mappings — simple keys for dedicated UI buffer
             debug_test = { lhs = "d", desc = "debug test" },
             go_to_file = { lhs = "g", desc = "go to file" },
             run_all = { lhs = "R", desc = "run all tests" },
@@ -44,13 +44,7 @@ return {
           ----------------------------------------------------------------
           local revit_versions = { "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027" }
 
-          -- MSBuild error format for quickfix parsing
-          local msbuild_efm = table.concat({
-            "%f(%l,%c): error %m",
-            "%f(%l,%c): warning %m",
-          }, ",")
-
-          --- Run a dotnet command async and populate quickfix with results
+          --- Parse MSBuild output and populate quickfix with errors/warnings only
           ---@param cmd string[]
           ---@param title string
           local function dotnet_async_qf(cmd, title)
@@ -60,12 +54,40 @@ return {
                 local output = (result.stdout or "") .. "\n" .. (result.stderr or "")
                 local lines = vim.split(output, "\n", { trimempty = true })
 
-                vim.fn.setqflist({}, "r", { title = title, lines = lines, efm = msbuild_efm })
+                -- Parse MSBuild output: path(line,col): error/warning CODE: message [project]
+                local qf_entries = {}
+                for _, line in ipairs(lines) do
+                  local filepath, lnum, col, msg =
+                    line:match("^(.-)%((%d+),(%d+)%):%s+error%s+(.+)$")
+                  if filepath then
+                    table.insert(qf_entries, {
+                      filename = filepath,
+                      lnum = tonumber(lnum),
+                      col = tonumber(col),
+                      text = msg,
+                      type = "E",
+                    })
+                  else
+                    filepath, lnum, col, msg =
+                      line:match("^(.-)%((%d+),(%d+)%):%s+warning%s+(.+)$")
+                    if filepath then
+                      table.insert(qf_entries, {
+                        filename = filepath,
+                        lnum = tonumber(lnum),
+                        col = tonumber(col),
+                        text = msg,
+                        type = "W",
+                      })
+                    end
+                  end
+                end
+
+                vim.fn.setqflist({}, "r", { title = title, items = qf_entries })
 
                 if result.code == 0 then
                   vim.notify(title .. " succeeded", vim.log.levels.INFO)
                 else
-                  vim.notify(title .. " FAILED", vim.log.levels.ERROR)
+                  vim.notify(title .. " FAILED (" .. #qf_entries .. " issues)", vim.log.levels.ERROR)
                   vim.cmd("copen")
                 end
               end)
@@ -74,9 +96,7 @@ return {
 
           local function revit_build(build_type)
             vim.ui.select(revit_versions, { prompt = "Revit Version" }, function(year)
-              if not year then
-                return
-              end
+              if not year then return end
               local version = year:gsub("^20", "")
               local config = (build_type == "release" and "Release" or "Debug") .. " R" .. version
               dotnet_async_qf({ "dotnet", "build", "-c", config }, "Revit Build [" .. config .. "]")
@@ -95,7 +115,7 @@ return {
             -- Dotnet commands
             { "<localleader>n", "<cmd>Dotnet<CR>", desc = "Dotnet picker" },
             { "<localleader>t", "<cmd>Dotnet testrunner<CR>", desc = "Toggle test runner" },
-            { "<localleader>b", "<cmd>Dotnet build solution quickfix<CR>", desc = "Build solution → quickfix" },
+            { "<localleader>b", "<cmd>Dotnet build solution quickfix<CR>", desc = "Build solution -> quickfix" },
             { "<localleader>x", "<cmd>Dotnet run default<CR>", desc = "Run default project" },
             { "<localleader>D", "<cmd>Dotnet debug default<CR>", desc = "Debug default project" },
             { "<localleader>w", "<cmd>Dotnet watch default<CR>", desc = "Watch mode" },
@@ -106,37 +126,13 @@ return {
             { "<localleader>i", "<cmd>Dotnet diagnostic<CR>", desc = "Workspace diagnostics" },
             { "<localleader>o", "<cmd>Dotnet restore<CR>", desc = "Restore packages" },
 
-            -- Revit build (pick version → async build → quickfix)
-            {
-              "<localleader>rd",
-              function()
-                revit_build("debug")
-              end,
-              desc = "Revit build Debug",
-            },
-            {
-              "<localleader>rr",
-              function()
-                revit_build("release")
-              end,
-              desc = "Revit build Release",
-            },
+            -- Revit build (pick version -> async build -> quickfix)
+            { "<localleader>rd", function() revit_build("debug") end, desc = "Revit build Debug" },
+            { "<localleader>rr", function() revit_build("release") end, desc = "Revit build Release" },
 
-            -- Revit clean (async → quickfix)
-            {
-              "<localleader>rcd",
-              function()
-                revit_clean("debug")
-              end,
-              desc = "Revit clean Debug",
-            },
-            {
-              "<localleader>rcr",
-              function()
-                revit_clean("release")
-              end,
-              desc = "Revit clean Release",
-            },
+            -- Revit clean (async -> quickfix)
+            { "<localleader>rcd", function() revit_clean("debug") end, desc = "Revit clean Debug" },
+            { "<localleader>rcr", function() revit_clean("release") end, desc = "Revit clean Release" },
           }
 
           if wk_ok then
