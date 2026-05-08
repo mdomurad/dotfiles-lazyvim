@@ -38,6 +38,7 @@ vim.opt.splitbelow = true -- Put new windows below current
 vim.opt.splitright = true -- Put new windows right of current
 vim.opt.splitkeep = "cursor"
 vim.opt.mouse = ""
+vim.filetype.add({ extension = { svx = "markdown" } })
 
 -- LSP
 vim.lsp.enable("nushell")
