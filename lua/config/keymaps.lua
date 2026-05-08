@@ -162,14 +162,6 @@ which_key.add({
     desc = "Revit dotnet clean",
   },
 
-  -- easy-dotnet
-  -- coordinate with testrunner mappings located in easy-dotnet setup
-
-  { ";d", group = "+Net" },
-  { ";dd", "<cmd>Dotnet<CR>", desc = "Dotnet picker" },
-  { ";dt", "<cmd>Dotnet test<CR>", desc = "Run tests" },
-  { ";dr", "<cmd>Dotnet testrunner<CR>", desc = "Toggle test runner" },
-
   -- Flogit
   { "gl", "<cmd>Flogsplit<CR>", desc = "Flogsplit" },
 
