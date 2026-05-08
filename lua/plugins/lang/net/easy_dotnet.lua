@@ -10,8 +10,17 @@ return {
       require("easy-dotnet").setup({
         picker = "snacks",
         lsp = { enabled = true },
+        auto_bootstrap_namespace = {
+          --block_scoped, file_scoped
+          type = "file_scoped",
+          enabled = true,
+          use_clipboard_json = {
+            behavior = "prompt", --'auto' | 'prompt' | 'never',
+            register = "+", -- which register to check
+          },
+        },
         test_runner = {
-          viewmode = "float",
+          viewmode = "vsplit",
           mappings = {
             -- Buffer mappings (.cs files) — use <localleader> to avoid LazyVim conflicts
             run_test_from_buffer = { lhs = "<localleader>r", desc = "run test from buffer" },
