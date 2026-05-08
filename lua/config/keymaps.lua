@@ -75,59 +75,6 @@ function CopilotFixNextDiagnosticProvideBuffer()
   end
 end
 
-local build_types = { "debug", "release" }
-local versions = { "2020", "2021", "2022", "2023", "2024", "2025" }
-
--- Use Snacks picker for Revit .NET project build selection
-function DotnetBuildRevitSnacks()
-  vim.ui.select(build_types, { prompt = "Select Build Type" }, function(build_type)
-    if not build_type then
-      return
-    end
-    vim.ui.select(versions, { prompt = "Select Revit Version" }, function(versionYear)
-      if not versionYear then
-        return
-      end
-      local version = versionYear:gsub("^20", "")
-      DotnetBuildRevit(build_type, version)
-    end)
-  end)
-end
-
--- Use Snacks picker for Revit .NET project clean selection
-function DotnetCleanRevitSnacks()
-  vim.ui.select(build_types, { prompt = "Select Build Type" }, function(build_type)
-    if not build_type then
-      return
-    end
-    vim.ui.select(versions, { prompt = "Select Revit Version" }, function(versionYear)
-      if not versionYear then
-        return
-      end
-      local version = versionYear:gsub("^20", "")
-      DotnetCleanRevit(build_type, version)
-    end)
-  end)
-end
-
--- Helper function to run dotnet clean command for Revit
-function DotnetCleanRevit(build_type, version)
-  local config = (build_type == "release" and "Release" or "Debug")
-  local cmd = 'dotnet clean -c "' .. config .. '"'
-  vim.cmd("vsplit")
-  vim.cmd("enew")
-  vim.fn.termopen(cmd)
-end
-
--- Helper function to run dotnet build command for Revit
-function DotnetBuildRevit(build_type, version)
-  local config = (build_type == "release" and "Release" or "Debug") .. " R" .. version
-  local cmd = 'dotnet build -c "' .. config .. '"'
-  vim.cmd("vsplit")
-  vim.cmd("enew")
-  vim.fn.termopen(cmd)
-end
-
 ----------------------------------------------------------------------------------------------------
 --- WhichKey mappings
 -- Normal mode mappings
@@ -144,23 +91,6 @@ which_key.add({
 
   -- wtf.nvim
   { "<leader>ow", group = "+wtf" },
-
-  -- Revit addins
-  { ";r", group = "+Revit" },
-  {
-    ";rb",
-    function()
-      DotnetBuildRevitSnacks()
-    end,
-    desc = "Revit dotnet build",
-  },
-  {
-    ";rc",
-    function()
-      DotnetCleanRevitSnacks()
-    end,
-    desc = "Revit dotnet clean",
-  },
 
   -- Flogit
   { "gl", "<cmd>Flogsplit<CR>", desc = "Flogsplit" },

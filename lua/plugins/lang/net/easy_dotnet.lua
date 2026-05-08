@@ -39,7 +39,34 @@ return {
           local wk_ok, wk = pcall(require, "which-key")
           local map_opts = { buffer = ev.buf, noremap = true, silent = true }
 
+          ----------------------------------------------------------------
+          -- Revit build/clean helpers
+          ----------------------------------------------------------------
+          local revit_versions = { "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027" }
+
+          local function revit_build(build_type)
+            vim.ui.select(revit_versions, { prompt = "Revit Version" }, function(year)
+              if not year then
+                return
+              end
+              local version = year:gsub("^20", "")
+              local config = (build_type == "release" and "Release" or "Debug") .. " R" .. version
+              vim.cmd("vsplit | enew")
+              vim.fn.jobstart('dotnet build -c "' .. config .. '"')
+            end)
+          end
+
+          local function revit_clean(build_type)
+            local config = (build_type == "release" and "Release" or "Debug")
+            vim.cmd("vsplit | enew")
+            vim.fn.jobstart('dotnet clean -c "' .. config .. '"')
+          end
+
+          ----------------------------------------------------------------
+          -- Mapping table
+          ----------------------------------------------------------------
           local mappings = {
+            -- Dotnet commands
             { "<localleader>n", "<cmd>Dotnet<CR>", desc = "Dotnet picker" },
             { "<localleader>t", "<cmd>Dotnet testrunner<CR>", desc = "Toggle test runner" },
             { "<localleader>b", "<cmd>Dotnet build solution quickfix<CR>", desc = "Build solution → quickfix" },
@@ -52,19 +79,51 @@ return {
             { "<localleader>v", "<cmd>Dotnet project view<CR>", desc = "Project view" },
             { "<localleader>i", "<cmd>Dotnet diagnostic<CR>", desc = "Workspace diagnostics" },
             { "<localleader>o", "<cmd>Dotnet restore<CR>", desc = "Restore packages" },
+
+            -- Revit build (pick version → build)
+            {
+              "<localleader>rd",
+              function()
+                revit_build("debug")
+              end,
+              desc = "Revit build Debug",
+            },
+            {
+              "<localleader>rr",
+              function()
+                revit_build("release")
+              end,
+              desc = "Revit build Release",
+            },
+
+            -- Revit clean (direct, no version needed)
+            {
+              "<localleader>rcd",
+              function()
+                revit_clean("debug")
+              end,
+              desc = "Revit clean Debug",
+            },
+            {
+              "<localleader>rcr",
+              function()
+                revit_clean("release")
+              end,
+              desc = "Revit clean Release",
+            },
           }
 
           if wk_ok then
-            -- Register group label + all mappings via which-key
             local wk_mappings = {
               { "<localleader>", group = "Dotnet", buffer = ev.buf },
+              { "<localleader>r", group = "Revit Build", buffer = ev.buf },
+              { "<localleader>rc", group = "Revit Clean", buffer = ev.buf },
             }
             for _, m in ipairs(mappings) do
               table.insert(wk_mappings, { m[1], m[2], desc = m.desc, buffer = ev.buf })
             end
             wk.add(wk_mappings)
           else
-            -- Fallback: register via vim.keymap.set
             for _, m in ipairs(mappings) do
               vim.keymap.set("n", m[1], m[2], vim.tbl_extend("force", map_opts, { desc = m.desc }))
             end
