@@ -68,15 +68,6 @@ local copilotChat = {
       { "<leader>o", group = "+copilot" },
     })
 
-    vim.keymap.set("n", "<leader>og", function()
-      local select = require("CopilotChat.select")
-      local source = select.visual() or select.line()
-      require("CopilotChat").ask(
-        "/COPILOT_GENERATE Rewrite text to improve clarity and style. Fix all grammar and spelling mistakes. Use language of the original text. Remove line numbers.",
-        { selection = source }
-      )
-    end, { desc = "Fix Grammar" })
-
     vim.keymap.set("n", ";C", function()
       require("CopilotChat").ask(
         "You are an expert at following the Conventional Commit specification. Given the git diff listed below, write commit message for the change:\n#gitdiff:staged\n#gitdiff:unstaged\n with commitizen convention. Make sure the title has maximum 72 characters and message is wrapped at 72 characters. Do not add any surrounding quotes.",

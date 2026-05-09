@@ -119,6 +119,11 @@ return {
         { "<leader>oh", "<cmd>CodeCompanionHistory<cr>", desc = "CodeCompanion History" },
         { "<leader>od", ":'<,'>CodeCompanion Add documentation for the selected code<cr>", desc = "Add docs" },
         { "<leader>or", ":'<,'>CodeCompanion Review the selected code<cr>", desc = "Review selection" },
+        {
+          "<leader>og",
+          ":'<,'>CodeCompanion Rewrite text to improve clarity and style. Fix all grammar and spelling mistakes. Use language of the original text<cr>",
+          desc = "Fix grammar and spelling",
+        },
         { "<leader>ot", ":'<,'>CodeCompanion Add tests for the selected code<cr>", desc = "Add tests" },
         {
           "<leader>of",
