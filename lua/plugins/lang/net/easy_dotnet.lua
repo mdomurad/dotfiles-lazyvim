@@ -109,7 +109,7 @@ return {
                 return
               end
               local version = year:gsub("^20", "")
-              local config = (build_type == "release" and "Release" or "Debug") .. " R" .. version
+              local config = (build_type == "release" and "Release" or "Debug") .. ".R" .. version
               dotnet_async_qf({ "dotnet", "build", "-c", config }, "Revit Build [" .. config .. "]")
             end)
           end
@@ -129,7 +129,7 @@ return {
             local configs = {}
             for _, year in ipairs(revit_versions) do
               local short = year:gsub("^20", "")
-              table.insert(configs, "Debug R" .. short)
+              table.insert(configs, "Debug.R" .. short)
             end
 
             vim.ui.select(configs, {
