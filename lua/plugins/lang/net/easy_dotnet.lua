@@ -153,7 +153,21 @@ return {
               vim.g.revit_lsp_config = choice
               vim.env.Configuration = choice
               vim.notify("Revit LSP -> " .. choice .. " -- restarting...", vim.log.levels.INFO)
-              vim.lsp.stop(vim.lsp.get_clients())
+              -- Properly stop all active LSP clients
+              local clients = vim.lsp.get_clients()
+              if next(clients) ~= nil then
+                local ids = {}
+                for _, client in pairs(clients) do
+                  if client and client.id then
+                    table.insert(ids, client.id)
+                  end
+                end
+                if #ids == 1 then
+                  vim.lsp.stop_client(ids[1])
+                elseif #ids > 1 then
+                  vim.lsp.stop_client(ids)
+                end
+              end
               vim.defer_fn(function()
                 vim.cmd("edit")
               end, 500)
