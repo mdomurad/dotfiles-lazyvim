@@ -7,10 +7,10 @@ return {
         vim.fn.expand("<sfile>:p:h") .. "/chatGPTactions.json",
       },
       openai_params = {
-        model = "gpt-5-mini",
+        model = "gpt-5.4-mini",
       },
       openai_edit_params = {
-        model = "gpt-5-mini",
+        model = "gpt-5.4-mini",
       },
     })
   end,
