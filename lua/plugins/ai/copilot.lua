@@ -60,8 +60,10 @@ local copilotChat = {
     { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
     { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
   },
-  config = function(_, opts)
-    require("CopilotChat").setup(opts)
+  config = function()
+    require("CopilotChat").setup({
+      model = "gpt-5.4-mini",
+    })
 
     local which_key = require("which-key")
     which_key.add({

@@ -9,6 +9,7 @@ return {
     config = function()
       require("wtf").setup({
         provider = "copilot",
+        providers = { copilot = { model_id = "gpt-5-mini" } },
       })
     end,
     opts = {},
