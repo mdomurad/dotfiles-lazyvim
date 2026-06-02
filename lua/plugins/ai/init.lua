@@ -7,7 +7,7 @@ local plugins = {
   -- require("plugins.ai.opencode"),
 
   -- Enabled plugins
-  require("plugins.ai.copilot"),
+  require("plugins.ai.copilot_lsp"),
   require("plugins.ai.codeCompanion"),
   require("plugins.ai.wtf"),
 }
