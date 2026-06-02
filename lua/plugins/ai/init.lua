@@ -1,13 +1,6 @@
 local user = os.getenv("USERNAME")
 
 local plugins = {
-  -- Disabled plugins, uncomment to enable
-  -- require("plugins.ai.minuet"),
-  -- require("plugins.ai.chatgpt"),
-  -- require("plugins.ai.opencode"),
-
-  -- Enabled plugins
-  require("plugins.ai.copilot_lsp"),
   require("plugins.ai.codeCompanion"),
   require("plugins.ai.wtf"),
 }
