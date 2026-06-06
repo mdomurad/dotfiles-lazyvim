@@ -1,14 +1,14 @@
-local user = os.getenv("USERNAME")
+local user_config = require("config.user")
 
 local plugins = {
   require("plugins.ai.codeCompanion"),
   require("plugins.ai.wtf"),
 }
 
-if user == "ianus" then
-  -- User-specific plugins can be added here.
-  -- For example, to enable avante for user 'ianus':
-  -- table.insert(plugins, require("plugins.ai.avante"))
+if user_config.is_ianus then
+  -- Inline autocomplete and copilot/sidekick overrides — ianus only
+  table.insert(plugins, require("plugins.ai.minuet"))
+  table.insert(plugins, require("plugins.ai.ianus"))
 end
 
 return plugins

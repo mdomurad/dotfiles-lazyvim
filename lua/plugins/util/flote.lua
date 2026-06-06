@@ -1,3 +1,5 @@
+local user_config = require("config.user")
+
 return {
   {
     "JellyApple102/flote.nvim",
@@ -8,7 +10,7 @@ return {
         window_border = "solid",
         window_title = true,
         notes_dir = (
-          os.getenv("USERNAME") == "ianus" and "C:\\clouds\\mega\\tbb\\dev\\notes\\flote" or "~/notes/flote"
+          user_config.is_ianus and "C:\\clouds\\mega\\tbb\\dev\\notes\\flote" or "~/notes/flote"
         ),
         files = {
           global = "flote-global.md",

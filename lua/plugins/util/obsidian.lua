@@ -1,4 +1,4 @@
-local username = os.getenv("USERNAME")
+local user_config = require("config.user")
 
 local workspaces = {
   {
@@ -11,7 +11,7 @@ local workspaces = {
   },
 }
 
-if username == "ianus" then
+if user_config.is_ianus then
   local additional_workspaces = {
     {
       name = "ianus",
