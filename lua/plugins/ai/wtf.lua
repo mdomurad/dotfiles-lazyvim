@@ -1,5 +1,5 @@
-local user_config = require("config.user")
-local is_ianus = user_config.is_ianus
+local ai_config = require("config.ai")
+local is_ianus = ai_config.is_ianus
 
 return {
   {
@@ -40,7 +40,7 @@ return {
         -- Other users: keep Copilot as before
         wtf_opts = {
           provider  = "copilot",
-          providers = { copilot = { model_id = "gpt-5.4-mini" } },
+          providers = { copilot = { model_id = ai_config.wtf.copilot } },
         }
       end
 

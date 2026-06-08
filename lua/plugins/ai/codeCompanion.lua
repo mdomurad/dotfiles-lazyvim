@@ -2,18 +2,28 @@
 -- Adapter state and fallback for ianus
 -- ---------------------------------------------------------------------------
 
-local user_config = require("config.user")
-local is_ianus = user_config.is_ianus
+local ai_config = require("config.ai")
+local is_ianus = ai_config.is_ianus
 
 -- Track preferred chat adapter for ianus (codex or deepseek_fast)
 local _ianus_chat_adapter = "codex"
 
---- Get current chat adapter for ianus with fallback support
-local function get_chat_adapter()
-  if not is_ianus then
-    return nil  -- Use default for non-ianus users
+local function copilot_adapter(model)
+  return { name = "copilot", model = model }
+end
+
+local function error_message(err)
+  if type(err) == "table" then
+    return vim.trim(vim.inspect(err))
   end
-  return _ianus_chat_adapter
+  return vim.trim(tostring(err or ""))
+end
+
+local function is_supported_model_error(err)
+  local text = error_message(err)
+  return text:find("unsupported_api_for_model", 1, true)
+    or text:find("not accessible via the /chat/completions endpoint", 1, true)
+    or text:find("Timeout waiting for models", 1, true)
 end
 
 --- Toggle between codex and deepseek for ianus
@@ -22,7 +32,7 @@ local function toggle_chat_adapter()
     vim.notify("Adapter toggle is only available for ianus user", vim.log.levels.WARN)
     return
   end
-  
+
   if _ianus_chat_adapter == "codex" then
     _ianus_chat_adapter = "deepseek_fast"
     vim.notify("Switched to DeepSeek adapter", vim.log.levels.INFO, { title = "CodeCompanion" })
@@ -38,10 +48,10 @@ local function show_adapter_status()
     vim.notify("Adapter status is only relevant for ianus user", vim.log.levels.WARN)
     return
   end
-  
+
   local status = _ianus_chat_adapter == "codex" and "Codex (ChatGPT)" or "DeepSeek"
   vim.notify(
-    "Current chat adapter: " .. status .. "\nToggle with <leader>am",
+    "Current chat adapter: " .. status .. "\nToggle with <leader>om",
     vim.log.levels.INFO,
     { title = "CodeCompanion" }
   )
@@ -52,7 +62,7 @@ local function try_fallback_adapter()
   if not is_ianus or _ianus_chat_adapter ~= "codex" then
     return false
   end
-  
+
   vim.notify(
     "Codex rate limit hit, falling back to DeepSeek",
     vim.log.levels.WARN,
@@ -68,7 +78,7 @@ local function open_chat()
     vim.cmd("CodeCompanionChat Toggle")
     return
   end
-  
+
   -- Ianus: use dynamic adapter with fallback on error
   require("codecompanion").chat({
     adapter = _ianus_chat_adapter,
@@ -84,7 +94,7 @@ local function open_chat()
         else
           vim.schedule(function()
             vim.notify(
-              "Chat failed: " .. vim.inspect(err),
+              "Chat failed: " .. error_message(err),
               vim.log.levels.ERROR,
               { title = "CodeCompanion" }
             )
@@ -160,18 +170,19 @@ end
 
 --- Fire a hidden auto-submitted chat for commit helpers.
 --- ianus: uses deepseek_fast HTTP adapter (fast, no ACP startup overhead).
---- Others: uses the default chat adapter (copilot).
+--- Others: uses a lightweight Copilot model first, then a supported fallback
+--- if that model is rejected.
 local function ai_ask(prompt, on_done)
   local attempt_count = 0
-  local max_attempts = 2
-  
+
   local function try_request(adapter_override)
     attempt_count = attempt_count + 1
-    
+
+    local adapter = adapter_override or (is_ianus and "deepseek_fast" or copilot_adapter(ai_config.codecompanion.quick_commit))
     require("codecompanion").chat({
       hidden = true,
       auto_submit = true,
-      adapter = adapter_override or (is_ianus and "deepseek_fast" or nil),
+      adapter = adapter,
       messages = { { role = "user", content = prompt } },
       callbacks = {
         on_created = function(chat)
@@ -185,20 +196,32 @@ local function ai_ask(prompt, on_done)
           end)
         end,
         on_error = function(err)
-          -- Try fallback on first attempt for ianus
-          if attempt_count < max_attempts then
-            local fallback = try_fallback_adapter()
-            if fallback then
-              vim.schedule(function()
-                try_request(fallback)
-              end)
-              return
-            end
+          local err_text = error_message(err)
+
+          -- Retry once with a more general supported Copilot model if the
+          -- lightweight model is rejected by the endpoint.
+          if not is_ianus
+            and attempt_count == 1
+            and type(adapter) == "table"
+            and adapter.name == "copilot"
+            and adapter.model == ai_config.codecompanion.quick_commit
+            and is_supported_model_error(err_text)
+          then
+            vim.schedule(function()
+              vim.notify(
+                "Copilot rejected " .. adapter.model .. " for quick commit; retrying with "
+                  .. ai_config.codecompanion.quick_commit_fallback .. ".",
+                vim.log.levels.WARN,
+                { title = "CodeCompanion" }
+              )
+              try_request(copilot_adapter(ai_config.codecompanion.quick_commit_fallback))
+            end)
+            return
           end
-          
+
           vim.schedule(function()
             vim.notify(
-              "Commit message generation failed: " .. vim.inspect(err),
+              "Commit message generation failed: " .. err_text .. "\nQuick commit needs a supported model.",
               vim.log.levels.ERROR,
               { title = "CodeCompanion" }
             )
@@ -207,7 +230,7 @@ local function ai_ask(prompt, on_done)
       },
     })
   end
-  
+
   try_request()
 end
 
@@ -318,17 +341,19 @@ return {
 
       -- Interaction adapters
       -- For ianus: chat adapter can be dynamically switched via toggle_chat_adapter()
-      -- Default is codex, can fallback to deepseek_fast on rate limits
+      -- Default is codex, can fallback to deepseek_fast on rate limits.
+      -- For non-ianus: use the code-focused Copilot model for chat/review tasks,
+      -- but keep titles and summaries on the lightweight model.
       local chat_adapter = is_ianus
         and { name = "codex" }  -- codex-acp auto-selects model based on subscription
-        or  { name = "copilot", model = "gpt-5.4-mini" }
+        or  { name = "copilot", model = ai_config.codecompanion.chat }
 
       local bg_adapter = is_ianus
         and { name = "deepseek_fast", model = "deepseek-v4-flash" }
-        or  { name = "copilot",       model = "gpt-5.4-mini" }
+        or  { name = "copilot",       model = ai_config.codecompanion.background }
 
-      local inline_adapter = is_ianus and "deepseek_fast" or "copilot"
-      local title_model    = is_ianus and "deepseek-v4-flash" or "gpt-5.4-mini"
+      local inline_adapter = is_ianus and "deepseek_fast" or { name = "copilot", model = ai_config.codecompanion.chat }
+      local title_model    = is_ianus and "deepseek-v4-flash" or ai_config.codecompanion.title
       local title_adapter  = is_ianus and "deepseek_fast" or nil
 
       -- CLI agent (ianus gets a codex terminal agent, others get nothing extra)

@@ -1,3 +1,5 @@
+local ai_config = require("config.ai")
+
 return {
   "jackMort/ChatGPT.nvim",
   event = "VeryLazy",
@@ -7,10 +9,10 @@ return {
         vim.fn.expand("<sfile>:p:h") .. "/chatGPTactions.json",
       },
       openai_params = {
-        model = "gpt-5.4-mini",
+        model = ai_config.chatgpt.chat,
       },
       openai_edit_params = {
-        model = "gpt-5.4-mini",
+        model = ai_config.chatgpt.edit,
       },
     })
   end,
