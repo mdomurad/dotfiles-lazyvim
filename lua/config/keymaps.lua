@@ -85,6 +85,7 @@ which_key.add({
   { "<leader>gA", "<cmd>G add --all<CR>", desc = "Stage all files" },
   { "<leader>gd", "<cmd>Gvdiffsplit<CR>", desc = "Git Diff" },
   { "<leader>gp", "<cmd>G pull<CR>", desc = "Git pull --rebase" },
+  { "<leader>gc", "<cmd>G commit<CR>", desc = "Git commit" },
   { "<leader>gr", "<cmd>G commit --amend<CR>", desc = "Reword latest commit" },
   { "<leader>gR", "<cmd>G reset --soft HEAD~1<CR>", desc = "Reset latest commit" },
 
