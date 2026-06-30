@@ -45,10 +45,12 @@ return {
         },
       })
 
-      -- Register dotnet command keymaps only for .cs buffers
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = "cs",
-        callback = function(ev)
+      -- Register dotnet command keymaps for C# and dotnet project buffers
+      local function register_dotnet_keymaps(ev)
+        if vim.b[ev.buf].easy_dotnet_keymaps_registered then
+          return
+        end
+        vim.b[ev.buf].easy_dotnet_keymaps_registered = true
           local wk_ok, wk = pcall(require, "which-key")
           local map_opts = { buffer = ev.buf, noremap = true, silent = true }
 
@@ -188,7 +190,7 @@ return {
             { "<localleader>c", "<cmd>Dotnet clean<CR>", desc = "Clean solution" },
             { "<localleader>s", "<cmd>Dotnet secrets<CR>", desc = "Edit user secrets" },
             { "<localleader>a", "<cmd>Dotnet add package<CR>", desc = "Add NuGet package" },
-            { "<localleader>v", "<cmd>Dotnet project view<CR>", desc = "Project view" },
+            { "<localleader>v", "<cmd>Dotnet solution select<CR>", desc = "Select solution" },
             { "<localleader>i", "<cmd>Dotnet diagnostic<CR>", desc = "Workspace diagnostics" },
             { "<localleader>o", "<cmd>Dotnet restore<CR>", desc = "Restore packages" },
 
@@ -258,7 +260,16 @@ return {
               vim.keymap.set("n", m[1], m[2], vim.tbl_extend("force", map_opts, { desc = m.desc }))
             end
           end
-        end,
+      end
+
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = "cs",
+        callback = register_dotnet_keymaps,
+      })
+
+      vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
+        pattern = { "*.csproj", "*.sln", "*.slnx" },
+        callback = register_dotnet_keymaps,
       })
     end,
   },
