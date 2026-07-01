@@ -100,12 +100,14 @@ local function set_csharp_root_dir()
   local max_depth = 10
   local depth = 0
 
-  -- Step 1: Find closest .csproj or .sln upwards
+  -- Step 1: Find closest .csproj or solution (.sln/.slnx) upwards
   while dir ~= "" and dir ~= "/" and depth < max_depth do
     local csproj = vim.fn.globpath(dir, "*.csproj")
     local sln = vim.fn.globpath(dir, "*.sln")
-    if sln ~= "" then
-      closest = { type = "sln", path = sln, dir = dir }
+    local slnx = vim.fn.globpath(dir, "*.slnx")
+    local solution = sln ~= "" and sln or slnx
+    if solution ~= "" then
+      closest = { type = "sln", path = solution, dir = dir }
       break
     elseif csproj ~= "" then
       closest = { type = "csproj", path = csproj, dir = dir }
@@ -125,7 +127,7 @@ local function set_csharp_root_dir()
     return
   end
 
-  -- Step 3: If closest is .csproj, look upwards for .sln
+  -- Step 3: If closest is .csproj, look upwards for solution (.sln/.slnx)
   local csproj_path = closest.path
   local csproj_dir = closest.dir
   local csproj_filename = vim.fn.fnamemodify(csproj_path, ":t")
@@ -133,15 +135,17 @@ local function set_csharp_root_dir()
   depth = 0
   while dir ~= "" and dir ~= "/" and depth < max_depth do
     local sln = vim.fn.globpath(dir, "*.sln")
-    if sln ~= "" then
-      local sln_content = vim.fn.readfile(sln)
-      for _, line in ipairs(sln_content) do
+    local slnx = vim.fn.globpath(dir, "*.slnx")
+    local solution = sln ~= "" and sln or slnx
+    if solution ~= "" then
+      local solution_content = vim.fn.readfile(solution)
+      for _, line in ipairs(solution_content) do
         if line:find(csproj_filename, 1, true) then
           vim.cmd("lcd " .. vim.fn.fnameescape(dir))
           return
         end
       end
-      break -- found .sln but not containing csproj, stop searching
+      break -- found solution but not containing csproj, stop searching
     end
     dir = vim.fn.fnamemodify(dir, ":h")
     depth = depth + 1
