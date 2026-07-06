@@ -12,6 +12,13 @@ local function copilot_adapter(model)
   return { name = "copilot", model = model }
 end
 
+local function adapter_params(adapter)
+  if type(adapter) == "table" then
+    return { adapter = adapter.name, model = adapter.model }
+  end
+  return { adapter = adapter }
+end
+
 local function error_message(err)
   if type(err) == "table" then
     return vim.trim(vim.inspect(err))
@@ -81,7 +88,7 @@ local function open_chat()
 
   -- Ianus: use dynamic adapter with fallback on error
   require("codecompanion").chat({
-    adapter = _ianus_chat_adapter,
+    params = { adapter = _ianus_chat_adapter },
     callbacks = {
       on_error = function(err)
         local fallback = try_fallback_adapter()
@@ -89,7 +96,7 @@ local function open_chat()
           -- Retry with fallback
           _ianus_chat_adapter = fallback
           vim.schedule(function()
-            require("codecompanion").chat({ adapter = fallback })
+            require("codecompanion").chat({ params = { adapter = fallback } })
           end)
         else
           vim.schedule(function()
@@ -182,7 +189,7 @@ local function ai_ask(prompt, on_done)
     require("codecompanion").chat({
       hidden = true,
       auto_submit = true,
-      adapter = adapter,
+      params = adapter_params(adapter),
       messages = { { role = "user", content = prompt } },
       callbacks = {
         on_created = function(chat)
@@ -316,27 +323,33 @@ return {
       -- Adapter and interaction config — split by user
       -- -----------------------------------------------------------------------
 
-      -- Custom adapters for ianus only
+      -- Custom adapters for ianus only. CodeCompanion keeps HTTP and ACP
+      -- adapters in separate registries; registering them under the correct
+      -- type lets per-chat `params.adapter` resolve the requested provider.
       local adapters = is_ianus and {
-        -- DeepSeek V4 Flash with thinking disabled: fast, cheap HTTP fallback
-        -- used for inline edits, background tasks, cmd, and commit helpers.
-        deepseek_fast = function()
-          return require("codecompanion.adapters").extend("deepseek", {
-            schema = {
-              model = { default = "deepseek-v4-flash" },
-              ["thinking.type"] = { default = "disabled" },
-            },
-          })
-        end,
-        -- Codex ACP adapter authenticated via ChatGPT subscription (no API billing).
-        -- Model selection is handled by codex-acp based on your ChatGPT subscription.
-        codex = function()
-          return require("codecompanion.adapters").extend("codex", {
-            defaults = {
-              auth_method = "chatgpt",
-            },
-          })
-        end,
+        http = {
+          -- DeepSeek V4 Flash with thinking disabled: fast, cheap HTTP fallback
+          -- used for inline edits, background tasks, cmd, and commit helpers.
+          deepseek_fast = function()
+            return require("codecompanion.adapters").extend("deepseek", {
+              schema = {
+                model = { default = "deepseek-v4-flash" },
+                ["thinking.type"] = { default = "disabled" },
+              },
+            })
+          end,
+        },
+        acp = {
+          -- Codex ACP adapter authenticated via ChatGPT subscription (no API billing).
+          -- Model selection is handled by codex-acp based on your ChatGPT subscription.
+          codex = function()
+            return require("codecompanion.adapters").extend("codex", {
+              defaults = {
+                auth_method = "chatgpt",
+              },
+            })
+          end,
+        },
       } or {}
 
       -- Interaction adapters
