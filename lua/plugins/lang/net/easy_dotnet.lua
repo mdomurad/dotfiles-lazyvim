@@ -181,7 +181,7 @@ return {
         ----------------------------------------------------------------
         local mappings = {
           -- Dotnet commands
-          { "<localleader>p", "<cmd>Dotnet<CR>", desc = "Dotnet picker" },
+          { "<localleader>\\", "<cmd>Dotnet<CR>", desc = "Dotnet picker" },
           { "<localleader>n", "<cmd>Dotnet new<CR>", desc = "Dotnet new" },
           { "<localleader>t", "<cmd>Dotnet testrunner<CR>", desc = "Toggle test runner" },
           { "<localleader>b", "<cmd>Dotnet build solution quickfix<CR>", desc = "Build solution -> quickfix" },
