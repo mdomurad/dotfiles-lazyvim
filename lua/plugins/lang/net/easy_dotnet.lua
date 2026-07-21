@@ -4,7 +4,7 @@ return {
     dependencies = { "nvim-lua/plenary.nvim", "folke/snacks.nvim" },
     config = function()
       -- Set MSBuild Configuration env var for Roslyn LSP (Revit SDK framework resolution)
-      vim.g.revit_lsp_config = vim.g.revit_lsp_config or "Debug R22"
+      vim.g.revit_lsp_config = vim.g.revit_lsp_config or "Debug.R22"
       vim.env.Configuration = vim.g.revit_lsp_config
 
       require("easy-dotnet").setup({
@@ -105,13 +105,46 @@ return {
           end)
         end
 
-        local function revit_build(build_type)
+        local function set_revit_lsp_config(config)
+          vim.g.revit_lsp_config = config
+          vim.env.Configuration = config
+          vim.notify("Revit LSP -> " .. config .. " -- restarting...", vim.log.levels.INFO)
+
+          -- Restart active LSP clients so Roslyn reevaluates the project with the new configuration.
+          local clients = vim.lsp.get_clients()
+          if next(clients) ~= nil then
+            local ids = {}
+            for _, client in pairs(clients) do
+              if client and client.id then
+                table.insert(ids, client.id)
+              end
+            end
+            if #ids == 1 then
+              vim.lsp.stop_client(ids[1])
+            elseif #ids > 1 then
+              vim.lsp.stop_client(ids)
+            end
+          end
+
+          vim.defer_fn(function()
+            vim.cmd("edit")
+          end, 500)
+        end
+
+        local function select_revit_config(build_type, callback)
           vim.ui.select(revit_versions, { prompt = "Revit Version" }, function(year)
             if not year then
               return
             end
             local version = year:gsub("^20", "")
-            local config = (build_type == "release" and "Release" or "Debug") .. ".R" .. version
+            local configuration = (build_type == "release" and "Release" or "Debug") .. ".R" .. version
+            callback(configuration)
+          end)
+        end
+
+        local function revit_build(build_type)
+          select_revit_config(build_type, function(config)
+            set_revit_lsp_config(config)
             dotnet_async_qf({ "dotnet", "build", "-c", config }, "Revit Build [" .. config .. "]")
           end)
         end
@@ -119,61 +152,6 @@ return {
         local function revit_clean(build_type)
           local config = (build_type == "release" and "Release" or "Debug")
           dotnet_async_qf({ "dotnet", "clean", "-c", config }, "Revit Clean [" .. config .. "]")
-        end
-
-        ----------------------------------------------------------------
-        -- Revit LSP configuration switcher
-        --
-        -- Switches the MSBuild Configuration that Roslyn LSP uses to
-        -- evaluate projects, controlling TargetFramework resolution.
-        ----------------------------------------------------------------
-        local function revit_lsp_switch()
-          local configs = {}
-          for _, year in ipairs(revit_versions) do
-            local short = year:gsub("^20", "")
-            table.insert(configs, "Debug.R" .. short)
-          end
-
-          vim.ui.select(configs, {
-            prompt = "Revit LSP Configuration",
-            format_item = function(item)
-              local mark = item == vim.g.revit_lsp_config and " * " or "   "
-              local short = tonumber(item:match("R(%d+)") or "0")
-              local year = short + 2000
-              local tfm = "net48"
-              if year >= 2027 then
-                tfm = "net10.0-windows7.0"
-              elseif year >= 2025 then
-                tfm = "net8.0-windows7.0"
-              end
-              return mark .. item .. "  ->  " .. tfm
-            end,
-          }, function(choice)
-            if not choice then
-              return
-            end
-            vim.g.revit_lsp_config = choice
-            vim.env.Configuration = choice
-            vim.notify("Revit LSP -> " .. choice .. " -- restarting...", vim.log.levels.INFO)
-            -- Properly stop all active LSP clients
-            local clients = vim.lsp.get_clients()
-            if next(clients) ~= nil then
-              local ids = {}
-              for _, client in pairs(clients) do
-                if client and client.id then
-                  table.insert(ids, client.id)
-                end
-              end
-              if #ids == 1 then
-                vim.lsp.stop_client(ids[1])
-              elseif #ids > 1 then
-                vim.lsp.stop_client(ids)
-              end
-            end
-            vim.defer_fn(function()
-              vim.cmd("edit")
-            end, 500)
-          end)
         end
 
         ----------------------------------------------------------------
@@ -240,8 +218,6 @@ return {
           { "<localleader>lx", "<cmd>Dotnet lsp stop<CR>", desc = "LSP stop" },
           { "<localleader>lr", "<cmd>Dotnet lsp restart<CR>", desc = "LSP restart" },
 
-          -- Revit LSP config switcher
-          { "<localleader>rl", revit_lsp_switch, desc = "Revit LSP config" },
         }
 
         if wk_ok then
