@@ -13,7 +13,7 @@ local M = {
     -- Stronger code-focused model for chat, review, fixes, and edits.
     code = "gpt-5.3-codex",
     -- General-purpose fallback when a quick task still needs a supported model.
-    versatile = "gpt-4o",
+    versatile = "gpt-5.6-terra",
   },
 }
 
