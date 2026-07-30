@@ -11,9 +11,9 @@ local M = {
     -- Lightweight default for quick tasks like commit titles and summaries.
     quick = "gpt-5.4-nano",
     -- Stronger code-focused model for chat, review, fixes, and edits.
-    code = "gpt-5.3-codex",
+    code = "gpt-5.6-luna",
     -- General-purpose fallback when a quick task still needs a supported model.
-    versatile = "gpt-5.6-terra",
+    versatile = "gpt-5.6-luna",
   },
 }
 
