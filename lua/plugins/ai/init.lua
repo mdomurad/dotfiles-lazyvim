@@ -3,6 +3,7 @@ local user_config = require("config.user")
 local plugins = {
   require("plugins.ai.codeCompanion"),
   require("plugins.ai.wtf"),
+  require("plugins.ai.review"),
 }
 
 if user_config.is_ianus then
