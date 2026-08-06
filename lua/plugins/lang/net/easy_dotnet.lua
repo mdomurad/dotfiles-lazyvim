@@ -162,27 +162,28 @@ return {
           { "<localleader>\\", "<cmd>Dotnet<CR>", desc = "Dotnet picker" },
           { "<localleader>n", "<cmd>Dotnet new<CR>", desc = "Dotnet new" },
           { "<localleader>t", "<cmd>Dotnet testrunner<CR>", desc = "Toggle test runner" },
-          { "<localleader>b", "<cmd>Dotnet build solution quickfix<CR>", desc = "Build solution -> quickfix" },
           { "<localleader>x", "<cmd>Dotnet run default<CR>", desc = "Run default project" },
           { "<localleader>D", "<cmd>Dotnet debug default<CR>", desc = "Debug default project" },
           { "<localleader>w", "<cmd>Dotnet watch default<CR>", desc = "Watch mode" },
-          { "<localleader>c", "<cmd>Dotnet clean<CR>", desc = "Clean solution" },
           { "<localleader>s", "<cmd>Dotnet secrets<CR>", desc = "Edit user secrets" },
           { "<localleader>a", "<cmd>Dotnet add package<CR>", desc = "Add NuGet package" },
           { "<localleader>v", "<cmd>Dotnet solution select<CR>", desc = "Select solution" },
           { "<localleader>i", "<cmd>Dotnet diagnostic<CR>", desc = "Workspace diagnostics" },
           { "<localleader>o", "<cmd>Dotnet restore<CR>", desc = "Restore packages" },
 
+          { "<localleader>cs", "<cmd>Dotnet clean<CR>", desc = "Clean solution" },
+          { "<localleader>bs", "<cmd>Dotnet build solution quickfix<CR>", desc = "Build solution -> quickfix" },
+
           -- Revit build (pick version -> async build -> quickfix)
           {
-            "<localleader>rr",
+            "<localleader>bd",
             function()
               revit_build("debug")
             end,
             desc = "Revit build Debug",
           },
           {
-            "<localleader>rb",
+            "<localleader>br",
             function()
               revit_build("release")
             end,
@@ -191,14 +192,14 @@ return {
 
           -- Revit clean (async -> quickfix)
           {
-            "<localleader>rcd",
+            "<localleader>cd",
             function()
               revit_clean("debug")
             end,
             desc = "Revit clean Debug",
           },
           {
-            "<localleader>rcr",
+            "<localleader>cr",
             function()
               revit_clean("release")
             end,
@@ -217,7 +218,6 @@ return {
           { "<localleader>ls", "<cmd>Dotnet lsp start<CR>", desc = "LSP start" },
           { "<localleader>lx", "<cmd>Dotnet lsp stop<CR>", desc = "LSP stop" },
           { "<localleader>lr", "<cmd>Dotnet lsp restart<CR>", desc = "LSP restart" },
-
         }
 
         if wk_ok then
@@ -225,8 +225,8 @@ return {
             { "<localleader>", group = "Dotnet", buffer = ev.buf },
             { "<localleader>e", group = "Entity Framework", buffer = ev.buf },
             { "<localleader>l", group = "LSP", buffer = ev.buf },
-            { "<localleader>r", group = "Revit", buffer = ev.buf },
-            { "<localleader>rc", group = "Revit Clean", buffer = ev.buf },
+            { "<localleader>b", group = "Build", buffer = ev.buf },
+            { "<localleader>c", group = "Clean", buffer = ev.buf },
           }
           for _, m in ipairs(mappings) do
             table.insert(wk_mappings, { m[1], m[2], desc = m.desc, buffer = ev.buf })
