@@ -3,9 +3,32 @@ return {
     "GustavEikaas/easy-dotnet.nvim",
     dependencies = { "nvim-lua/plenary.nvim", "folke/snacks.nvim" },
     config = function()
+      local state = require("config.state")
+      local default_revit_config = "Debug.R22"
+
+      local function is_valid_revit_config(config)
+        if type(config) ~= "string" then
+          return false
+        end
+        return config:match("^Debug%.R2[0-7]$") ~= nil or config:match("^Release%.R2[0-7]$") ~= nil
+      end
+
       -- Set MSBuild Configuration env var for Roslyn LSP (Revit SDK framework resolution)
-      vim.g.revit_lsp_config = vim.g.revit_lsp_config or "Debug.R22"
-      vim.env.Configuration = vim.g.revit_lsp_config
+      -- The persisted value is the source of truth for the last selected Revit
+      -- configuration. Fall back to the current global only when no state exists.
+      local function sync_revit_lsp_config()
+        local saved_revit_config = state.get("revit_lsp_config", vim.g.revit_lsp_config or default_revit_config)
+        if not is_valid_revit_config(saved_revit_config) then
+          saved_revit_config = vim.g.revit_lsp_config
+        end
+        if not is_valid_revit_config(saved_revit_config) then
+          saved_revit_config = default_revit_config
+        end
+        vim.g.revit_lsp_config = saved_revit_config
+        vim.env.Configuration = saved_revit_config
+      end
+
+      sync_revit_lsp_config()
 
       require("easy-dotnet").setup({
         picker = "snacks",
@@ -45,12 +68,23 @@ return {
         },
       })
 
+      local revit_config_group = vim.api.nvim_create_augroup("RevitDotnetConfiguration", { clear = true })
+      vim.api.nvim_create_autocmd({ "VimEnter", "BufEnter", "LspAttach" }, {
+        group = revit_config_group,
+        callback = function()
+          vim.schedule(sync_revit_lsp_config)
+        end,
+      })
+      sync_revit_lsp_config()
+      vim.defer_fn(sync_revit_lsp_config, 1000)
+
       -- Register dotnet command keymaps for C# and dotnet project buffers
       local function register_dotnet_keymaps(ev)
-        if vim.b[ev.buf].easy_dotnet_keymaps_registered then
+        local keymap_version = "revit-config-v7"
+        if vim.b[ev.buf].easy_dotnet_keymaps_registered == keymap_version then
           return
         end
-        vim.b[ev.buf].easy_dotnet_keymaps_registered = true
+        vim.b[ev.buf].easy_dotnet_keymaps_registered = keymap_version
         local wk_ok, wk = pcall(require, "which-key")
         local map_opts = { buffer = ev.buf, noremap = true, silent = true }
 
@@ -106,8 +140,15 @@ return {
         end
 
         local function set_revit_lsp_config(config)
+          local changed = vim.g.revit_lsp_config ~= config or vim.env.Configuration ~= config
           vim.g.revit_lsp_config = config
           vim.env.Configuration = config
+          state.set("revit_lsp_config", config)
+
+          if not changed then
+            return
+          end
+
           vim.notify("Revit LSP -> " .. config .. " -- restarting...", vim.log.levels.INFO)
 
           -- Restart active LSP clients so Roslyn reevaluates the project with the new configuration.
@@ -138,21 +179,59 @@ return {
             end
             local version = year:gsub("^20", "")
             local configuration = (build_type == "release" and "Release" or "Debug") .. ".R" .. version
+            set_revit_lsp_config(configuration)
             callback(configuration)
           end)
         end
 
         local function revit_build(build_type)
           select_revit_config(build_type, function(config)
-            set_revit_lsp_config(config)
             dotnet_async_qf({ "dotnet", "build", "-c", config }, "Revit Build [" .. config .. "]")
           end)
         end
 
         local function revit_clean(build_type)
-          local config = (build_type == "release" and "Release" or "Debug")
+          select_revit_config(build_type, function(config)
+            dotnet_async_qf({ "dotnet", "clean", "-c", config }, "Revit Clean [" .. config .. "]")
+          end)
+        end
+
+        local function last_revit_config()
+          local config = state.get("revit_lsp_config", vim.g.revit_lsp_config or default_revit_config)
+          if not is_valid_revit_config(config) then
+            config = vim.g.revit_lsp_config
+          end
+          if not is_valid_revit_config(config) then
+            config = default_revit_config
+          end
+
+          -- Keep the current MSBuild/LSP environment aligned with the selected
+          -- configuration when a last-build or last-clean mapping is invoked.
+          vim.g.revit_lsp_config = config
+          vim.env.Configuration = config
+          return config
+        end
+
+        local function revit_build_last()
+          local config = last_revit_config()
+          dotnet_async_qf({ "dotnet", "build", "-c", config }, "Revit Build [" .. config .. "]")
+        end
+
+        local function revit_clean_last()
+          local config = last_revit_config()
           dotnet_async_qf({ "dotnet", "clean", "-c", config }, "Revit Clean [" .. config .. "]")
         end
+
+        -- Commands resolve the state at invocation time. This avoids retaining a
+        -- stale Lua callback in an already-open C# buffer after a config reload.
+        vim.api.nvim_create_user_command("RevitBuildLast", revit_build_last, {
+          desc = "Build using the last selected Revit configuration",
+          force = true,
+        })
+        vim.api.nvim_create_user_command("RevitCleanLast", revit_clean_last, {
+          desc = "Clean using the last selected Revit configuration",
+          force = true,
+        })
 
         ----------------------------------------------------------------
         -- Mapping table
@@ -183,6 +262,11 @@ return {
             desc = "Revit build Debug",
           },
           {
+            "<localleader>bl",
+            "<cmd>RevitBuildLast<CR>",
+            desc = "Revit build last selected",
+          },
+          {
             "<localleader>br",
             function()
               revit_build("release")
@@ -190,13 +274,18 @@ return {
             desc = "Revit build Release",
           },
 
-          -- Revit clean (async -> quickfix)
+          -- Revit clean (pick version -> async clean -> quickfix)
           {
             "<localleader>cd",
             function()
               revit_clean("debug")
             end,
             desc = "Revit clean Debug",
+          },
+          {
+            "<localleader>cl",
+            "<cmd>RevitCleanLast<CR>",
+            desc = "Revit clean last selected",
           },
           {
             "<localleader>cr",
@@ -220,22 +309,18 @@ return {
           { "<localleader>lr", "<cmd>Dotnet lsp restart<CR>", desc = "LSP restart" },
         }
 
+        for _, m in ipairs(mappings) do
+          vim.keymap.set("n", m[1], m[2], vim.tbl_extend("force", map_opts, { desc = m.desc }))
+        end
+
         if wk_ok then
-          local wk_mappings = {
+          wk.add({
             { "<localleader>", group = "Dotnet", buffer = ev.buf },
             { "<localleader>e", group = "Entity Framework", buffer = ev.buf },
             { "<localleader>l", group = "LSP", buffer = ev.buf },
             { "<localleader>b", group = "Build", buffer = ev.buf },
             { "<localleader>c", group = "Clean", buffer = ev.buf },
-          }
-          for _, m in ipairs(mappings) do
-            table.insert(wk_mappings, { m[1], m[2], desc = m.desc, buffer = ev.buf })
-          end
-          wk.add(wk_mappings)
-        else
-          for _, m in ipairs(mappings) do
-            vim.keymap.set("n", m[1], m[2], vim.tbl_extend("force", map_opts, { desc = m.desc }))
-          end
+          })
         end
       end
 
@@ -248,6 +333,16 @@ return {
         pattern = { "*.csproj", "*.sln", "*.slnx" },
         callback = register_dotnet_keymaps,
       })
+
+      for _, buffer in ipairs(vim.api.nvim_list_bufs()) do
+        if vim.api.nvim_buf_is_valid(buffer) then
+          local name = vim.api.nvim_buf_get_name(buffer)
+          local filetype = vim.bo[buffer].filetype
+          if filetype == "cs" or name:match("%.csproj$") or name:match("%.slnx?$") then
+            register_dotnet_keymaps({ buf = buffer })
+          end
+        end
+      end
     end,
   },
 }
