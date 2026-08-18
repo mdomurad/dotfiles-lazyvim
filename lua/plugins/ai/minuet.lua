@@ -1,54 +1,93 @@
--- Inline as-you-type AI completions via DeepSeek FIM API.
--- Loaded only for ianus (see ai/init.lua).
--- Requires DEEPSEEK_API_KEY environment variable.
+-- DeepSeek-backed inline completions and next-edit predictions for ianus only.
+-- This module is imported conditionally by plugins/ai/init.lua.
+local code_filetypes = {
+  "lua",
+  "python",
+  "javascript",
+  "typescript",
+  "typescriptreact",
+  "javascriptreact",
+  "go",
+  "rust",
+  "c",
+  "cpp",
+  "cs",
+}
+
 return {
   "milanglacier/minuet-ai.nvim",
+  lazy = false,
   dependencies = { "nvim-lua/plenary.nvim" },
+  keys = {
+    { "<leader>am", "", desc = "+minuet", mode = "n" },
+    { "<leader>amp", "<cmd>Minuet duet predict<cr>", desc = "Predict next edit", mode = "n" },
+    { "<leader>ama", "<cmd>Minuet duet apply<cr>", desc = "Apply next edit", mode = "n" },
+    { "<leader>amd", "<cmd>Minuet duet dismiss<cr>", desc = "Dismiss next edit", mode = "n" },
+    { "<leader>amt", "<cmd>Minuet duet toggle<cr>", desc = "Toggle next-edit predictions", mode = "n" },
+  },
   config = function()
     require("minuet").setup({
-      -- Use DeepSeek FIM (Fill-In-the-Middle) — best for code completion latency.
       provider = "openai_fim_compatible",
-
-      -- One completion at a time keeps DeepSeek FIM cost minimal.
       n_completions = 1,
-
-      -- Throttle and debounce reduce API calls while still feeling responsive.
-      throttle     = 1000, -- ms between request bursts
-      debounce     = 400,  -- ms of idle before triggering
-      request_timeout = 3, -- seconds before giving up
-
+      throttle = 1000,
+      debounce = 400,
+      request_timeout = 3,
       provider_options = {
         openai_fim_compatible = {
-          api_key   = "DEEPSEEK_API_KEY",    -- read from env var
-          name      = "deepseek",
+          api_key = "DEEPSEEK_API_KEY",
+          name = "DeepSeek",
           end_point = "https://api.deepseek.com/beta/completions",
-          model     = "deepseek-v4-flash",
-          optional  = {
+          model = "deepseek-v4-flash",
+          optional = {
             max_tokens = 256,
-            top_p      = 0.9,
+            top_p = 0.9,
           },
         },
       },
-
       virtualtext = {
-        -- Auto-trigger in common coding filetypes.
-        -- Set to {} for manual-only (trigger with next/prev keys).
-        auto_trigger_ft = {
-          "lua", "python", "javascript", "typescript", "typescriptreact",
-          "javascriptreact", "go", "rust", "c", "cpp", "cs",
-        },
-        -- Show virtual text even when blink.cmp menu is visible
-        -- Default is false to avoid visual clutter
+        auto_trigger_ft = code_filetypes,
         show_on_completion_menu = true,
         keymap = {
-          accept      = "<Tab>",
-          accept_line = "<S-Tab>",
-          accept_word = "<C-Right>",
-          next        = "<A-l>",
-          prev        = "<A-j>",
-          dismiss     = "<Esc>",
+          accept_line = "<M-a>",
+          next = "<M-]>",
+          prev = "<M-[>",
+          dismiss = "<M-e>",
+        },
+      },
+      duet = {
+        provider = "openai_compatible",
+        request_timeout = 15,
+        auto_trigger = {
+          auto_trigger_ft = code_filetypes,
+          enable_predicates = {
+            function()
+              return vim.fn.mode(1):sub(1, 1) == "n"
+            end,
+          },
+        },
+        provider_options = {
+          openai_compatible = {
+            api_key = "DEEPSEEK_API_KEY",
+            name = "DeepSeek",
+            end_point = "https://api.deepseek.com/chat/completions",
+            model = "deepseek-v4-flash",
+            optional = {
+              thinking = { type = "disabled" },
+            },
+          },
         },
       },
     })
+
+    LazyVim.cmp.actions.ai_accept = function()
+      local virtualtext = require("minuet.virtualtext").action
+      if not virtualtext.is_visible() then
+        return
+      end
+
+      LazyVim.create_undo()
+      virtualtext.accept()
+      return true
+    end
   end,
 }

@@ -1,6 +1,7 @@
 local keymap = vim.keymap
 local opts = { noremap = true, silent = true }
 local which_key = require("which-key")
+local user_config = require("config.user")
 
 ----------------------------------------------------------------------------------------------------
 
@@ -108,8 +109,14 @@ which_key.add({
   -- Exit terminal mode
   { "<C-q>", "<C-\\><C-n>", mode = "t", desc = "Exit Terminal Mode" },
 
-  -- Sidekick NES
-  { "<C-p>", LazyVim.cmp.map({ "ai_nes" }, "<tab>"), mode = { "n" }, expr = true },
+  -- ianus uses DeepSeek-backed Minuet Duet; other profiles retain Sidekick NES.
+  {
+    "<C-p>",
+    user_config.is_ianus and "<cmd>Minuet duet predict<cr>" or LazyVim.cmp.map({ "ai_nes" }, "<tab>"),
+    desc = user_config.is_ianus and "Minuet predict next edit" or "Sidekick NES",
+    mode = { "n" },
+    expr = not user_config.is_ianus,
+  },
 
   -- ccc.nvim color picker
   { "<leader>cp", "<cmd>CccPick<cr>", desc = "Pick color" },
