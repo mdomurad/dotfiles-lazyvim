@@ -151,19 +151,11 @@ return {
 
           vim.notify("Revit LSP -> " .. config .. " -- restarting...", vim.log.levels.INFO)
 
-          -- Restart active LSP clients so Roslyn reevaluates the project with the new configuration.
-          local clients = vim.lsp.get_clients()
-          if next(clients) ~= nil then
-            local ids = {}
-            for _, client in pairs(clients) do
-              if client and client.id then
-                table.insert(ids, client.id)
-              end
-            end
-            if #ids == 1 then
-              vim.lsp.stop_client(ids[1])
-            elseif #ids > 1 then
-              vim.lsp.stop_client(ids)
+          -- Restart active LSP clients so Roslyn reevaluates the project
+          -- with the new configuration.
+          for _, client in pairs(vim.lsp.get_clients()) do
+            if client and client.stop then
+              client:stop()
             end
           end
 
