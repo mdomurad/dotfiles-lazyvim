@@ -96,7 +96,8 @@ return {
         --- Parse MSBuild output and populate quickfix with errors/warnings only
         ---@param cmd string[]
         ---@param title string
-        local function dotnet_async_qf(cmd, title)
+        ---@param on_complete? fun()
+        local function dotnet_async_qf(cmd, title, on_complete)
           vim.notify(title .. "...", vim.log.levels.INFO)
           vim.system(cmd, { text = true }, function(result)
             vim.schedule(function()
@@ -135,8 +136,39 @@ return {
                 vim.notify(title .. " FAILED (" .. #qf_entries .. " issues)", vim.log.levels.ERROR)
                 vim.cmd("copen")
               end
+
+              if on_complete then
+                on_complete()
+              end
             end)
           end)
+        end
+
+        ---@param config string
+        ---@param buffer? integer Buffer to refresh after restarting clients.
+        local function restart_lsp(config, buffer)
+          vim.notify("Revit LSP -> " .. config .. " -- restarting...", vim.log.levels.INFO)
+
+          -- Restart active LSP clients so Roslyn reevaluates the project
+          -- with the new configuration.
+          for _, client in pairs(vim.lsp.get_clients()) do
+            if client and client.stop then
+              client:stop()
+            end
+          end
+
+          vim.defer_fn(function()
+            if not buffer or not vim.api.nvim_buf_is_valid(buffer) or not vim.api.nvim_buf_is_loaded(buffer) then
+              return
+            end
+            if vim.api.nvim_buf_get_name(buffer) == "" then
+              return
+            end
+
+            vim.api.nvim_buf_call(buffer, function()
+              vim.cmd("edit")
+            end)
+          end, 500)
         end
 
         local function set_revit_lsp_config(config)
@@ -149,19 +181,7 @@ return {
             return
           end
 
-          vim.notify("Revit LSP -> " .. config .. " -- restarting...", vim.log.levels.INFO)
-
-          -- Restart active LSP clients so Roslyn reevaluates the project
-          -- with the new configuration.
-          for _, client in pairs(vim.lsp.get_clients()) do
-            if client and client.stop then
-              client:stop()
-            end
-          end
-
-          vim.defer_fn(function()
-            vim.cmd("edit")
-          end, 500)
+          restart_lsp(config, vim.api.nvim_get_current_buf())
         end
 
         local function select_revit_config(build_type, callback)
@@ -177,8 +197,11 @@ return {
         end
 
         local function revit_build(build_type)
+          local build_buffer = vim.api.nvim_get_current_buf()
           select_revit_config(build_type, function(config)
-            dotnet_async_qf({ "dotnet", "build", "-c", config }, "Revit Build [" .. config .. "]")
+            dotnet_async_qf({ "dotnet", "build", "-c", config }, "Revit Build [" .. config .. "]", function()
+              restart_lsp(config, build_buffer)
+            end)
           end)
         end
 
@@ -205,8 +228,11 @@ return {
         end
 
         local function revit_build_last()
+          local build_buffer = vim.api.nvim_get_current_buf()
           local config = last_revit_config()
-          dotnet_async_qf({ "dotnet", "build", "-c", config }, "Revit Build [" .. config .. "]")
+          dotnet_async_qf({ "dotnet", "build", "-c", config }, "Revit Build [" .. config .. "]", function()
+            restart_lsp(config, build_buffer)
+          end)
         end
 
         local function revit_clean_last()
