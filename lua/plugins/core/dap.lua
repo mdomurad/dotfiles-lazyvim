@@ -1,13 +1,21 @@
+local last_expression
+
 local function eval_expression()
-  -- Clear dap-ui's registered hover float before evaluating a new expression.
-  -- dapui.eval() closes the old window directly, which leaves the window
-  -- registry pointing at that stale float on the next evaluation.
   local dapui = require("dapui")
-  require("dapui.windows").close_float("hover")
+  local expression = require("dapui.util").get_current_expr()
+
+  -- Clear dap-ui's registered hover float only when evaluating a new
+  -- expression. Repeating the same expression should enter the existing
+  -- float so its expandable details remain available.
+  if last_expression ~= expression then
+    require("dapui.windows").close_float("hover")
+  end
+  last_expression = expression
+
   -- nvim-dap-ui accepts these options as optional at runtime and sizes the
   -- float to its contents when width and height are omitted.
   ---@diagnostic disable-next-line: missing-fields
-  dapui.eval(nil, { context = "repl" })
+  dapui.eval(expression, { context = "repl" })
 end
 
 return {
