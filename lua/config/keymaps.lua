@@ -103,6 +103,11 @@ which_key.add({
   { ";l", "<cmd>lua vim.diagnostic.goto_next()<CR>", desc = "Next Diagnostic" },
   { ";j", "<cmd>lua vim.diagnostic.goto_prev()<CR>", desc = "Previous Diagnostic" },
 
+  -- lsp
+  { "<;>Ls", "<cmd>lsp start<CR>", desc = "LSP start" },
+  { "<;>Lx", "<cmd>lsp stop<CR>", desc = "LSP stop" },
+  { "<;>Lr", "<cmd>lsp restart<CR>", desc = "LSP restart" },
+
   -- Cosco comma or semicolon
   { ";;", "<Plug>(cosco-commaOrSemiColon)", desc = "Cosco Comma or Semicolon" },
 

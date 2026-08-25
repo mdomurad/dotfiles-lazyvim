@@ -294,11 +294,6 @@ return {
           { "<localleader>eu", "<cmd>Dotnet ef database update<CR>", desc = "EF database update" },
           { "<localleader>ep", "<cmd>Dotnet ef database update pick<CR>", desc = "EF database update (pick)" },
           { "<localleader>ed", "<cmd>Dotnet ef database drop<CR>", desc = "EF database drop" },
-
-          -- LSP
-          { "<localleader>ls", "<cmd>Dotnet lsp start<CR>", desc = "LSP start" },
-          { "<localleader>lx", "<cmd>Dotnet lsp stop<CR>", desc = "LSP stop" },
-          { "<localleader>lr", "<cmd>Dotnet lsp restart<CR>", desc = "LSP restart" },
         }
 
         for _, m in ipairs(mappings) do
