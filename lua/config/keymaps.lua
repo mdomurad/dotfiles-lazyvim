@@ -104,6 +104,7 @@ which_key.add({
   { ";j", "<cmd>lua vim.diagnostic.goto_prev()<CR>", desc = "Previous Diagnostic" },
 
   -- lsp
+  { "<;>L", group = "lsp" },
   { "<;>Ls", "<cmd>lsp start<CR>", desc = "LSP start" },
   { "<;>Lx", "<cmd>lsp stop<CR>", desc = "LSP stop" },
   { "<;>Lr", "<cmd>lsp restart<CR>", desc = "LSP restart" },
