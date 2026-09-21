@@ -5,6 +5,7 @@ local plugins = {
   require("plugins.ai.wtf"),
   require("plugins.ai.review"),
   require("plugins.ai.herdr"),
+  require("plugins.ai.sidekick"),
 }
 
 if user_config.is_ianus then
