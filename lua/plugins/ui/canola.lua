@@ -1,6 +1,6 @@
 return {
   {
-    "barrettruth/canola.nvim",
+    "https://forge.barrettruth.com/barrettruth/canola.nvim",
     config = function()
       require("oil").setup({
         keymaps = {
